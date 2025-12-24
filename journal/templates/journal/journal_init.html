@@ -1,29 +1,89 @@
-{% extends 'base.html' %}
-{% block title %}{{ journal.date }}のジャーナル作成{% endblock %}
+{% extends "base.html" %}
+{% block title %}Journal作成{% endblock %}
+
 {% block content %}
+<div class="container my-5" style="max-width: 900px;">
 
-<form method="post">
-    {% csrf_token %}
-
-<h2>Goals</h2>
-    {{ goal_formset.management_form }}
-    {% for form in goal_formset %}
-        <div class="goal-form mb-2 p-2 border">
-            {{ form.as_p }}
+    <!-- ヘッダー（日付 + 戻る） -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h3 class="mb-1">
+                {{ journal.date|date:"Y年n月j日" }}
+            </h3>
+            <small class="text-muted">今日の記録を作成します</small>
         </div>
-    {% endfor %}
 
-    <hr>
+        <a href="{% url 'journal:home' %}" class="btn btn-outline-secondary">
+            ← カレンダーへ戻る
+        </a>
+    </div>
 
-    <h2>todo</h2>
-    {{ todo_formset.management_form }}
-    {% for form in todo_formset %}
-        <div class="todo-form mb-2 p-2 border">
-            {{ form.as_p }}
+    <form method="post">
+        {% csrf_token %}
+
+        <div class="row g-4">
+            <!-- Goal -->
+            <div class="col-md-6">
+                <div class="card shadow-sm h-100">
+                    <div class="card-header bg-primary text-white">
+                        🎯 Goal
+                    </div>
+                    <div class="card-body">
+                        {{ goal_formset.management_form }}
+
+                        {% for form in goal_formset %}
+                            <div class="mb-3">
+                                {{ form.title }}
+                            </div>
+                        {% endfor %}
+
+                        <small class="text-muted">
+                            今日達成したい目標を書いてみましょう
+                        </small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Todo -->
+            <div class="col-md-6">
+                <div class="card shadow-sm h-100">
+                    <div class="card-header bg-success text-white">
+                        ✅ Todo
+                    </div>
+                    <div class="card-body">
+                        {% for form in todo_formset %}
+                            <div class="border rounded p-3 mb-3">
+                                <div class="mb-2">
+                                    {{ form.title }}
+                                </div>
+
+                                <div class="row g-2">
+                                    <div class="col-6">
+                                        {{ form.start_time.label_tag }}
+                                        {{ form.start_time }}
+                                    </div>
+                                    <div class="col-6">
+                                        {{ form.end_time.label_tag }}
+                                        {{ form.end_time }}
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+
+                        <small class="text-muted">
+                            今日やることを書き出してみましょう
+                        </small>
+                    </div>
+                </div>
+            </div>
         </div>
-    {% endfor %}
 
-    <button type="submit" class="btn btn-primary">保存</button>
-</form>
-
+        <!-- 保存ボタン -->
+        <div class="text-center mt-5">
+            <button type="submit" class="btn btn-lg btn-primary px-5">
+                保存する
+            </button>
+        </div>
+    </form>
+</div>
 {% endblock %}

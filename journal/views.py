@@ -7,7 +7,7 @@ from datetime import date, datetime, timedelta
 import calendar
 from .forms import GoalFormSet, TodoFormSet
 
-
+# Home画面のView
 class HomeScreenView(LoginRequiredMixin,TemplateView):
     template_name = 'journal/home.html'
     login_url = 'accounts:login'
@@ -34,7 +34,12 @@ class HomeScreenView(LoginRequiredMixin,TemplateView):
             user=self.request.user,
             date__year=year,
             date__month=month
-        ).values_list('date', flat=True)
+        ).prefetch_related('goal_set','todo_set')
+
+        journal_map = {
+            j.date: (j.goal_set.exists() or j.todo_set.exists())
+            for j in journal_dates
+        }
 
         # カレンダーデータの構築
         cal_data = []
@@ -43,7 +48,7 @@ class HomeScreenView(LoginRequiredMixin,TemplateView):
             for day in week:
                 week_data.append({
                     'day': day,
-                    'has_journal': day in journal_dates,
+                    'has_journal': journal_map.get(day, False),
                 })
             cal_data.append(week_data)
 
@@ -93,7 +98,7 @@ class JournalDetailView(DetailView): # その日のGoalとTodoを表示するVie
 class JournalInitView(CreateView):
     template_name = 'journal/journal_init.html'
     def get(self, request, year, month, day):
-        journal, _ = journal.objects.get_or_create(
+        journal, _ = Journal.objects.get_or_create(
             user=request.user,
             date=date(year, month, day)
         )
@@ -140,7 +145,7 @@ class JournalInitView(CreateView):
             'todo_formset': todo_formset,
             'journal': journal,
         })
-        
+
 # Goal関連のView
 class CreateGoalView(CreateView):
     template_name = 'journal/create_goal.html'
