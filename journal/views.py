@@ -1,13 +1,58 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse, reverse_lazy
-from django.views.generic import (TemplateView, ListView, DetailView, CreateView, DeleteView, UpdateView,)
+from django.views.generic import (TemplateView, DetailView, CreateView, DeleteView, UpdateView,)
 from .models import Journal, Todo, Goal
-from datetime import date
+from datetime import date, datetime, timedelta
+import calendar
 from .forms import GoalFormSet, TodoFormSet
 
 
-class HomeScreenView(TemplateView):
+class HomeScreenView(LoginRequiredMixin,TemplateView):
     template_name = 'journal/home.html'
+    login_url = 'accounts:login'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        today = date.today()
+        year = int(self.request.GET.get('year', today.year))
+        month = int(self.request.GET.get('month', today.month))
+
+        # 年・月プルダんリストの生成
+        context['years'] = [y for y in range(today.year -2, today.year +5)]
+        context['months'] = [m for m in range(1,13)]
+        context['year'] = year
+        context['month'] = month
+        context['today'] = today
+
+        # カレンダーの生成
+        cal = calendar.Calendar(firstweekday=6) # 日曜日始まり
+        month_days = cal.monthdatescalendar(year, month) # 週ごとの日付リスト
+
+        # 日付ごとの journal 存在フラグ
+        journal_dates = Journal.objects.filter(
+            user=self.request.user,
+            date__year=year,
+            date__month=month
+        ).values_list('date', flat=True)
+
+        # カレンダーデータの構築
+        cal_data = []
+        for week in month_days:
+            week_data = []
+            for day in week:
+                week_data.append({
+                    'day': day,
+                    'has_journal': day in journal_dates,
+                })
+            cal_data.append(week_data)
+
+        context.update({
+            'year': year,
+            'month': month,
+            'cal_data': cal_data,
+        })
+        return context
     
 # Journal関連のView
 class JournalDetailView(DetailView): # その日のGoalとTodoを表示するView
@@ -64,6 +109,7 @@ class JournalInitView(CreateView):
     
     def post(self, request, year, month, day):
         journal = get_object_or_404(
+            Journal,
             user = request.user,
             date = date(year, month, day)
         )
@@ -100,18 +146,26 @@ class CreateGoalView(CreateView):
     template_name = 'journal/create_goal.html'
     model = Goal
     fields = ('title',)
-    success_url = reverse_lazy('home')
+    success_url = reverse_lazy('journal:journal_detail', kwargs={
+        'year': 'year',
+        'month': 'month',
+        'day': 'day',
+        })
     
     def form_valid(self, form):
         year = self.kwargs['year']
         month = self.kwargs['month']
-        dey = self.kwargs['day']
+        day = self.kwargs['day']
 
         from datetime import date
         
-        journal_date = date(year, month, dey)
+        journal_date = date(year, month, day)
 
-        journal = get_object_or_404(user=self.request.user, date=journal_date) # 
+        journal = get_object_or_404(
+            Journal,
+            user=self.request.user,
+            date=journal_date
+            ) 
         form.instance.journal = journal
 
         return super().form_valid(form)
@@ -127,7 +181,7 @@ class UpdateGoalView(UpdateView):
 class DeleteGoalView(DeleteView):
     template_name = 'journal/delete_goal.html'
     model = Goal
-    success_url = reverse_lazy('home')
+    success_url = reverse_lazy('accounts:home')
 
     def get_queryset(self):
         return Goal.objects.filter(journal__user=self.request.user)
@@ -141,7 +195,16 @@ class CreateTodoView(CreateView):
     success_url = reverse_lazy('home')
 
     def form_valid(self, form):
-        journal = Journal.objects.get(user=self.request.user, date=self.kwargs['date'])
+        journal_date = date(
+            int(self.kwargs['year']),
+            int(self.kwargs['month']),
+            int(self.kwargs['day'])
+        )
+        journal = get_object_or_404(
+            Journal,
+            user=self.request.user,
+            date=journal_date
+        )
         form.instance.journal = journal
         return super().form_valid(form)
 

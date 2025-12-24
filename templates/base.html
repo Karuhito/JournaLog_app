@@ -20,25 +20,14 @@
                 <a class="nav-link active" aria-current="page" href="{% url 'journal:home' %}">Home</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#"></a>
-              </li>
-              <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                  投稿する
-                </a>
-                <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" href="#">Goal</a></li>
-                  <li><a class="dropdown-item" href="#">Todo</a></li>
-                  <li><hr class="dropdown-divider"></li>
-                  <li><a class="dropdown-item" href="#">閉じる</a></li>
-                </ul>
+                <form class="d-flex me-3 pl-4" role="search">
+                  <input class="form-control me-2" type="search" placeholder="検索ワードを入力" aria-label="Search">
+                  <button class="btn btn-outline-success" type="submit">Search</button>
+                </form>
               </li>
             </ul>
           
-            <form class="d-flex me-3" role="search">
-              <input class="form-control me-2" type="search" placeholder="検索ワードを入力" aria-label="Search">
-              <button class="btn btn-outline-success" type="submit">Search</button>
-            </form>
+           
           </div>
           <div>
             {% if user.is_authenticated %}

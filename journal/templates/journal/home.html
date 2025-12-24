@@ -1,5 +1,64 @@
 {% extends 'base.html' %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/calendar.css' %}">
 {% block title %}ホーム{% endblock %}
-{% block content %}
 
+{% block content %}
+<div class="container mt-5">
+    <h2>{{ user.username }}さんのカレンダー</h2>
+
+    <!-- 年・月プルダウン -->
+    <form method="get" id="calendar-form" class="mb-3">
+        <select name="year"
+                class="form-select d-inline w-auto"
+                onchange="document.getElementById('calendar-form').submit();">
+            {% for y in years %}
+                <option value="{{ y }}" {% if y == year %}selected{% endif %}>{{ y }}</option>
+            {% endfor %}
+        </select>
+    
+        <select name="month"
+                class="form-select d-inline w-auto"
+                onchange="document.getElementById('calendar-form').submit();">
+            {% for m in months %}
+                <option value="{{ m }}" {% if m == month %}selected{% endif %}>{{ m }}</option>
+            {% endfor %}
+        </select>
+    </form>
+
+    <!-- カレンダー表示 -->
+    <table class="table table-bordered text-center">
+        <thead>
+            <tr>
+                <th>日</th><th>月</th><th>火</th><th>水</th><th>木</th><th>金</th><th>土</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for week in cal_data %}
+            <tr>
+                {% for day in week %}
+                <td
+                class="
+                calendar-cell
+                {% if d.day.month != month %} other-month {% endif %}
+                {% if d.day == today %} today {% endif %}
+                {% if d.has_journal %} has-journal {% endif %}">
+                {% if d.day.month != month %}
+                    <span class="text-muted">{{ d.day.day }}</span>
+                {% else %}
+                    <a href="{% if d.has_journal %}
+                        {% url 'journal:journal_detail' year=d.day.year month=d.day.month day=d.day.day %}
+                    {% else %}
+                        {% url 'journal:journal_init' year=d.day.year month=d.day.month day=d.day.day %}
+                    {% endif %}">
+                {{ d.day.day }}
+                    </a>
+                {% endif %}
+                </td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
 {% endblock %}
