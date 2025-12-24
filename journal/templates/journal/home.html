@@ -1,6 +1,5 @@
 {% extends 'base.html' %}
-{% load static %}
-<link rel="stylesheet" href="{% static 'css/calendar.css' %}">
+
 {% block title %}ホーム{% endblock %}
 
 {% block content %}
@@ -37,28 +36,31 @@
             {% for week in cal_data %}
             <tr>
                 {% for day in week %}
-                <td
-                class="
-                calendar-cell
-                {% if d.day.month != month %} other-month {% endif %}
-                {% if d.day == today %} today {% endif %}
-                {% if d.has_journal %} has-journal {% endif %}">
-                {% if d.day.month != month %}
-                    <span class="text-muted">{{ d.day.day }}</span>
-                {% else %}
-                    <a href="{% if d.has_journal %}
-                        {% url 'journal:journal_detail' year=d.day.year month=d.day.month day=d.day.day %}
+                    <td class="
+                        calendar-cell
+                        {% if day.day.month != month %} other-month {% endif %}
+                        {% if day.day == today %} today {% endif %}
+                        {% if day.has_journal %} has-journal {% endif %}
+                        "
+                    >
+                    {% if day.day.month != month %}
+                        <span class="text-muted">{{ day.day.day }}</span>
                     {% else %}
-                        {% url 'journal:journal_init' year=d.day.year month=d.day.month day=d.day.day %}
-                    {% endif %}">
-                {{ d.day.day }}
-                    </a>
-                {% endif %}
-                </td>
-                {% endfor %}
-            </tr>
+                        <a href="{% if day.has_journal %}
+                        {% url 'journal:journal_detail'
+                        year=day.day.year month=day.day.month day=day.day.day %}
+                        {% else %}
+                        {% url 'journal:journal_init'
+                        year=day.day.year month=day.day.month day=day.day.day %}
+                        {% endif %}"
+                        {% if day.has_journal %} fw-bold text-white {% else %} text-dark {% endif %}">
+                        {{ day.day.day }}
+                        </a>
+                    {% endif %}
+                    </td>
             {% endfor %}
-        </tbody>
+            </tr>
+        {% endfor %}
     </table>
 </div>
 {% endblock %}
