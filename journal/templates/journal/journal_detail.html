@@ -59,12 +59,31 @@
                         <ul class="list-group list-group-flush">
                             {% for todo in todos %}
                             <li class="list-group-item d-flex justify-content-between align-items-start">
+                                <!-- 左：内容 -->
                                 <div>
-                                    <a href="{% url 'journal:update_todo' todo.pk %}" class="text-decoration-none">
-                                        {{ todo.title }}
+                                    {{ todo.title }}
+                                    {% if todo.start_time %}
+                                        <br>
+                                        <small class="text-muted">
+                                            {{ todo.start_time|time:"H:i" }}
+                                            {% if todo.end_time %} ~ {{ todo.end_time|time:"H:i" }}{% endif %}
+                                        </small>
+                                    {% endif %}
+                                    {% if todo.is_done %}
+                                        <span class="badge bg-success ms-2">完了</span>
+                                    {% endif %}
+                                </div>
+                            
+                                <!-- 右：操作 -->
+                                <div>
+                                    <a href="{% url 'journal:update_todo' todo.pk %}"
+                                       class="btn btn-sm btn-outline-success me-1">
+                                        編集
                                     </a>
-                                    {% if todo.start_time %} <small>{{ todo.start_time|time:"H:i" }}{% if todo.end_time %} ~ {{ todo.end_time|time:"H:i" }}{% endif %}</small>{% endif %}
-                                    {% if todo.is_done %}<span class="badge bg-success ms-2">完了</span>{% endif %}
+                                    <a href="{% url 'journal:delete_todo' todo.pk %}"
+                                       class="btn btn-sm btn-outline-danger">
+                                        削除
+                                    </a>
                                 </div>
                             </li>
                             {% endfor %}
