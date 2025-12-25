@@ -1,4 +1,8 @@
-asgiref==3.11.0
-Django==6.0
-python-dotenv==1.2.1
-sqlparse==0.5.5
+Django>=5.0,<6.0
+gunicorn
+whitenoise
+python-dotenv
+django-widget-tweaks
+dj-database-url
+psycopg2-binary
+
