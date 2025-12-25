@@ -2,10 +2,12 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse, reverse_lazy
 from django.views.generic import (TemplateView, DetailView, CreateView, DeleteView, UpdateView,)
+from django.views import View
+from django.http import HttpResponseForbidden
 from .models import Journal, Todo, Goal
 from datetime import date, datetime, timedelta
 import calendar
-from .forms import GoalFormSet, TodoFormSet
+from .forms import GoalFormSet, TodoFormSet, TodoForm, GoalForm
 
 # Home画面のView
 class HomeScreenView(LoginRequiredMixin, TemplateView):
@@ -157,34 +159,55 @@ class JournalInitView(CreateView):
 
 # Goal関連のView
 class CreateGoalView(CreateView):
-    template_name = 'journal/goal_create.html'
     model = Goal
-    fields = ('title',)
-    success_url = reverse_lazy('journal:journal_detail', kwargs={
-        'year': 'year',
-        'month': 'month',
-        'day': 'day',
-        })
-    
+    form_class = GoalForm
+    template_name = 'journal/goal_create.html'
+
     def form_valid(self, form):
+        form.instance.is_done = False
         year = self.kwargs['year']
         month = self.kwargs['month']
         day = self.kwargs['day']
+ 
 
-        from datetime import date
-        
         journal_date = date(year, month, day)
 
         journal = get_object_or_404(
             Journal,
             user=self.request.user,
             date=journal_date
-            ) 
+        )
+
         form.instance.journal = journal
+        self.object = form.save()
 
-        return super().form_valid(form)
-        
+        return redirect(
+            'journal:journal_detail',
+            year=year,
+            month=month,
+            day=day
+        )
+    
+# goalの完了・未完了切り替えView
+class ToggleGoalDoneView(LoginRequiredMixin, View):
+    def post(self, request, pk):
+        goal = get_object_or_404(
+            Goal,
+            pk=pk,
+            journal__user=request.user
+        )
+        goal.is_done = not goal.is_done
+        goal.save()
 
+        journal = goal.journal
+        return redirect(
+            'journal:journal_detail',
+            year=journal.date.year,
+            month=journal.date.month,
+            day=journal.date.day
+        )
+
+# Goalの編集View
 class UpdateGoalView(UpdateView):
     template_name = 'journal/goal_update.html'
     model = Goal
@@ -206,7 +229,6 @@ class UpdateGoalView(UpdateView):
 class DeleteGoalView(DeleteView):
     template_name = 'journal/goal_delete.html'
     model = Goal
-    success_url = reverse_lazy('journal:home')
 
     def get_queryset(self):
         return Goal.objects.filter(journal__user=self.request.user)
@@ -219,57 +241,95 @@ class DeleteGoalView(DeleteView):
             'day': journal.date.day,
         })
 
-
 # Todo関連のView
+# TodoCreateView
+
 class CreateTodoView(CreateView):
-    template_name = 'journal/todo_create.html'
     model = Todo
-    fields = ('title','start_time','end_time')
-    success_url = reverse_lazy('journal:home')
+    form_class = TodoForm
+    template_name = 'journal/todo_create.html'
 
     def form_valid(self, form):
-        journal_date = date(
-            int(self.kwargs['year']),
-            int(self.kwargs['month']),
-            int(self.kwargs['day'])
-        )
+        form.instance.is_done = False
+        year = self.kwargs['year']
+        month = self.kwargs['month']
+        day = self.kwargs['day']
+
+        journal_date = date(year, month, day)
+
         journal = get_object_or_404(
             Journal,
             user=self.request.user,
             date=journal_date
         )
-        form.instance.journal = journal
-        return super().form_valid(form)
 
+        form.instance.journal = journal
+        self.object = form.save()
+
+        return redirect(
+            'journal:journal_detail',
+            year=year,
+            month=month,
+            day=day
+        )
+    
+# todo の完了・未完了切り替えView
+class ToggleTodoDoneView(LoginRequiredMixin, View):
+    def post(self, request, pk):
+        todo = get_object_or_404(
+            Todo,
+            pk=pk,
+            journal__user=request.user
+        )
+        todo.is_done = not todo.is_done
+        todo.save()
+
+        journal = todo.journal
+        return redirect(
+            'journal:journal_detail',
+            year=journal.date.year,
+            month=journal.date.month,
+            day=journal.date.day
+        )
+    
+# TodoDetailView
 class DetailTodoView(DetailView):
     template_name = 'journal/todo_detail.html'
     model = Todo
 
     def get_queryset(self):
+        # ログインユーザーのTodoのみ表示
         return Todo.objects.filter(journal__user=self.request.user)
-    
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        todo = self.object
-        # 関連する Goal や他の Todo は必要に応じて追加可能
-        context['journal'] = todo.journal
-        return context
 
+# TodoUpdateView
 class UpdateTodoView(UpdateView):
-    template_name = 'journal/update_todo.html'
+    template_name = 'journal/todo_update.html'
     model = Todo
-    fields = ('title','start_time','end_time','is_done')
+    fields = ['title', 'start_time', 'end_time', 'is_done']
 
     def get_queryset(self):
         return Todo.objects.filter(journal__user=self.request.user)
 
+    def get_success_url(self):
+        journal = self.object.journal
+        return reverse('journal:journal_detail', kwargs={
+            'year': journal.date.year,
+            'month': journal.date.month,
+            'day': journal.date.day
+        })
+
+# TodoDeleteView
 class DeleteTodoView(DeleteView):
-    template_name = 'journal/delete_todo.html'
+    template_name = 'journal/todo_delete.html'
     model = Todo
-    success_url = reverse_lazy('journal:home')
 
     def get_queryset(self):
         return Todo.objects.filter(journal__user=self.request.user)
 
-
-
+    def get_success_url(self):
+        journal = self.object.journal
+        return reverse('journal:journal_detail', kwargs={
+            'year': journal.date.year,
+            'month': journal.date.month,
+            'day': journal.date.day
+        })

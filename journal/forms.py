@@ -16,7 +16,7 @@ def time_choices(interval=10):
 class GoalForm(forms.ModelForm):
     class Meta:
         model = Goal
-        fields = ['title', 'is_done']
+        fields = ['title',]
         labels = {
             'title': '目標タイトル',
             'is_done': '達成/未達成',
@@ -43,7 +43,7 @@ class TodoForm(forms.ModelForm):
 
     class Meta:
         model = Todo
-        fields = ['title', 'start_time', 'end_time', 'is_done']
+        fields = ['title', 'start_time', 'end_time',]
         labels = {
             'title': 'Todo内容',
             'is_done': '完了/未完了',

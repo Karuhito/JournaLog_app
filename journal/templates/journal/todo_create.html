@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Todo追加{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/journal_init.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+<div class="container my-5" style="max-width: 600px;">
+
+    <h3 class="mb-4">Todoを追加</h3>
+
+    <form method="post">
+        {% csrf_token %}
+
+        <div class="todo-form border rounded p-3 mb-3">
+
+            <div class="mb-2">
+                {{ form.title.label_tag }}
+                {{ form.title }}
+            </div>
+
+            <div class="row g-2">
+                <div class="col-6">
+                    {{ form.start_time.label_tag }}
+                    {{ form.start_time }}
+                </div>
+                <div class="col-6">
+                    {{ form.end_time.label_tag }}
+                    {{ form.end_time }}
+                </div>
+            </div>
+
+            <div class="form-check mt-3">
+                {{ form.is_done }}
+                {{ form.is_done.label_tag }}
+            </div>
+
+        </div>
+
+        <div class="text-center mt-4">
+            <button type="submit" class="btn btn-primary px-5">
+                保存
+            </button>
+        </div>
+
+    </form>
+</div>
+{% endblock %}

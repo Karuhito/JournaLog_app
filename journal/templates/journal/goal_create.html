@@ -1,6 +1,36 @@
-{% extends 'base.html' %}
-{% block title %}Goal作成{% endblock %}
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Goal追加{% endblock %}
+
 {% block content %}
-<!-- ここに作成画面を置く-->
- 
+<div class="container my-5" style="max-width: 500px;">
+
+    <h3 class="mb-4">Goalを追加</h3>
+
+    <form method="post">
+        {% csrf_token %}
+
+        <div class="goal-form border rounded p-3 mb-3">
+
+            <div class="mb-2">
+                {{ form.title.label_tag }}
+                {{ form.title }}
+            </div>
+
+            <div class="form-check mt-3">
+                {{ form.is_done }}
+                {{ form.is_done.label_tag }}
+            </div>
+
+        </div>
+
+        <div class="text-center mt-4">
+            <button type="submit" class="btn btn-primary px-5">
+                保存
+            </button>
+        </div>
+
+    </form>
+</div>
 {% endblock %}
