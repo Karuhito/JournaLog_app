@@ -5,7 +5,7 @@ app_name = 'journal'
 
 urlpatterns = [
     path('', views.HomeScreenView.as_view(), name='home'),
-    path('journal/<int:year>/<int:month>/<int:day>/', views.JournalInitView.as_view(), name='journal_init'),
+    path('journal/<int:year>/<int:month>/<int:day>/init', views.JournalInitView.as_view(), name='journal_init'),
     path('journal/<int:year>/<int:month>/<int:day>/', views.JournalDetailView.as_view(), name='journal_detail'),
     # todo関連のURLパターン
     path('journal/<int:year>/<int:month>/<int:day>/todo/create/', views.CreateTodoView.as_view(), name='create_todo'),

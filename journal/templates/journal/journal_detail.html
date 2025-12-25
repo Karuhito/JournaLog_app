@@ -1,36 +1,62 @@
-{% extends 'base.html' %}
-{% block title %}{{ journal.date }}のジャーナル{% endblock %}
-{% block content %}
+{% extends "base.html" %}
+{% block title %}Journal詳細{% endblock %}
 
-<div class="container mt-4">
-    <h2>{{ journal.date }}のジャーナル詳細</h2>
-    <div class="mb-4">
-        <h3>Goals</h3>
-        {% if goals %}
-            {% for goal in goals %}
-                <div class="card mb-2">
-                    <div class="card-body">
-                        <p class="card-text">{{ goal.title }}</p>
-                    </div>
-                </div>
-            {% endfor %}
-        {% else %}
-            <p>Goalはまだ設定されていません。</p>
-        {% endif %}
+{% block content %}
+<div class="container my-5">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h3>{{ object.date|date:"Y年n月j日" }}</h3>
+        <a href="{% url 'journal:home' %}" class="btn btn-outline-secondary">← カレンダーへ戻る</a>
     </div>
-    <div class="mb-4">
-        <h3>Todo</h3>
-        {% if todos %}
-            {% for todo in todos %}
-                <div class="card mb-2">
-                    <div class="card-body">
-                        <p class="card-text">{{ todo.title }}</p>
-                    </div>
+
+    <div class="row g-4">
+        <!-- Goal 左半分 -->
+        <div class="col-md-6">
+            <div class="card shadow-sm h-100">
+                <div class="card-header bg-primary text-white">
+                    🎯 Goal
                 </div>
-            {% endfor %}
-        {% else %}
-            <p>Todoはまだ設定されていません。</p>
-        {% endif %}
+                <div class="card-body">
+                    {% if goals %}
+                        <ul class="list-group list-group-flush">
+                            {% for goal in goals %}
+                                <li class="list-group-item">
+                                    {{ goal.title }}
+                                    {% if goal.detail %}<br><small class="text-muted">{{ goal.detail }}</small>{% endif %}
+                                    {% if goal.is_done %}<span class="badge bg-success ms-2">達成</span>{% endif %}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p class="text-muted">今日のGoalはありません。</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Todo 右半分 -->
+        <div class="col-md-6">
+            <div class="card shadow-sm h-100">
+                <div class="card-header bg-success text-white">
+                    ✅ Todo
+                </div>
+                <div class="card-body">
+                    {% if todos %}
+                        <ul class="list-group list-group-flush">
+                            {% for todo in todos %}
+                                <li class="list-group-item">
+                                    {{ todo.title }}
+                                    {% if todo.start_time %} <small>{{ todo.start_time|time:"H:i" }}{% if todo.end_time %} ~ {{ todo.end_time|time:"H:i" }}{% endif %}</small>{% endif %}
+                                    {% if todo.is_done %}<span class="badge bg-success ms-2">完了</span>{% endif %}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p class="text-muted">今日のTodoはありません。</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 {% endblock %}

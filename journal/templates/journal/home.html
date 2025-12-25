@@ -9,60 +9,51 @@
     <!-- 年・月プルダウン -->
     <form method="get" id="calendar-form" class="mb-3">
         <select name="year" class="form-select d-inline w-auto"
-            onchange="document.getElementById('calendar-form').submit();">
+                onchange="document.getElementById('calendar-form').submit();">
             {% for y in years %}
-            <option value="{{ y }}" {% if y == year %}selected{% endif %}>{{ y }}</option>
+                <option value="{{ y }}" {% if y == year %}selected{% endif %}>{{ y }}</option>
             {% endfor %}
         </select>
 
         <select name="month" class="form-select d-inline w-auto"
-            onchange="document.getElementById('calendar-form').submit();">
+                onchange="document.getElementById('calendar-form').submit();">
             {% for m in months %}
-            <option value="{{ m }}" {% if m == month %}selected{% endif %}>{{ m }}</option>
+                <option value="{{ m }}" {% if m == month %}selected{% endif %}>{{ m }}</option>
             {% endfor %}
         </select>
     </form>
 
     <!-- カレンダー表示 -->
-     <div class="calendar-wrapper">
-    <table class="table table-bordered text-center">
-        <thead>
-            <tr>
-                <th>日</th>
-                <th>月</th>
-                <th>火</th>
-                <th>水</th>
-                <th>木</th>
-                <th>金</th>
-                <th>土</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for week in cal_data %}
-            <tr>
-            {% for d in week %}
-            <td class="
-            calendarcalendar-cell
-            {% if d.day.month != month %} other-month {% endif %}
-            {% if d.day == today %} today {% endif %}
-            {% if d.has_journal %} has-journal {% endif %}
-    ">
-        {% if d.day.month == month %}
-            {% if d.has_journal %}
-                <a href="{% url 'journal:journal_detail' year=d.day.year month=d.day.month day=d.day.day %}">
-            {% else %}
-                <a href="{% url 'journal:journal_init' year=d.day.year month=d.day.month day=d.day.day %}">
-            {% endif %}
-                <span class="calendar-day">{{ d.day.day }}</span>
-                </a>
-        {% else %}
-            <span class="text-muted">{{ d.day.day }}</span>
-            {% endif %}
-            </td>
-        {% endfor %}
-            </tr>
-        {% endfor %}
-    </table>
-</div>
+    <div class="calendar-wrapper">
+        <table class="table table-bordered text-center">
+            <thead>
+                <tr>
+                    <th>日</th><th>月</th><th>火</th><th>水</th><th>木</th><th>金</th><th>土</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for week in cal_data %}
+                <tr>
+                    {% for d in week %}
+                    <td class="
+                        calendar-cell
+                        {% if d.day.month != month %} other-month {% endif %}
+                        {% if d.day == today %} today {% endif %}
+                        {% if d.has_journal %} has-journal {% endif %}
+                    ">
+                        {% if d.day.month != month %}
+                            <span class="text-muted">{{ d.day.day }}</span>
+                        {% else %}
+                            <a href="{{ d.url }}">
+                                <span class="calendar-day">{{ d.day.day }}</span>
+                            </a>
+                        {% endif %}
+                    </td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 </div>
 {% endblock %}

@@ -8,7 +8,7 @@ import calendar
 from .forms import GoalFormSet, TodoFormSet
 
 # Home画面のView
-class HomeScreenView(LoginRequiredMixin,TemplateView):
+class HomeScreenView(LoginRequiredMixin, TemplateView):
     template_name = 'journal/home.html'
     login_url = 'accounts:login'
 
@@ -18,62 +18,67 @@ class HomeScreenView(LoginRequiredMixin,TemplateView):
         year = int(self.request.GET.get('year', today.year))
         month = int(self.request.GET.get('month', today.month))
 
-        # 年・月プルダんリストの生成
-        context['years'] = [y for y in range(today.year -2, today.year +5)]
-        context['months'] = [m for m in range(1,13)]
+        # 年・月プルダウン用
+        context['years'] = [y for y in range(today.year - 2, today.year + 5)]
+        context['months'] = list(range(1, 13))
         context['year'] = year
         context['month'] = month
         context['today'] = today
 
-        # カレンダーの生成
-        cal = calendar.Calendar(firstweekday=6) # 日曜日始まり
-        month_days = cal.monthdatescalendar(year, month) # 週ごとの日付リスト
+        # カレンダー生成
+        cal = calendar.Calendar(firstweekday=6)  # 日曜始まり
+        month_days = cal.monthdatescalendar(year, month)  # 週ごとの日付リスト
 
-        # 日付ごとの journal 存在フラグ
-        journal_dates = Journal.objects.filter(
+        # 日付ごとの Journal 存在フラグ
+        journals = Journal.objects.filter(
             user=self.request.user,
             date__year=year,
             date__month=month
-        ).prefetch_related('goal_set','todo_set')
+        ).prefetch_related('goal_set', 'todo_set')
 
         journal_map = {
             j.date: (j.goal_set.exists() or j.todo_set.exists())
-            for j in journal_dates
+            for j in journals
         }
 
-        # カレンダーデータの構築
+        # カレンダーデータ構築
         cal_data = []
         for week in month_days:
             week_data = []
             for day in week:
+                has_journal = journal_map.get(day, False)
                 week_data.append({
                     'day': day,
-                    'has_journal': journal_map.get(day, False),
+                    'has_journal': has_journal,
+                    # URL: 投稿済みなら DetailView、未投稿なら InitView
+                    'url': (
+                        f"/journal/{day.year}/{day.month}/{day.day}/"
+                        if has_journal else
+                        f"/journal/{day.year}/{day.month}/{day.day}/init/"
+                    )
                 })
             cal_data.append(week_data)
 
-        context.update({
-            'year': year,
-            'month': month,
-            'cal_data': cal_data,
-        })
+        context['cal_data'] = cal_data
         return context
     
 # Journal関連のView
 class JournalDetailView(DetailView): # その日のGoalとTodoを表示するView
     template_name = 'journal/journal_detail.html'
     model = Journal
-    
-    def get_context_data(self, **kwargs):
+
+    def get_object(self, queryset = None):
         year = self.kwargs['year']
         month = self.kwargs['month']
         day = self.kwargs['day']
-
-        return get_object_or_404(
-            Journal,
-            user=self.request.user,
-            date=date(year, month, day)
-        )
+        return get_object_or_404(Journal, user=self.request.user, date=date(year, month, day))
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        journal = self.object
+        context['goals'] = journal.goal_set.all()
+        context['todos'] = journal.todo_set.all()
+        return context
     
     def get(self, request, *args, **kwargs):
         self.object = self.get_object()
@@ -90,9 +95,7 @@ class JournalDetailView(DetailView): # その日のGoalとTodoを表示するVie
                 day=journal.date.day
             )
         
-        context = self.get_context_data(object=journal)
-        context['goals'] = goals
-        context['todos'] = todos
+        context = self.get_context_data()
         return self.render_to_response(context)
     
 class JournalInitView(CreateView):
@@ -102,9 +105,15 @@ class JournalInitView(CreateView):
             user=request.user,
             date=date(year, month, day)
         )
+        goal_formset = GoalFormSet(
+            queryset=journal.goal_set.none(),
+            prefix='goal'
+        )
 
-        goal_formset = GoalFormSet(queryset=journal.goal_set.none())
-        todo_formset = TodoFormSet(queryset=journal.todo_set.none())
+        todo_formset = TodoFormSet(
+            queryset=journal.todo_set.none(),
+            prefix='todo'
+        )
 
         return render(request, self.template_name, {
             'goal_formset': goal_formset,
@@ -119,8 +128,8 @@ class JournalInitView(CreateView):
             date = date(year, month, day)
         )
 
-        goal_formset = GoalFormSet(request.POST, queryset=journal.goal_set.none())
-        todo_formset = TodoFormSet(request.POST, queryset=journal.todo_set.none())
+        goal_formset = GoalFormSet(request.POST, queryset=journal.goal_set.none(),prefix='goal')
+        todo_formset = TodoFormSet(request.POST, queryset=journal.todo_set.none(),prefix='todo')
 
         if goal_formset.is_valid() and todo_formset.is_valid():
             goal = goal_formset.save(commit=False)
@@ -138,7 +147,7 @@ class JournalInitView(CreateView):
                 todo.journal = journal
                 todo.save()
 
-            return redirect('journal_detail', year=year, month=month, day=day)
+            return redirect('journal:journal_detail', year=year, month=month, day=day)
         
         return render(request, self.template_name,{
             'goal_formset': goal_formset,
