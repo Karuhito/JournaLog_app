@@ -1,32 +1,35 @@
 {% extends 'base.html' %}
-
 {% block title %}ホーム{% endblock %}
 
 {% block content %}
-<div class="container mt-5">
-    <h2>{{ user.username }}さんのカレンダー</h2>
+<div class="container mt-3">
 
-    <!-- 年・月プルダウン -->
-    <form method="get" id="calendar-form" class="mb-3">
-        <select name="year" class="form-select d-inline w-auto"
+    <!-- タイトル -->
+    <h4 class="mb-3">{{ user.username }}さんのカレンダー</h4>
+
+    <!-- 年・月プルダウン（共通） -->
+    <form method="get" id="calendar-form" class="mb-3 d-flex gap-2">
+        <select name="year" class="form-select w-auto"
                 onchange="document.getElementById('calendar-form').submit();">
             {% for y in years %}
-                <option value="{{ y }}" {% if y == year %}selected{% endif %}>{{ y }}</option>
+                <option value="{{ y }}" {% if y == year %}selected{% endif %}>{{ y }}年</option>
             {% endfor %}
         </select>
 
-        <select name="month" class="form-select d-inline w-auto"
+        <select name="month" class="form-select w-auto"
                 onchange="document.getElementById('calendar-form').submit();">
             {% for m in months %}
-                <option value="{{ m }}" {% if m == month %}selected{% endif %}>{{ m }}</option>
+                <option value="{{ m }}" {% if m == month %}selected{% endif %}>{{ m }}月</option>
             {% endfor %}
         </select>
     </form>
 
-    <!-- カレンダー表示 -->
-    <div class="calendar-wrapper">
-        <table class="table table-bordered text-center">
-            <thead>
+    <!-- ===================== -->
+    <!-- PC表示：月間カレンダー -->
+    <!-- ===================== -->
+    <div class="d-none d-md-block calendar-wrapper">
+        <table class="table table-bordered text-center align-middle">
+            <thead class="table-light">
                 <tr>
                     <th>日</th><th>月</th><th>火</th><th>水</th><th>木</th><th>金</th><th>土</th>
                 </tr>
@@ -36,17 +39,22 @@
                 <tr>
                     {% for d in week %}
                     <td class="
-                        calendar-cell
+                        calendar-cell position-relative
                         {% if d.day.month != month %} other-month {% endif %}
                         {% if d.day == today %} today {% endif %}
-                        {% if d.has_journal %} has-journal {% endif %}
                     ">
                         {% if d.day.month != month %}
                             <span class="text-muted">{{ d.day.day }}</span>
                         {% else %}
-                            <a href="{{ d.url }}">
+                            <a href="{{ d.url }}" class="text-decoration-none d-block">
                                 <span class="calendar-day">{{ d.day.day }}</span>
                             </a>
+
+                            {% if d.has_journal %}
+                                <span class="badge bg-success position-absolute top-0 end-0 m-1">
+                                    記録あり
+                                </span>
+                            {% endif %}
                         {% endif %}
                     </td>
                     {% endfor %}
@@ -55,5 +63,34 @@
             </tbody>
         </table>
     </div>
+
+    <!-- ===================== -->
+    <!-- スマホ表示：日付リスト -->
+    <!-- ===================== -->
+    <div class="d-md-none">
+        <div class="list-group">
+            {% for week in cal_data %}
+                {% for d in week %}
+                    {% if d.day.month == month %}
+                        <a href="{{ d.url }}"
+                           class="list-group-item list-group-item-action d-flex justify-content-between align-items-center
+                           {% if d.day == today %} list-group-item-primary {% endif %}">
+                            <span>
+                                {{ d.day.day }}日
+                                （{{ d.day|date:"D" }}）
+                            </span>
+
+                            {% if d.has_journal %}
+                                <span class="badge bg-success rounded-pill">
+                                    記録あり
+                                </span>
+                            {% endif %}
+                        </a>
+                    {% endif %}
+                {% endfor %}
+            {% endfor %}
+        </div>
+    </div>
+
 </div>
 {% endblock %}

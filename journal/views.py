@@ -68,6 +68,9 @@ class HomeScreenView(LoginRequiredMixin, TemplateView):
 class JournalDetailView(DetailView): # その日のGoalとTodoを表示するView
     template_name = 'journal/journal_detail.html'
     model = Journal
+    
+    def get_queryset(self):
+        return Journal.objects.filter(user=self.request.user)
 
     def get_object(self, queryset = None):
         year = self.kwargs['year']
@@ -100,8 +103,9 @@ class JournalDetailView(DetailView): # その日のGoalとTodoを表示するVie
         context = self.get_context_data()
         return self.render_to_response(context)
     
-class JournalInitView(CreateView):
+class JournalInitView(LoginRequiredMixin, CreateView):
     template_name = 'journal/journal_init.html'
+    login_url = 'accounts:login'
     def get(self, request, year, month, day):
         journal, _ = Journal.objects.get_or_create(
             user=request.user,
