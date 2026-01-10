@@ -1,36 +1,50 @@
 {% extends "base.html" %}
 {% load static %}
-
 {% block title %}Goal追加{% endblock %}
 
+{% block extra_js %}
+<script src="{% static 'js/goal_create.js' %}"></script>
+{% endblock %}
+
 {% block content %}
-<div class="container my-5" style="max-width: 500px;">
+<div class="container my-5" style="max-width: 600px;">
 
     <h3 class="mb-4">Goalを追加</h3>
 
     <form method="post">
         {% csrf_token %}
+        {{ formset.management_form }}
 
-        <div class="goal-form border rounded p-3 mb-3">
+        <div id="goal-formset">
+            {% for form in formset %}
+            <div class="goal-form border rounded p-3 mb-3 position-relative">
+                <!-- 削除ボタンをフォーム上部に移動 -->
+                <div class="d-flex justify-content-end mb-2">
+                    <button type="button" class="btn btn-sm btn-outline-danger remove-form">削除</button>
+                </div>
 
-            <div class="mb-2">
-                {{ form.title.label_tag }}
-                {{ form.title }}
+                <div class="mb-2">
+                    {{ form.title.label_tag }}
+                    {{ form.title }}
+                </div>
+
+                {% if form.is_done %}
+                <div class="form-check mt-2">
+                    {{ form.is_done }} {{ form.is_done.label_tag }}
+                </div>
+                {% endif %}
             </div>
+            {% endfor %}
+        </div>
 
-            <div class="form-check mt-3">
-                {{ form.is_done }}
-                {{ form.is_done.label_tag }}
-            </div>
-
+        <!-- 追加ボタンはフォームセット下に固定 -->
+        <div class="text-center my-3">
+            <button type="button" class="btn btn-outline-primary" id="add-goal">+ Goalを追加</button>
         </div>
 
         <div class="text-center mt-4">
-            <button type="submit" class="btn btn-primary px-5">
-                保存
-            </button>
+            <button type="submit" class="btn btn-primary px-5">保存</button>
         </div>
-
     </form>
 </div>
 {% endblock %}

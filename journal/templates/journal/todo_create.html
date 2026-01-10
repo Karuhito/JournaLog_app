@@ -1,50 +1,60 @@
 {% extends "base.html" %}
 {% load static %}
-
 {% block title %}Todo追加{% endblock %}
 
 {% block extra_js %}
-<script src="{% static 'js/journal_init.js' %}"></script>
+<script src="{% static 'js/todo_create.js' %}"></script>
 {% endblock %}
 
 {% block content %}
-<div class="container my-5 w-100" style="max-width: 600px;" id="todo">
+<div class="container my-5" style="max-width: 700px;">
+
     <h3 class="mb-4">Todoを追加</h3>
 
     <form method="post">
         {% csrf_token %}
-        <div class="todo-form border rounded p-3 mb-3">
+        {{ formset.management_form }}
 
-            <div class="mb-3">
-                {{ form.title.label_tag }}
-                {{ form.title|add_class:"form-control" }}
-            </div>
-
-            <div class="row g-2 mb-3">
-                <div class="col-6">
-                    {{ form.start_time.label_tag }}
-                    {{ form.start_time|add_class:"form-control" }}
+        <div id="todo-formset">
+            {% for form in formset %}
+            <div class="todo-form border rounded p-3 mb-3 position-relative">
+                <!-- 削除ボタン -->
+                <div class="d-flex justify-content-end mb-2">
+                    <button type="button" class="btn btn-sm btn-outline-danger remove-form">削除</button>
                 </div>
-                <div class="col-6">
-                    {{ form.end_time.label_tag }}
-                    {{ form.end_time|add_class:"form-control" }}
-                </div>
-            </div>
 
-            <div class="form-check mb-3">
-                {{ form.is_done }}
-                {{ form.is_done.label_tag }}
+                <div class="mb-2">
+                    {{ form.title.label_tag }}
+                    {{ form.title }}
+                </div>
+
+                <div class="row g-2">
+                    <div class="col-6">
+                        {{ form.start_time.label_tag }}
+                        {{ form.start_time }}
+                    </div>
+                    <div class="col-6">
+                        {{ form.end_time.label_tag }}
+                        {{ form.end_time }}
+                    </div>
+                </div>
+
+                {% if form.is_done %}
+                <div class="form-check mt-2">
+                    {{ form.is_done }} {{ form.is_done.label_tag }}
+                </div>
+                {% endif %}
             </div>
+            {% endfor %}
         </div>
 
-        <div class="d-flex justify-content-between flex-wrap gap-2 mt-3">
-            <a href="{% url 'journal:journal_detail' year=form.instance.journal.date.year month=form.instance.journal.date.month day=form.instance.journal.date.day %}"
-               class="btn btn-outline-secondary w-100 w-sm-auto">
-                キャンセル
-            </a>
-            <button type="submit" class="btn btn-primary w-100 w-sm-auto">
-                保存
-            </button>
+        <!-- 追加ボタン -->
+        <div class="text-center my-3">
+            <button type="button" class="btn btn-outline-primary" id="add-todo">+ Todoを追加</button>
+        </div>
+
+        <div class="text-center mt-4">
+            <button type="submit" class="btn btn-primary px-5">保存</button>
         </div>
     </form>
 </div>

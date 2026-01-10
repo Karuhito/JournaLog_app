@@ -224,37 +224,42 @@ class JournalInitView(LoginRequiredMixin, CreateView):
         })
 
 # Goal関連のView
-class CreateGoalView(CreateView):
-    model = Goal
-    form_class = GoalForm
+class CreateGoalView(LoginRequiredMixin, View):
     template_name = 'journal/goal_create.html'
+    login_url = 'accounts:login'
 
-    def get_form_kwargs(self):
-        kwargs = super().get_form_kwargs()
-        kwargs['show_is_done'] = False
-        return kwargs
-
-    def form_valid(self, form):
-        form.instance.is_done = False
-        year = self.kwargs['year']
-        month = self.kwargs['month']
-        day = self.kwargs['day']
-
+    def get(self, request, year, month, day):
         journal = get_object_or_404(
             Journal,
-            user=self.request.user,
+            user=request.user,
             date=date(year, month, day)
         )
+        formset = GoalFormSet(queryset=Goal.objects.none())
+        return render(request, self.template_name, {
+            'journal': journal,
+            'formset': formset,
+        })
 
-        form.instance.journal = journal
-        self.object = form.save()
-
-        return redirect(
-            'journal:journal_detail',
-            year=year,
-            month=month,
-            day=day
+    def post(self, request, year, month, day):
+        journal = get_object_or_404(
+            Journal,
+            user=request.user,
+            date=date(year, month, day)
         )
+        formset = GoalFormSet(request.POST, queryset=Goal.objects.none())
+        if formset.is_valid():
+            goals = formset.save(commit=False)
+            for goal in goals:
+                if not goal.title:
+                    continue
+                goal.journal = journal
+                goal.save()
+            return redirect('journal:journal_detail', year=year, month=month, day=day)
+
+        return render(request, self.template_name, {
+            'journal': journal,
+            'formset': formset,
+        })
         
 # goalの完了・未完了切り替えView
 class ToggleGoalDoneView(LoginRequiredMixin, View):
@@ -314,37 +319,42 @@ class DeleteGoalView(DeleteView):
 # Todo関連のView
 # TodoCreateView
 
-class CreateTodoView(CreateView):
-    model = Todo
-    form_class = TodoForm
+class CreateTodoView(LoginRequiredMixin, View):
     template_name = 'journal/todo_create.html'
+    login_url = 'accounts:login'
 
-    def get_form_kwargs(self):
-        kwargs = super().get_form_kwargs()
-        kwargs['show_is_done'] = False  # ← ここが肝
-        return kwargs
-
-    def form_valid(self, form):
-        form.instance.is_done = False
-        year = self.kwargs['year']
-        month = self.kwargs['month']
-        day = self.kwargs['day']
-
+    def get(self, request, year, month, day):
         journal = get_object_or_404(
             Journal,
-            user=self.request.user,
+            user=request.user,
             date=date(year, month, day)
         )
+        formset = TodoFormSet(queryset=Todo.objects.none())
+        return render(request, self.template_name, {
+            'journal': journal,
+            'formset': formset,
+        })
 
-        form.instance.journal = journal
-        self.object = form.save()
-
-        return redirect(
-            'journal:journal_detail',
-            year=year,
-            month=month,
-            day=day
+    def post(self, request, year, month, day):
+        journal = get_object_or_404(
+            Journal,
+            user=request.user,
+            date=date(year, month, day)
         )
+        formset = TodoFormSet(request.POST, queryset=Todo.objects.none())
+        if formset.is_valid():
+            todos = formset.save(commit=False)
+            for todo in todos:
+                if not todo.title:
+                    continue
+                todo.journal = journal
+                todo.save()
+            return redirect('journal:journal_detail', year=year, month=month, day=day)
+
+        return render(request, self.template_name, {
+            'journal': journal,
+            'formset': formset,
+        })
 
 # todo の完了・未完了切り替えView
 class ToggleTodoDoneView(LoginRequiredMixin, View):
