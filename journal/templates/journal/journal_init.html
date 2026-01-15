@@ -28,7 +28,7 @@
             <!-- ================= Goal ================= -->
             <div class="col-md-6">
                 <div class="card shadow-sm h-100">
-                    <div class="card-header bg-primary text-white d-flex justify-content-between">
+                    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
                         <span>Goal</span>
                         <button type="button" id="add-goal" class="btn btn-sm btn-light">+ 追加</button>
                     </div>
@@ -54,7 +54,7 @@
                         </div>
 
                         <small class="text-muted">
-                            今日達成したい目標を書いてみましょう
+                            今日の指針・達成したいことを書きましょう
                         </small>
                     </div>
                 </div>
@@ -63,7 +63,7 @@
             <!-- ================= Todo ================= -->
             <div class="col-md-6">
                 <div class="card shadow-sm h-100">
-                    <div class="card-header bg-success text-white d-flex justify-content-between">
+                    <div class="card-header bg-success text-white d-flex justify-content-between align-items-center">
                         <span>Todo</span>
                         <button type="button" id="add-todo" class="btn btn-sm btn-light">+ 追加</button>
                     </div>
@@ -77,20 +77,11 @@
                                 {{ form.DELETE }}
 
                                 <div class="mb-2">
-                                    {{ form.title.label_tag }} {{ form.title }}
-                                </div>
-
-                                <div class="row g-2">
-                                    <div class="col-6">
-                                        {{ form.start_time.label_tag }} {{ form.start_time }}
-                                    </div>
-                                    <div class="col-6">
-                                        {{ form.end_time.label_tag }} {{ form.end_time }}
-                                    </div>
+                                    {{ form.title }}
                                 </div>
 
                                 <button type="button"
-                                        class="btn btn-outline-danger mt-2 remove-form w-100 w-md-auto">
+                                        class="btn btn-outline-danger remove-form w-100 w-md-auto">
                                     - 削除
                                 </button>
                             </div>
@@ -98,18 +89,21 @@
                         </div>
 
                         <small class="text-muted">
-                            開始時刻に応じて終了時刻を制限します
+                            Goalを達成するために、今日やる具体的な行動を書きましょう
                         </small>
                     </div>
                 </div>
             </div>
+
         </div>
 
         <!-- empty forms -->
         <div id="goal-empty-form" class="d-none">
             <div class="goal-form border rounded p-3 mb-3">
                 {{ goal_formset.empty_form.DELETE }}
-                <div class="mb-2">{{ goal_formset.empty_form.title }}</div>
+                <div class="mb-2">
+                    {{ goal_formset.empty_form.title }}
+                </div>
                 <button type="button"
                         class="btn btn-outline-danger remove-form w-100 w-md-auto">
                     - 削除
@@ -120,22 +114,11 @@
         <div id="todo-empty-form" class="d-none">
             <div class="todo-form border rounded p-3 mb-3">
                 {{ todo_formset.empty_form.DELETE }}
-
                 <div class="mb-2">
                     {{ todo_formset.empty_form.title }}
                 </div>
-
-                <div class="row g-2">
-                    <div class="col-6">
-                        {{ todo_formset.empty_form.start_time }}
-                    </div>
-                    <div class="col-6">
-                        {{ todo_formset.empty_form.end_time }}
-                    </div>
-                </div>
-
                 <button type="button"
-                        class="btn btn-outline-danger mt-2 remove-form w-100 w-md-auto">
+                        class="btn btn-outline-danger remove-form w-100 w-md-auto">
                     - 削除
                 </button>
             </div>

@@ -45,20 +45,24 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // 開始時刻 → 終了時刻制御
-    document.addEventListener('change', (e) => {
-        if (!e.target.name.endsWith('start_time')) return;
+    document.addEventListener('input', (e) => {
 
+        // 開始時刻 input のみ拾う
+        if (!e.target.matches('input[type="time"][name$="start_time"]')) return;
+    
         const form = e.target.closest('.todo-form');
-        const endSelect = form.querySelector('select[name$="end_time"]');
-
-        const startValue = e.target.value;
-        if (!endSelect.value) {
-            endSelect.value = startValue;
+        if (!form) return;
+    
+        const startInput = e.target;
+        const endInput = form.querySelector('input[type="time"][name$="end_time"]');
+        if (!endInput) return;
+    
+        // 終了時刻が未入力なら開始時刻をセット
+        if (!endInput.value) {
+            endInput.value = startInput.value;
         }
-
-        Array.from(endSelect.options).forEach(opt => {
-            if (!opt.value) return;
-            opt.disabled = opt.value < startValue;
-        });
+    
+        // 終了時刻が開始時刻より前にならないよう制限
+        endInput.min = startInput.value;
     });
 });

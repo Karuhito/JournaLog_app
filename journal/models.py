@@ -22,8 +22,7 @@ class Journal(models.Model):
         return f"{self.user.username} - {self.date}"
 
 class Goal(models.Model):
-    title = models.CharField(max_length=50)
-    is_done = models.BooleanField(default=False)
+    title = models.CharField(max_length=100)
     journal = models.ForeignKey('Journal', on_delete=models.CASCADE, related_name='goals')    
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -32,9 +31,7 @@ class Goal(models.Model):
         return self.title
 
 class Todo(models.Model):
-    title = models.CharField(max_length=50)
-    start_time = models.TimeField(blank=True, null=True)
-    end_time = models.TimeField(blank=True, null=True)
+    title = models.CharField(max_length=100)
     is_done = models.BooleanField(default=False)
     journal = models.ForeignKey('Journal', on_delete=models.CASCADE, related_name='todos')
     created_at = models.DateTimeField(auto_now_add=True)
@@ -42,3 +39,12 @@ class Todo(models.Model):
 
     def __str__(self):
         return self.title
+
+class Schedule(models.Model):
+    journal = models.ForeignKey('Journal', on_delete=models.CASCADE, related_name='schedules')
+    title = models.CharField(max_length=100)
+    start_time = models.TimeField()
+    end_time = models.TimeField()
+
+    class Meta:
+        ordering = ['start_time']

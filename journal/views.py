@@ -7,7 +7,7 @@ from django.http import HttpResponseForbidden
 from .models import Journal, Todo, Goal
 from datetime import date, datetime, timedelta
 import calendar
-from .forms import GoalFormSet, TodoFormSet, TodoForm, GoalForm
+from .forms import GoalFormSet, TodoFormSet,  GoalForm, TodoForm, ScheduleFormSet
 
 # Home画面のView
 class HomeScreenView(LoginRequiredMixin, TemplateView):
@@ -195,24 +195,21 @@ class JournalInitView(LoginRequiredMixin, View):
 
     def post(self, request, year, month, day):
         journal = get_object_or_404(
-            Journal,
-            user=request.user,
-            date=date(year, month, day)
+        Journal,
+        user=request.user,
+        date=date(year, month, day)
         )
 
         goal_formset = GoalFormSet(
             request.POST,
             queryset=journal.goals.none(),
-            prefix='goal'
+            prefix="goal"
         )
         todo_formset = TodoFormSet(
             request.POST,
             queryset=journal.todos.none(),
-            prefix='todo'
+            prefix="todo"
         )
-
-        print("GOAL VALID:", goal_formset.is_valid())
-        print("TODO VALID:", todo_formset.is_valid())
 
         if goal_formset.is_valid() and todo_formset.is_valid():
             goals = goal_formset.save(commit=False)
@@ -228,20 +225,19 @@ class JournalInitView(LoginRequiredMixin, View):
                     todo.journal = journal
                     todo.save()
 
-            print("=== REDIRECT ===")
             return redirect(
-                'journal:journal_detail',
+                "journal:journal_detail",
                 year=year,
                 month=month,
                 day=day
             )
 
         return render(request, self.template_name, {
-            'goal_formset': goal_formset,
-            'todo_formset': todo_formset,
-            'journal': journal,
+            "goal_formset": goal_formset,
+            "todo_formset": todo_formset,
+            "journal": journal,
         })
-    
+
 # Goal関連のView
 class CreateGoalView(LoginRequiredMixin, View):
     template_name = 'journal/goal_create.html'
@@ -439,4 +435,60 @@ class DeleteTodoView(DeleteView):
             'year': journal.date.year,
             'month': journal.date.month,
             'day': journal.date.day
+        })
+    
+# スケジュール関連のView
+class CreateScheduleView(LoginRequiredMixin, View):
+    template_name = "journal/schedule_create.html"
+    login_url = "accounts:login"
+
+    def get(self, request, year, month, day):
+        journal = get_object_or_404(
+            Journal,
+            user=request.user,
+            date=date(year, month, day)
+        )
+
+        formset = ScheduleFormSet(
+            queryset=journal.schedules.none(),
+            prefix="schedule"
+        )
+
+        return render(request, self.template_name, {
+            "journal": journal,
+            "formset": formset,
+        })
+
+    def post(self, request, year, month, day):
+        journal = get_object_or_404(
+            Journal,
+            user=request.user,
+            date=date(year, month, day)
+        )
+
+        formset = ScheduleFormSet(
+            request.POST,
+            queryset=journal.schedules.none(),
+            prefix="schedule"
+        )
+
+        if formset.is_valid():
+            schedules = formset.save(commit=False)
+
+            for schedule in schedules:
+                if not schedule.title:
+                    continue
+                schedule.journal = journal
+                schedule.save()
+
+            return redirect(
+                "journal:journal_detail",
+                year=year,
+                month=month,
+                day=day
+            )
+
+        return render(request, self.template_name, {
+            "journal": journal,
+            "formset": formset,
         })
