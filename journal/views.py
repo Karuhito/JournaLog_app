@@ -1,13 +1,14 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse, reverse_lazy
-from django.views.generic import (TemplateView, DetailView, CreateView, DeleteView, UpdateView,)
+from django.views.generic import (TemplateView, DetailView, DeleteView, UpdateView,)
 from django.views import View
 from django.http import HttpResponseForbidden
-from .models import Journal, Todo, Goal
+from .models import Journal, Todo, Goal, Schedule
 from datetime import date, datetime, timedelta
 import calendar
 from .forms import GoalFormSet, TodoFormSet,  GoalForm, TodoForm, ScheduleFormSet
+from django.http import Http404
 
 # Home画面のView
 class HomeScreenView(LoginRequiredMixin, TemplateView):
@@ -127,46 +128,45 @@ class HomeScreenView(LoginRequiredMixin, TemplateView):
         return context
     
 # Journal関連のView
-class JournalDetailView(DetailView): # その日のGoalとTodoを表示するView
-    template_name = 'journal/journal_detail.html'
+class JournalDetailView(LoginRequiredMixin, DetailView):
     model = Journal
-    
+    template_name = 'journal/journal_detail.html'
+
     def get_queryset(self):
         return Journal.objects.filter(user=self.request.user)
 
-    def get_object(self, queryset = None):
+    def get_object(self, queryset=None):
         year = self.kwargs['year']
         month = self.kwargs['month']
         day = self.kwargs['day']
-        return get_object_or_404(Journal, user=self.request.user, date=date(year, month, day))
-    
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        journal = self.object
-        context['goals'] = journal.goals.all()
-        context['todos'] = journal.todos.all()
-        return context
-    
-    def get(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        journal = self.object
 
-        goals = journal.goals.all()
-        todos = journal.todos.all()
+        journal = get_object_or_404(
+            Journal,
+            user=self.request.user,
+            date=date(year, month, day)
+        )
 
-        if not goals.exists() and not todos.exists():
+        # 👇 ここでリダイレクト判定
+        if not journal.goals.exists() and not journal.todos.exists():
             return redirect(
                 'journal:journal_init',
                 year=journal.date.year,
                 month=journal.date.month,
                 day=journal.date.day
             )
-        
-        context = self.get_context_data()
-        return self.render_to_response(context)
-    
-from django.views import View
 
+        return journal
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        journal = self.object
+
+        context['goals'] = journal.goals.all()
+        context['todos'] = journal.todos.all()
+        context['schedules'] = journal.schedules.order_by("start_time")
+
+        return context
+    
 class JournalInitView(LoginRequiredMixin, View):
     template_name = 'journal/journal_init.html'
     login_url = 'accounts:login'
@@ -296,7 +296,7 @@ class ToggleGoalDoneView(LoginRequiredMixin, View):
         )
 
 # Goalの編集View
-class UpdateGoalView(UpdateView):
+class UpdateGoalView(LoginRequiredMixin, UpdateView):
     template_name = 'journal/goal_update.html'
     model = Goal
     form_class = GoalForm
@@ -316,7 +316,7 @@ class UpdateGoalView(UpdateView):
             'month': journal.date.month,
             'day': journal.date.day,
         })
-class DeleteGoalView(DeleteView):
+class DeleteGoalView(LoginRequiredMixin, DeleteView):
     template_name = 'journal/goal_delete.html'
     model = Goal
 
@@ -391,7 +391,7 @@ class ToggleTodoDoneView(LoginRequiredMixin, View):
         )
     
 # TodoDetailView
-class DetailTodoView(DetailView):
+class DetailTodoView(LoginRequiredMixin, DetailView):
     template_name = 'journal/todo_detail.html'
     model = Todo
 
@@ -400,7 +400,7 @@ class DetailTodoView(DetailView):
         return Todo.objects.filter(journal__user=self.request.user)
 
 # TodoUpdateView
-class UpdateTodoView(UpdateView):
+class UpdateTodoView(LoginRequiredMixin, UpdateView):
     template_name = 'journal/todo_update.html'
     model = Todo
     form_class = TodoForm  # ← fields を消す
@@ -422,7 +422,7 @@ class UpdateTodoView(UpdateView):
         })
 
 # TodoDeleteView
-class DeleteTodoView(DeleteView):
+class DeleteTodoView(LoginRequiredMixin, DeleteView):
     template_name = 'journal/todo_delete.html'
     model = Todo
 
@@ -438,6 +438,7 @@ class DeleteTodoView(DeleteView):
         })
     
 # スケジュール関連のView
+# スケジュール作成
 class CreateScheduleView(LoginRequiredMixin, View):
     template_name = "journal/schedule_create.html"
     login_url = "accounts:login"
@@ -491,4 +492,27 @@ class CreateScheduleView(LoginRequiredMixin, View):
         return render(request, self.template_name, {
             "journal": journal,
             "formset": formset,
+        })
+    
+# スケジュール編集
+class UpdateScheduleView(LoginRequiredMixin, UpdateView):
+    template_name = "journal/schedule_update.html"
+    model = Schedule
+
+
+
+# スケジュール削除
+class DeleteScheduleView(LoginRequiredMixin, DeleteView):
+    template_name = "journal/schedule_delete.html"
+    model = Schedule
+
+    def get_queryset(self):
+        return Schedule.objects.filter(journal__user=self.request.user)
+    
+    def get_success_url(self):
+        journal = self.object.journal
+        return reverse('journal:journal_detail',kwargs={
+            'year':journal.date.year,
+            'month':journal.date.month,
+            'day': journal.date.day
         })

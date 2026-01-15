@@ -49,7 +49,7 @@
                 <!-- 左側メニュー -->
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link active" href="{% url 'journal:home' %}">Home</a>
+                        <a class="nav-link active" href="{% url 'journal:home' %}">カレンダー</a>
                     </li>
                 </ul>
 
@@ -62,7 +62,7 @@
                         <span class="small me-lg-3">ようこそ、{{ user.username }}さん</span>
                         <form method="post" action="{% url 'accounts:logout' %}">
                             {% csrf_token %}
-                            <button class="btn btn-outline-primary btn-sm" type="submit">
+                            <button class="btn btn-outline-danger btn-sm" type="submit">
                                 ログアウト
                             </button>
                         </form>

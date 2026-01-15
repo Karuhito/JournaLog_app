@@ -22,4 +22,6 @@ urlpatterns = [
 
     # schedule関連のURLパターン
     path('journal/<int:year>/<int:month>/<int:day>/schedule/create/', views.CreateScheduleView.as_view(), name='create_schedule'),
+    path('journal/schedule/update/<int:pk>/', views.UpdateScheduleView.as_view(), name='update_schedule'),
+    path('journal/schedule/delete/<int:pk>/', views.DeleteScheduleView.as_view(), name='delete_schedule'),
 ]

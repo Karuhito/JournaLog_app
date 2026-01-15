@@ -3,10 +3,15 @@
 
 {% block content %}
 <div class="container my-5 w-100" style="max-width: 500px;" id="todo">
-    <h4 class="mb-4 text-danger">このTodoを削除しますか？</h4>
+    <h4 class="mb-4 text-danger">このスケジュールを削除しますか？</h4>
 
     <div class="card p-3 mb-4">
         <strong>{{ object.title }}</strong>
+        {% if object.start_time %}
+            <div class="text-muted small">
+                {{ object.start_time }} {% if object.end_time %}〜 {{ object.end_time }}{% endif %}
+            </div>
+        {% endif %}
     </div>
 
     <form method="post">
