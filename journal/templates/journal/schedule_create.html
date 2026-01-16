@@ -1,7 +1,11 @@
 {% extends "base.html" %}
 {% load static %}
-<link rel="stylesheet" href="css/schedule.css">
+
 {% block title %}スケジュール作成{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/schedule.css' %}">
+{% endblock %}
 
 {% block extra_js %}
 <script src="{% static 'js/schedule_create.js' %}"></script>
@@ -16,21 +20,30 @@
             <h3 class="mb-1">{{ journal.date|date:"Y年n月j日" }}</h3>
             <small class="text-muted">この日のスケジュールを作成します</small>
         </div>
-        <a href="{% url 'journal:journal_detail' year=journal.date.year month=journal.date.month day=journal.date.day %}"
-           class="btn btn-outline-secondary">
+        <a href="{% url 'journal:journal_detail'
+            year=journal.date.year
+            month=journal.date.month
+            day=journal.date.day %}
+        " class="btn btn-outline-secondary">
             ← 戻る
         </a>
     </div>
 
     <form method="post">
         {% csrf_token %}
+
+        <!-- ✅ management form（超重要） -->
         {{ formset.management_form }}
 
+        <!-- ===================== -->
         <!-- Schedule Formset -->
+        <!-- ===================== -->
         <div class="card shadow-sm">
             <div class="card-header bg-info text-white d-flex justify-content-between align-items-center">
                 🕒 Schedule
-                <button type="button" class="btn btn-sm btn-light" id="add-schedule">
+                <button type="button"
+                        class="btn btn-sm btn-light"
+                        id="add-schedule">
                     + 追加
                 </button>
             </div>
@@ -39,7 +52,6 @@
                 {% for form in formset %}
                 <div class="schedule-form border rounded p-3 mb-3">
 
-                    <!-- PC & スマホ共通レイアウト -->
                     <div class="row g-2 align-items-end">
                         <div class="col-6 col-md-2">
                             {{ form.start_time.label_tag }}
@@ -69,9 +81,12 @@
             </div>
         </div>
 
+        <!-- ===================== -->
         <!-- Empty form（JS用） -->
+        <!-- ===================== -->
         <div id="schedule-empty-form" class="d-none">
             <div class="schedule-form border rounded p-3 mb-3">
+
                 <div class="row g-2 align-items-end">
                     <div class="col-6 col-md-2">
                         {{ formset.empty_form.start_time.label_tag }}
@@ -95,6 +110,7 @@
                         </button>
                     </div>
                 </div>
+
             </div>
         </div>
 
