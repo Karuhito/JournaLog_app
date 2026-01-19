@@ -12,8 +12,10 @@ class CreateScheduleView(BaseCreateView):
 class UpdateScheduleView(BaseUpdateView):
     model = Schedule
     form_class = ScheduleForm
+    title = "Scheduleの編集"
+    header_class = "bg-success"
     template_name = "journal/schedule_update.html"
 
 class DeleteScheduleView(BaseDeleteView):
-    modl = Schedule
+    model = Schedule
     object_name = "Schedule"

@@ -1,42 +1,76 @@
-document.addEventListener("DOMContentLoaded", function() {
-    const formset = document.getElementById("goal-formset");
-    const addButton = document.getElementById("add-goal");
-    const totalForms = document.querySelector('#id_form-TOTAL_FORMS');
+document.addEventListener("DOMContentLoaded", () => {
 
-    // 空フォームのテンプレートを作成
-    const emptyForm = formset.firstElementChild.cloneNode(true);
-    // 中身をクリア
-    emptyForm.querySelectorAll('input').forEach(input => {
-        if (input.type === 'checkbox') input.checked = false;
-        else input.value = '';
+    const formsetContainer = document.getElementById("goal-formset");
+    const addButton = document.getElementById("add-goal");
+    const emptyFormTemplateEl = document.getElementById("goal-empty-form");
+
+    const totalFormsInput = document.querySelector(
+        'input[name="goal-TOTAL_FORMS"]'
+    );
+
+    if (!formsetContainer || !addButton || !emptyFormTemplateEl || !totalFormsInput) {
+        console.error("goal_create.js: 必要な要素が見つかりません");
+        return;
+    }
+
+    const emptyFormTemplate = emptyFormTemplateEl.innerHTML;
+
+    // ==========================
+    // 追加
+    // ==========================
+    addButton.addEventListener("click", () => {
+        const formCount = parseInt(totalFormsInput.value, 10);
+
+        const newFormHtml = emptyFormTemplate.replace(
+            /__prefix__/g,
+            formCount
+        );
+
+        const tempDiv = document.createElement("div");
+        tempDiv.innerHTML = newFormHtml;
+
+        const newForm = tempDiv.firstElementChild;
+
+        // disabled を解除
+        newForm.querySelectorAll("input").forEach(el => {
+            el.disabled = false;
+        });
+
+        formsetContainer.appendChild(newForm);
+
+        // ⭐ これが最重要
+        totalFormsInput.value = formCount + 1;
     });
 
-    // 削除ボタンのクリックイベント
-    formset.addEventListener("click", function(e) {
-        if (e.target && e.target.classList.contains("remove-form")) {
-            e.target.closest(".goal-form").remove();
-            updateFormIndices();
+    // ==========================
+    // 削除
+    // ==========================
+    formsetContainer.addEventListener("click", (e) => {
+        if (e.target.classList.contains("remove-form")) {
+            const form = e.target.closest(".goal-form");
+            if (form) {
+                form.remove();
+                renumberForms();
+            }
         }
     });
 
-    // 追加ボタンのクリックイベント
-    addButton.addEventListener("click", function() {
-        const newForm = emptyForm.cloneNode(true);
-        formset.appendChild(newForm);
-        updateFormIndices();
-    });
+    function renumberForms() {
+        const forms = formsetContainer.querySelectorAll(".goal-form");
+        totalFormsInput.value = forms.length;
 
-    // フォーム番号を更新する関数
-    function updateFormIndices() {
-        const forms = formset.querySelectorAll(".goal-form");
         forms.forEach((form, index) => {
-            form.querySelectorAll("input").forEach(input => {
-                const name = input.name.replace(/\d+/, index);
-                const id = input.id.replace(/\d+/, index);
-                input.name = name;
-                input.id = id;
+            form.querySelectorAll("input, label").forEach(el => {
+                if (el.name) {
+                    el.name = el.name.replace(/goal-\d+-/, `goal-${index}-`);
+                }
+                if (el.id) {
+                    el.id = el.id.replace(/goal-\d+-/, `goal-${index}-`);
+                }
+                if (el.htmlFor) {
+                    el.htmlFor = el.htmlFor.replace(/goal-\d+-/, `goal-${index}-`);
+                }
             });
         });
-        totalForms.value = forms.length;
     }
 });

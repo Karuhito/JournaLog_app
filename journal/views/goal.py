@@ -12,11 +12,16 @@ class CreateGoalView(BaseCreateView):
 class UpdateGoalView(BaseUpdateView):
     model = Goal
     form_class = GoalForm
+    title = "Goalの編集"
+    header_class = "bg-primary"
     template_name = "journal/goal_update.html"
+
 
 class DeleteGoalView(BaseDeleteView):
     model = Goal
     object_name = "Goal"
+    model_label = "Goal"
+
 
 
     

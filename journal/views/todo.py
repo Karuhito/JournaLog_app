@@ -13,6 +13,8 @@ class CreateTodoView(BaseCreateView):
 class UpdateTodoView(BaseUpdateView):
     model = Todo
     form_class = TodoForm
+    title = "Todoの編集"
+    header_class = "bg-info"
     template_name = "journal/todo_update.html"
     
     def get_form_kwargs(self):

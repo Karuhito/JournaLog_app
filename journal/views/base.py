@@ -8,9 +8,7 @@ from datetime import date
 from ..models import Journal
 
 class BaseCreateView(LoginRequiredMixin, View):
-    """
-    複数のモデルに対応できるフォームセット用 CreateView の共通基底クラス
-    """
+
     model = None             # 対象モデル（Goal, Todo, Scheduleなど）
     formset_class = None     # 使用するフォームセット
     prefix = None            # フォームセットのprefix
@@ -19,19 +17,13 @@ class BaseCreateView(LoginRequiredMixin, View):
     login_url = "accounts:login"
 
     def get_journal(self, request, year, month, day):
-        """
-        Journalオブジェクトを取得（存在しなければ404）
-        """
         return get_object_or_404(
             Journal,
             user=request.user,
             date=date(year, month, day)
         )
-    
+
     def before_save(self, obj):
-        """
-        保存前の追加処理用（必要に応じてオーバーライド）
-        """
         pass
 
     def get(self, request, year, month, day):
@@ -44,8 +36,9 @@ class BaseCreateView(LoginRequiredMixin, View):
             "journal": journal,
             "formset": formset,
         })
-
+    
     def post(self, request, year, month, day):
+        print(request.POST)
         journal = self.get_journal(request, year, month, day)
         formset = self.formset_class(
             request.POST,
@@ -74,7 +67,8 @@ class BaseCreateView(LoginRequiredMixin, View):
         })
     
 class BaseUpdateView(LoginRequiredMixin, UpdateView):
-    
+    title = ""
+    header_class = "bg-secondary"
     def get_queryset(self):
         return self.model.objects.filter(
             journal__user=self.request.user
@@ -90,21 +84,43 @@ class BaseUpdateView(LoginRequiredMixin, UpdateView):
                 'day': journal.date.day,
             }
         )
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        # 🔑 ここでテンプレートに渡す
+        context["title"] = self.title
+        context["header_class"] = self.header_class
+        context["cancel_url"] = self.get_success_url()
+
+        return context
 
 
 
 
 class BaseDeleteView(LoginRequiredMixin, DeleteView):
-    template_name = "journal/common/confirm_delete.html"
-
+    template_name = "common/delete_confirm.html"
+    model_label = ""
     def get_queryset(self):
         return super().get_queryset().filter(journal__user=self.request.user)
+    
+    def get_success_url(self):
+        journal = self.object.journal
+        return reverse(
+            "journal:journal_detail",
+            kwargs={
+                "year": journal.date.year,
+                "month": journal.date.month,
+                "day": journal.date.day,
+            }
+        )
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         journal = self.object.journal
 
         context["object_name"] = self.object_name
+        context["model_label"] = self.model_label
         context["cancel_url"] = reverse(
             "journal:journal_detail",
             kwargs={
