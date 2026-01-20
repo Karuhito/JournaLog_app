@@ -8,19 +8,15 @@
 {% endblock %}
 
 {% block content %}
-<div class="container my-5" style="max-width: 900px;" id="top">
+<div class="container my-5" style="max-width: 900px;">
 
     <!-- ヘッダー -->
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
             <h3 class="mb-1">{{ journal.date|date:"Y年n月j日" }}</h3>
-            <small class="text-muted">この日のGoalを作成します</small>
+            <small class="text-muted">この日のTodoを作成します</small>
         </div>
-        <a href="{% url 'journal:journal_detail'
-            year=journal.date.year
-            month=journal.date.month
-            day=journal.date.day %}
-        " class="btn btn-outline-secondary">
+        <a href="{% url 'journal:journal_detail' year=journal.date.year month=journal.date.month day=journal.date.day %}" class="btn btn-outline-secondary">
             ← 戻る
         </a>
     </div>
@@ -28,7 +24,9 @@
     <form method="post">
         {% csrf_token %}
 
+        <!-- ===================== -->
         <!-- management form -->
+        <!-- ===================== -->
         {{ formset.management_form }}
 
         <!-- ===================== -->
@@ -44,7 +42,7 @@
                 </button>
             </div>
 
-            <div class="card-body" id="todo">
+            <div class="card-body" id="todo-formset">
                 {% for form in formset %}
                 <div class="todo-form border rounded p-3 mb-3">
 
@@ -62,13 +60,6 @@
                         </div>
                     </div>
 
-                    {% if form.is_done %}
-                    <div class="form-check mt-2">
-                        {{ form.is_done }}
-                        {{ form.is_done.label_tag }}
-                    </div>
-                    {% endif %}
-
                 </div>
                 {% endfor %}
             </div>
@@ -77,8 +68,8 @@
         <!-- ===================== -->
         <!-- Empty form（JS用） -->
         <!-- ===================== -->
-        <div id="goal-empty-form" class="d-none">
-            <div class="goal-form border rounded p-3 mb-3">
+        <div id="todo-empty-form" class="d-none">
+            <div class="todo-form border rounded p-3 mb-3">
 
                 <div class="row g-2 align-items-end">
                     <div class="col-12 col-md-10">
@@ -97,7 +88,16 @@
             </div>
         </div>
 
+        <!-- empty_formのinput無効化 -->
+        <script>
+            document
+                .querySelectorAll("#todo-empty-form input")
+                .forEach(el => el.disabled = true);
+        </script>
+
+        <!-- ===================== -->
         <!-- 保存 -->
+        <!-- ===================== -->
         <div class="text-center mt-5">
             <button type="submit" class="btn btn-lg btn-primary px-5">
                 保存する

@@ -27,24 +27,42 @@ class GoalForm(forms.ModelForm):
 
 
 # Todoフォーム
-class TodoForm(forms.ModelForm):
+class TodoCreateForm(forms.ModelForm):
     class Meta:
         model = Todo
-        fields = ['title','is_done']
+        fields = ['title']
         labels = {
             'title': '今日やることの内容',
-            'is_done': '完了/未完了',
         }
         widgets = {
-            'title': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Todo内容'}),
-            'is_done': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+            'title': forms.TextInput(
+                attrs={
+                    'class': 'form-control',
+                    'placeholder': 'Todo内容'
+                }
+            ),
         }
 
-    def __init__(self, *args, **kwargs):
-        show_is_done = kwargs.pop('show_is_done', False)
-        super().__init__(*args, **kwargs)
-        if not show_is_done:
-            self.fields.pop('is_done')
+class TodoUpdateForm(forms.ModelForm):
+    class Meta:
+        model = Todo
+        fields = ['title', 'is_done']
+        labels = {
+            'title': 'やること',
+            'is_done': '完了',
+        }
+        widgets = {
+            'title': forms.TextInput(
+                attrs={
+                    'class': 'form-control',
+                }
+            ),
+            'is_done': forms.CheckboxInput(
+                attrs={
+                    'class': 'form-check-input',
+                }
+            ),
+        }
 
 
 # Scheduleフォーム
@@ -81,7 +99,7 @@ GoalFormSet = modelformset_factory(
 
 TodoFormSet = modelformset_factory(
     Todo,
-    form=TodoForm,
+    form=TodoCreateForm,
     extra=1,
     can_delete=False
     )

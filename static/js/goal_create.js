@@ -1,9 +1,3 @@
-console.log("GOAL CREATE JS LOADED");
-
-document.addEventListener("DOMContentLoaded", () => {
-    alert("GOAL CREATE JS EXECUTED");
-});
-
 document.addEventListener("DOMContentLoaded", () => {
 
     // ==========================

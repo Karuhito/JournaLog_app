@@ -13,28 +13,42 @@ class JournalDetailView(LoginRequiredMixin, DetailView):
     def get_queryset(self):
         return Journal.objects.filter(user=self.request.user)
 
+    # --------------------
+    # Journal取得（※モデルのみ返す）
+    # --------------------
     def get_object(self, queryset=None):
         year = self.kwargs['year']
         month = self.kwargs['month']
         day = self.kwargs['day']
 
-        journal = get_object_or_404(
+        return get_object_or_404(
             Journal,
             user=self.request.user,
             date=date(year, month, day)
         )
 
-        # 👇 ここでリダイレクト判定
-        if not journal.goals.exists() and not journal.todos.exists():
+    # --------------------
+    # 空JournalならInitへリダイレクト
+    # --------------------
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+
+        if (
+            not self.object.goals.exists()
+            and not self.object.todos.exists()
+        ):
             return redirect(
                 'journal:journal_init',
-                year=journal.date.year,
-                month=journal.date.month,
-                day=journal.date.day
+                year=self.object.date.year,
+                month=self.object.date.month,
+                day=self.object.date.day
             )
 
-        return journal
+        return super().get(request, *args, **kwargs)
 
+    # --------------------
+    # context
+    # --------------------
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         journal = self.object

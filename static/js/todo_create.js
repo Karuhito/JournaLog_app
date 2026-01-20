@@ -1,39 +1,75 @@
-document.addEventListener("DOMContentLoaded", function() {
-    const formset = document.getElementById("todo-formset");
-    const addButton = document.getElementById("add-todo");
-    const totalForms = document.querySelector('#id_form-TOTAL_FORMS');
+document.addEventListener("DOMContentLoaded", () => {
 
-    const emptyForm = formset.firstElementChild.cloneNode(true);
-    emptyForm.querySelectorAll('input, select').forEach(input => {
-        if (input.type === 'checkbox') input.checked = false;
-        else input.value = '';
+    const formsetContainer = document.getElementById("todo-formset");
+    const addButton = document.getElementById("add-todo");
+    const emptyFormTemplateEl = document.getElementById("todo-empty-form");
+
+    const totalFormsInput = document.querySelector(
+        'input[name="todo-TOTAL_FORMS"]'
+    );
+
+    if (!formsetContainer || !addButton || !emptyFormTemplateEl || !totalFormsInput) {
+        console.error("todo_create.js: 必要な要素が見つかりません");
+        return;
+    }
+
+    const emptyFormTemplate = emptyFormTemplateEl.innerHTML;
+
+    // ------------------
+    // 追加
+    // ------------------
+    addButton.addEventListener("click", () => {
+        const formCount = parseInt(totalFormsInput.value, 10);
+
+        const newFormHtml = emptyFormTemplate.replace(
+            /__prefix__/g,
+            formCount
+        );
+
+        const tempDiv = document.createElement("div");
+        tempDiv.innerHTML = newFormHtml;
+
+        const newForm = tempDiv.firstElementChild;
+
+        // disabled解除（empty_form対策）
+        newForm.querySelectorAll("input").forEach(el => {
+            el.disabled = false;
+        });
+
+        formsetContainer.appendChild(newForm);
+
+        totalFormsInput.value = formCount + 1;
     });
 
-    // 削除ボタン
-    formset.addEventListener("click", function(e) {
-        if (e.target && e.target.classList.contains("remove-form")) {
-            e.target.closest(".todo-form").remove();
-            updateFormIndices();
+    // ------------------
+    // 削除
+    // ------------------
+    formsetContainer.addEventListener("click", (e) => {
+        if (e.target.classList.contains("remove-form")) {
+            const form = e.target.closest(".todo-form");
+            if (form) {
+                form.remove();
+                updateTotalForms();
+            }
         }
     });
 
-    // 追加ボタン
-    addButton.addEventListener("click", function() {
-        const newForm = emptyForm.cloneNode(true);
-        formset.appendChild(newForm);
-        updateFormIndices();
-    });
+    function updateTotalForms() {
+        const forms = formsetContainer.querySelectorAll(".todo-form");
+        totalFormsInput.value = forms.length;
 
-    function updateFormIndices() {
-        const forms = formset.querySelectorAll(".todo-form");
         forms.forEach((form, index) => {
-            form.querySelectorAll("input, select").forEach(input => {
-                const name = input.name.replace(/\d+/, index);
-                const id = input.id.replace(/\d+/, index);
-                input.name = name;
-                input.id = id;
+            form.querySelectorAll("input, label").forEach(el => {
+                if (el.name) {
+                    el.name = el.name.replace(/todo-\d+-/, `todo-${index}-`);
+                }
+                if (el.id) {
+                    el.id = el.id.replace(/todo-\d+-/, `todo-${index}-`);
+                }
+                if (el.htmlFor) {
+                    el.htmlFor = el.htmlFor.replace(/todo-\d+-/, `todo-${index}-`);
+                }
             });
         });
-        totalForms.value = forms.length;
     }
 });
