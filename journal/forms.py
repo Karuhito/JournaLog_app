@@ -1,6 +1,6 @@
 import datetime
 from django import forms
-from .models import Goal, Todo, Schedule
+from .models import Goal, Todo, Schedule, Reflection
 from django.forms import modelformset_factory
 
 # 時間の選択肢を10分刻みで生成（valueも文字列）
@@ -87,7 +87,23 @@ class ScheduleForm(forms.ModelForm):
             }),
         }
 
-
+# Reflection フォーム
+class ReflectionForm(forms.ModelForm):
+    class Meta:
+        model = Reflection
+        fields = ['content']
+        labels = {
+            'content':'今日の振り返り',
+            }
+        widgets = {
+            'content': forms.Textarea(
+                attrs={
+                    'class': 'form-control',
+                    'placeholder': '今日の振り返りを入力してください',
+                    'rows':5, # 初期表示行数を設定
+                }
+            ),
+        }
 
 # フォームセット
 GoalFormSet = modelformset_factory(

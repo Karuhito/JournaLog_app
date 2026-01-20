@@ -45,9 +45,6 @@ class BaseCreateView(LoginRequiredMixin, View):
     # POST：保存（ここが本丸）
     # --------------------
     def post(self, request, year, month, day):
-        print("========== POST DATA ==========")
-        print(request.POST)
-        print("===============================")
         journal = self.get_journal(request, year, month, day)
 
         formset = self.formset_class(

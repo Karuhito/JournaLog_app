@@ -45,6 +45,16 @@ class Schedule(models.Model):
     title = models.CharField(max_length=100)
     start_time = models.TimeField()
     end_time = models.TimeField()
-
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
     class Meta:
         ordering = ['start_time']
+
+class Reflection(models.Model):
+    journal = models.ForeignKey('Journal', on_delete=models.CASCADE, related_name='reflection')
+    content = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.journal.date}の振り返り"
