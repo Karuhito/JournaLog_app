@@ -118,21 +118,24 @@
                 </div>
             </div>
         </div>
-        
+
         <!-- reflection -->
-        {% if reflection %}
-        <div class="card my-4 shadow-sm">
-            <div class="card-header bg-warning text-white">
-                今日の振り返り
-                <a href="{% url 'journal:update_reflection' pk=reflection.pk %}" class="btn btn-sm btn-light float-end">
-                    編集
-                </a>
+        <div class="card-body">
+            {% if reflection %}
+            <div class="card my-4 shadow-sm">
+                <div class="card-header bg-warning text-white">
+                    今日の振り返り
+                    <a href="{% url 'journal:update_reflection' pk=reflection.pk %}" class="btn btn-sm btn-outline-light float-end">
+                        編集
+                    </a>
+                </div>
+                <div class="card-body">
+
+                    <div>{{ reflection.content }}</div>
+                </div>
             </div>
-            <div class="card-body">
-                <p>{{ reflection.content }}</p>
-            </div>
+            {% else %}
         </div>
-        {% else %}
         <div class="card my-4 shadow-sm">
             <div class="card-header bg-warning text-white">
                 今日の振り返り
