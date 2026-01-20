@@ -19,7 +19,7 @@ class GoalForm(forms.ModelForm):
         model = Goal
         fields = ['title']
         labels = {
-            'title': '目標タイトル',
+            'title': '今日の目標',
         }
         widgets = {
             'title': forms.TextInput(attrs={'class': 'form-control'}),
@@ -32,7 +32,7 @@ class TodoForm(forms.ModelForm):
         model = Todo
         fields = ['title','is_done']
         labels = {
-            'title': 'Todo内容',
+            'title': '今日やることの内容',
             'is_done': '完了/未完了',
         }
         widgets = {
@@ -55,7 +55,7 @@ class ScheduleForm(forms.ModelForm):
         widgets = {
             'title': forms.TextInput(attrs={
                 'class': 'form-control',
-                'placeholder': '予定内容'
+                'placeholder': '予定内容',
             }),
             'start_time': forms.Select(
                 choices=time_choices(15),

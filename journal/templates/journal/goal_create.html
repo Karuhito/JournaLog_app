@@ -1,11 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
-
 {% block title %}目標作成{% endblock %}
-
-{% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/goal.css' %}">
-{% endblock %}
 
 {% block extra_js %}
 <script src="{% static 'js/goal_create.js' %}"></script>
@@ -89,11 +84,6 @@
         
             </div>
         </div>
-        <script>
-        document
-              .querySelectorAll("#goal-empty-form input")
-              .forEach(el => el.disabled = true);
-        </script>
 
         <!-- 保存 -->
         <div class="text-center mt-5">

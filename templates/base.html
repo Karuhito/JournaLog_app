@@ -18,6 +18,9 @@
 
     <!-- 独自CSS -->
     <link rel="stylesheet" href="{% static 'css/calendar.css' %}">
+
+    {% block extra_js %}{% endblock %}
+    {% block extra_css %}{% endblock %}
 </head>
 
 <body>
@@ -80,8 +83,5 @@
         {% block content %}
         {% endblock %}
     </main>
-
-    {% block extra_js %}{% endblock %}
-    {% block extra_css %}{% endblock %}
 </body>
 </html>

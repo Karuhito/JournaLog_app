@@ -1,5 +1,14 @@
+console.log("GOAL CREATE JS LOADED");
+
+document.addEventListener("DOMContentLoaded", () => {
+    alert("GOAL CREATE JS EXECUTED");
+});
+
 document.addEventListener("DOMContentLoaded", () => {
 
+    // ==========================
+    // DOM取得
+    // ==========================
     const formsetContainer = document.getElementById("goal-formset");
     const addButton = document.getElementById("add-goal");
     const emptyFormTemplateEl = document.getElementById("goal-empty-form");
@@ -8,19 +17,44 @@ document.addEventListener("DOMContentLoaded", () => {
         'input[name="goal-TOTAL_FORMS"]'
     );
 
-    if (!formsetContainer || !addButton || !emptyFormTemplateEl || !totalFormsInput) {
-        console.error("goal_create.js: 必要な要素が見つかりません");
+    // ==========================
+    // 必須要素チェック
+    // ==========================
+    if (!formsetContainer) {
+        console.error("goal-formset が見つかりません");
+        return;
+    }
+    if (!addButton) {
+        console.error("add-goal ボタンが見つかりません");
+        return;
+    }
+    if (!emptyFormTemplateEl) {
+        console.error("goal-empty-form が見つかりません");
+        return;
+    }
+    if (!totalFormsInput) {
+        console.error("goal-TOTAL_FORMS が見つかりません");
         return;
     }
 
+    // ==========================
+    // 初期設定
+    // ==========================
     const emptyFormTemplate = emptyFormTemplateEl.innerHTML;
 
+    // empty_form 内の input は最初は無効化（POSTに含めない）
+    emptyFormTemplateEl
+        .querySelectorAll("input")
+        .forEach(el => el.disabled = true);
+
     // ==========================
-    // 追加
+    // 追加処理
     // ==========================
     addButton.addEventListener("click", () => {
+
         const formCount = parseInt(totalFormsInput.value, 10);
 
+        // __prefix__ → index
         const newFormHtml = emptyFormTemplate.replace(
             /__prefix__/g,
             formCount
@@ -31,46 +65,32 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const newForm = tempDiv.firstElementChild;
 
-        // disabled を解除
+        // disabled解除（これが超重要）
         newForm.querySelectorAll("input").forEach(el => {
             el.disabled = false;
         });
 
         formsetContainer.appendChild(newForm);
 
-        // ⭐ これが最重要
+        // 🔥 Djangoが参照する唯一の数値
         totalFormsInput.value = formCount + 1;
     });
 
     // ==========================
-    // 削除
+    // 削除処理（UI用）
+    // ※ TOTAL_FORMS は減らさない
     // ==========================
     formsetContainer.addEventListener("click", (e) => {
         if (e.target.classList.contains("remove-form")) {
             const form = e.target.closest(".goal-form");
             if (form) {
+                // 入力を無効化してPOSTから除外
+                form.querySelectorAll("input").forEach(el => {
+                    el.disabled = true;
+                });
                 form.remove();
-                renumberForms();
             }
         }
     });
 
-    function renumberForms() {
-        const forms = formsetContainer.querySelectorAll(".goal-form");
-        totalFormsInput.value = forms.length;
-
-        forms.forEach((form, index) => {
-            form.querySelectorAll("input, label").forEach(el => {
-                if (el.name) {
-                    el.name = el.name.replace(/goal-\d+-/, `goal-${index}-`);
-                }
-                if (el.id) {
-                    el.id = el.id.replace(/goal-\d+-/, `goal-${index}-`);
-                }
-                if (el.htmlFor) {
-                    el.htmlFor = el.htmlFor.replace(/goal-\d+-/, `goal-${index}-`);
-                }
-            });
-        });
-    }
 });

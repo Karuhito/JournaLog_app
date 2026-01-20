@@ -8,14 +8,16 @@ from datetime import date
 from ..models import Journal
 
 class BaseCreateView(LoginRequiredMixin, View):
-
-    model = None             # 対象モデル（Goal, Todo, Scheduleなど）
-    formset_class = None     # 使用するフォームセット
-    prefix = None            # フォームセットのprefix
-    template_name = None     # テンプレート名
+    model = None
+    formset_class = None
+    prefix = None
+    template_name = None
 
     login_url = "accounts:login"
 
+    # --------------------
+    # 共通：Journal取得
+    # --------------------
     def get_journal(self, request, year, month, day):
         return get_object_or_404(
             Journal,
@@ -23,23 +25,31 @@ class BaseCreateView(LoginRequiredMixin, View):
             date=date(year, month, day)
         )
 
-    def before_save(self, obj):
-        pass
-
+    # --------------------
+    # GET：表示
+    # --------------------
     def get(self, request, year, month, day):
         journal = self.get_journal(request, year, month, day)
+
         formset = self.formset_class(
             queryset=self.model.objects.none(),
             prefix=self.prefix
         )
+
         return render(request, self.template_name, {
             "journal": journal,
             "formset": formset,
         })
-    
+
+    # --------------------
+    # POST：保存（ここが本丸）
+    # --------------------
     def post(self, request, year, month, day):
+        print("========== POST DATA ==========")
         print(request.POST)
+        print("===============================")
         journal = self.get_journal(request, year, month, day)
+
         formset = self.formset_class(
             request.POST,
             queryset=self.model.objects.none(),
@@ -47,13 +57,12 @@ class BaseCreateView(LoginRequiredMixin, View):
         )
 
         if formset.is_valid():
-            instances = formset.save(commit=False)
-            for obj in instances:
-                if not getattr(obj, "title", None):
-                    continue
-                self.before_save(obj)
+            objects = formset.save(commit=False)
+
+            for obj in objects:
                 obj.journal = journal
                 obj.save()
+
             return redirect(
                 "journal:journal_detail",
                 year=year,
@@ -61,6 +70,7 @@ class BaseCreateView(LoginRequiredMixin, View):
                 day=day
             )
 
+        # バリデーションエラー時
         return render(request, self.template_name, {
             "journal": journal,
             "formset": formset,
