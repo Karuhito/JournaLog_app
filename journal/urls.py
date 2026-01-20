@@ -4,6 +4,7 @@ from journal.views.journal import JournalDetailView, JournalInitView
 from journal.views.goal import UpdateGoalView, DeleteGoalView, CreateGoalView 
 from journal.views.todo import UpdateTodoView, DeleteTodoView, CreateTodoView
 from journal.views.schedule import UpdateScheduleView, DeleteScheduleView, CreateScheduleView
+from journal.views.reflection import CreateReflectionView, UpdateReflectionView
 
 app_name = 'journal'
 
@@ -29,7 +30,6 @@ urlpatterns = [
     path('journal/schedule/delete/<int:pk>/', DeleteScheduleView.as_view(), name='delete_schedule'),
 
     # Reflection関連のURLパターン (URLだけ)
-    # path('journal/<int:year>/<int:month>/<int:day>/reflection/create', views.CreateReflectionView.as_view(), name='create_reflection'),
-    # path('journal/reflection/update/<int:pk>', views.UpdateReflectionView.as_view(), name='update_reflection'),
-    # path('journal/reflection/delete/<int:pk>', views.DeleteReflectionView.as_view(), name='delete_reflection'),
+    path('journal/<int:year>/<int:month>/<int:day>/reflection/create', CreateReflectionView.as_view(), name='create_reflection'),
+    path('journal/reflection/update/<int:pk>', UpdateReflectionView.as_view(), name='update_reflection'),
 ]

@@ -1,13 +1,12 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse
 from django.views import View
 from .base import BaseUpdateView
 from django.shortcuts import render, get_object_or_404, redirect
 from journal.models import Journal, Reflection
 from journal.forms import ReflectionForm
-from datetime import date
+from datetime import date, timezone
 
-class CreateReflectionView(LoginRequiredMixin, View):
+class CreateReflectionView(View):
     template_name = "journal/reflection_create.html"
     login_url = "accounts:login"
 
@@ -46,9 +45,24 @@ class CreateReflectionView(LoginRequiredMixin, View):
             'form': form,
         })
     
-class UpdateReflectionView(LoginRequiredMixin, BaseUpdateView):
+class UpdateReflectionView(BaseUpdateView):
     model = Reflection
     form_class = ReflectionForm
     title = "振り返り編集"
     header_class = "bg-warning"
     template_name = "journal/reflection_update.html"
+
+    def get_success_url(self):
+        # journal が None の場合は安全にホームに戻す
+        journal = getattr(self.object, 'journal', None)
+        if journal:
+            return reverse(
+                "journal:journal_detail",
+                kwargs={
+                    "year": journal.date.year,
+                    "month": journal.date.month,
+                    "day": journal.date.day,
+                }
+            )
+        else:
+            return reverse("journal:home")

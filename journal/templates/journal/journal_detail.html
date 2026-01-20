@@ -118,6 +118,33 @@
                 </div>
             </div>
         </div>
+        
+        <!-- reflection -->
+        {% if reflection %}
+        <div class="card my-4 shadow-sm">
+            <div class="card-header bg-warning text-white">
+                今日の振り返り
+                <a href="{% url 'journal:update_reflection' pk=reflection.pk %}" class="btn btn-sm btn-light float-end">
+                    編集
+                </a>
+            </div>
+            <div class="card-body">
+                <p>{{ reflection.content }}</p>
+            </div>
+        </div>
+        {% else %}
+        <div class="card my-4 shadow-sm">
+            <div class="card-header bg-warning text-white">
+                今日の振り返り
+                <a href="{% url 'journal:create_reflection' year=journal.date.year month=journal.date.month day=journal.date.day %}" class="btn btn-sm btn-light float-end">
+                    作成
+                </a>
+            </div>
+            <div class="card-body text-muted">
+                まだ振り返りは作成されていません
+            </div>
+        </div>
+        {% endif %}
 
     </div>
 </div>

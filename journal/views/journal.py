@@ -56,6 +56,7 @@ class JournalDetailView(LoginRequiredMixin, DetailView):
         context['goals'] = journal.goals.all()
         context['todos'] = journal.todos.all()
         context['schedules'] = journal.schedules.order_by("start_time")
+        context['reflection'] = journal.reflection.first()
 
         return context
     
