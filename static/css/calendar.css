@@ -1,21 +1,77 @@
-@media (max-width: 768px) {
-    .calendar-cell {
-        height: 48px;
-        font-size: 0.9rem;
-    }
+/* =====================================
+   基本設計
+===================================== */
+
+:root {
+    --journal-primary: #4f6edb;
+    --journal-primary-soft: rgba(79, 110, 219, 0.15);
+    --journal-success: #7bcf9a;
+    --journal-success-soft: rgba(123, 207, 154, 0.18);
+    --journal-bg: #f9fafb;
+    --journal-card: #ffffff;
+    --journal-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
 }
 
-/* カレンダーセル全体 */
+/* =====================================
+   カレンダー全体
+===================================== */
+
+.calendar-wrapper {
+    background-color: var(--journal-bg);
+    padding: 16px;
+    border-radius: 18px;
+}
+
+/* table感を消す */
+.table {
+    margin-bottom: 0;
+}
+
+.table-bordered > :not(caption) > * > * {
+    border: none;
+}
+
+/* 曜日ヘッダー */
+thead th {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: #6c757d;
+    padding-bottom: 8px;
+}
+
+/* =====================================
+   カレンダーセル（月表示）
+===================================== */
+
 .calendar-cell {
-    height: 90px;
-    vertical-align: top;
-    cursor: pointer;
-    transition: background-color 0.2s;
     position: relative;
-    padding: 5px;
+    height: 92px;
+    padding: 8px;
+    vertical-align: top;
+    background-color: var(--journal-card);
+    border-radius: 16px;
+    cursor: pointer;
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        background-color 0.2s ease;
 }
 
-/* セル全体をリンク化 */
+/* hover：呼吸する感じ */
+.calendar-cell:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--journal-shadow);
+    background-color: #fcfdff;
+}
+
+.calendar-cell:active {
+    transform: translateY(1px) scale(0.98);
+    box-shadow: 0 4px 10px rgba(0,0,0,.12) inset;
+}
+
+
+/* セル全体リンク */
 .calendar-cell a {
     display: block;
     width: 100%;
@@ -24,80 +80,153 @@
     color: inherit;
 }
 
-/* ホバー時の色 */
-.calendar-cell:hover {
-    background-color: #eef4ff;
-    border-radius: 8px;
-}
-
-/* 今日 */
-.calendar-cell.today {
-    background-color: #e7f1ff;   /* 薄い青 */
-    border: 2px solid #0d6efd;   /* Bootstrap primary */
-    font-weight: bold;
-}
-
-/* 今日リンク内 */
-.calendar-cell.today a .calendar-day {
+/* 日付表示 */
+.calendar-day {
     display: inline-flex;
     width: 32px;
     height: 32px;
-    background-color: #0d6efd;
-    color: white;
     align-items: center;
     justify-content: center;
+    font-weight: 600;
+    border-radius: 50%;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* =====================================
+   今日
+===================================== */
+
+.calendar-cell.today {
+    background: linear-gradient(
+        180deg,
+        #ffffff,
+        #eef3ff
+    );
+    box-shadow: 0 0 0 3px var(--journal-primary-soft);
+}
+
+.calendar-cell.today .calendar-day {
+    background-color: var(--journal-primary);
+    color: #ffffff;
+}
+
+/* =====================================
+   記録済み（痕跡）
+===================================== */
+
+.calendar-cell.has-journal {
+    background: linear-gradient(
+        135deg,
+        var(--journal-success-soft),
+        rgba(255, 255, 255, 0.6)
+    );
+}
+
+/* 記録ドット */
+.calendar-cell.has-journal::after {
+    content: "";
+    position: absolute;
+    bottom: 8px;
+    right: 8px;
+    width: 6px;
+    height: 6px;
+    background-color: var(--journal-success);
     border-radius: 50%;
 }
 
-/* 前後月 */
+/* =====================================
+   前後月
+===================================== */
+
 .calendar-cell.other-month {
-    background-color: #f8f9fa;
-    color: #adb5bd; /* 薄い文字色 */
+    background-color: #f1f3f5;
+    color: #adb5bd;
+    cursor: default;
 }
 
-/* 投稿済み */
-.calendar-cell.has-journal {
-    background-color: #eaf7ea;
-    border-radius: 8px;
+.calendar-cell.other-month:hover {
+    transform: none;
+    box-shadow: none;
 }
 
-/* 日付 */
-.calendar-day {
-    font-weight: normal;
-    display: inline-block;
+/* =====================================
+   曜日色
+===================================== */
+
+.weekday-sun {
+    color: #dc3545;
 }
 
-/* カレンダー全体 */
-.calendar-wrapper {
-    background-color: #f8f9fa;
-    padding: 15px;
-    border-radius: 12px;
+.weekday-sat {
+    color: var(--journal-primary);
 }
 
-/* カードボディの最大高さとスクロール */
-.card-body {
-    max-height: 500px;
-    overflow-y: auto;
+/* =====================================
+   週表示カード
+===================================== */
+
+.card {
+    border: none;
+    border-radius: 18px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-/* 記録ありバッジ（PC逆輸入） */
-.journal-badge {
-    position: absolute;
-    top: 4px;
-    right: 4px;
-    font-size: 0.65rem;
-    padding: 2px 6px;
-    background-color: #198754; /* Bootstrap success */
-    color: white;
-    border-radius: 10px;
-    pointer-events: none;
+.card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--journal-shadow);
 }
 
-/* 曜日色 */
-.weekday_sun {
-    color: #dc3545; /* Bootstrap danger (赤) */
+.card.border-primary {
+    box-shadow: 0 0 0 3px var(--journal-primary-soft);
 }
 
-.weekday_sat {
-    color: #0d6efd; /* Bootstrap primary (青) */
+.card.bg-light {
+    background: linear-gradient(
+        135deg,
+        var(--journal-success-soft),
+        rgba(255, 255, 255, 0.6)
+    );
+}
+
+/* =====================================
+   モバイル調整
+===================================== */
+
+@media (max-width: 768px) {
+    .calendar-cell {
+        height: 56px;
+        padding: 4px;
+    }
+
+    .calendar-day {
+        width: 28px;
+        height: 28px;
+        font-size: 0.9rem;
+    }
+
+    .calendar-wrapper {
+        padding: 12px;
+    }
+}
+
+/* ボタン調整 */
+.btn {
+    transition:
+      transform .1s ease,
+      box-shadow .1s ease;
+}
+
+.btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0,0,0,.12);
+}
+
+.btn:active {
+    transform: translateY(1px) scale(0.97);
+    box-shadow: 0 2px 4px rgba(0,0,0,.2) inset;
+}
+
+/* aタグの調整 */
+a:active {
+    opacity: 0.85;
 }
