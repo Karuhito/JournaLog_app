@@ -23,6 +23,17 @@
                 {{ form.as_p }}
                 <button type="submit" class="btn btn-primary">ログイン</button>
             </form>
+            <hr>
+
+            <p class="text-center mb-2">
+                アカウントをお持ちでない方
+            </p>
+    
+            <div class="d-grid gap-2">
+                <a href="{% url 'accounts:signup' %}" class="btn btn-outline-secondary">
+                    新規登録
+                </a>
+            </div>
         </div>
     </main>
     <script

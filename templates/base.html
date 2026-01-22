@@ -19,56 +19,57 @@
     <!-- 独自CSS -->
     <link rel="stylesheet" href="{% static 'css/base.css' %}">
 
-    {% block extra_js %}{% endblock %}
+
     {% block extra_css %}{% endblock %}
 </head>
 
-<body>
+<body class="{% block body_css %}{% endblock %}">
     <!-- ナビゲーション -->
-    <nav class="navbar bg-white border-bottom shadow-sm sticky-top">
-        <div class="container d-flex justify-content-between align-items-center">
-    
-            <!-- 左側：タイトル + Home -->
-            <div class="d-flex align-items-center gap-3">
-                <a class="navbar-brand fw-bold fs-5 mb-0" href="{% url 'journal:home' %}">
-                    JournaLog
-                </a>
-                <a href="{% url 'journal:home' %}" class="btn btn-outline-secondary btn-sm">
-                    Home
-                </a>
+    <header class="site-header">
+        <nav class="navbar border-bottom shadow-sm sticky-top">
+            <div class="container d-flex justify-content-between align-items-center">
+        
+                <!-- 左側：タイトル + Home -->
+                <div class="d-flex align-items-center gap-3">
+                    <a class="navbar-brand fw-bold fs-5 mb-0" href="{% url 'journal:home' %}">
+                        JournaLog
+                    </a>
+                    <a href="{% url 'journal:home' %}" class="btn btn-outline-secondary btn-sm">
+                        Home
+                    </a>
+                </div>
+        
+                <!-- 右側：ハンバーガーメニュー（アカウント） -->
+                <div class="dropdown">
+                    <button
+                        class="btn"
+                        type="button"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false"
+                        aria-label="アカウントメニュー"
+                    >
+                    <img src="{% static 'img/menu-btn.svg' %}" alt="ハンバーガーメニュー" class="hamburger-icon ">
+                    </button>
+        
+                    <ul class="dropdown-menu dropdown-menu-end p-3" style="min-width: 200px;">
+                        <li class="mb-2">
+                            <div class="small text-muted">ログイン中</div>
+                            <div class="fw-semibold">{{ user.username }}</div>
+                        </li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li>
+                            <form method="post" action="{% url 'accounts:logout' %}">
+                                {% csrf_token %}
+                                <button class="btn btn-outline-danger btn-sm w-100" type="submit">
+                                    ログアウト
+                                </button>
+                            </form>
+                        </li>
+                    </ul>
+                </div>
             </div>
-    
-            <!-- 右側：ハンバーガーメニュー（アカウント） -->
-            <div class="dropdown">
-                <button
-                    class="btn btn-outline-secondary"
-                    type="button"
-                    data-bs-toggle="dropdown"
-                    aria-expanded="false"
-                    aria-label="アカウントメニュー"
-                >
-                    <img src="{% static 'img/menu_btn.svg' %}" alt="ハンバーガーメニュー" class="hamburger-icon">
-                </button>
-    
-                <ul class="dropdown-menu dropdown-menu-end p-3" style="min-width: 200px;">
-                    <li class="mb-2">
-                        <div class="small text-muted">ログイン中</div>
-                        <div class="fw-semibold">{{ user.username }}</div>
-                    </li>
-                    <li><hr class="dropdown-divider"></li>
-                    <li>
-                        <form method="post" action="{% url 'accounts:logout' %}">
-                            {% csrf_token %}
-                            <button class="btn btn-outline-danger btn-sm w-100" type="submit">
-                                ログアウト
-                            </button>
-                        </form>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-
+        </nav>
+    </header>
     <!-- メインコンテンツ -->
     <main class="container my-3 my-md-4">
         {% block content %}
@@ -81,5 +82,6 @@
         crossorigin="anonymous">
     </script>
     <script src="{% static 'js/page_transition.js' %}"></script>
+    {% block extra_js %}{% endblock %}
 </body>
 </html>

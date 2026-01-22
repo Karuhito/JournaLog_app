@@ -1,48 +1,160 @@
+/* =========================
+   Color Variables
+========================= */
+:root {
+  --bg-main: #f4f6f8;
+  --text-main: #333333;
+
+  --accent: #4a6fa5;
+
+  --goal: #4a6fa5;
+  --todo: #6b8f71;
+  --schedule: #7a6c8a;
+  --reflection: #8a6f5c;
+}
+
 /* =========
    Base Button
    ========= */
+.btn {
+  transition:
+    transform 0.08s ease,
+    box-shadow 0.08s ease,
+    background-color 0.15s ease;
+}
 
-   .btn {
-    transition:
-      transform 0.08s ease,
-      box-shadow 0.08s ease,
-      background-color 0.15s ease;
-  }
-  
-  /* hover：少し浮く */
-  .btn:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.12);
-  }
-  
-  /* active：押し込まれる */
-  .btn:active {
-    transform: translateY(1px);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.18);
-  }
-  
-  /* focus：操作感が分かる */
-  .btn:focus-visible {
-    outline: none;
-    box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.3);
-  }
+/* hover：少し浮く */
+.btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.12);
+}
 
-  /* ハンバーガーメニュー */
-  .hamburger-icon {
-    height: 2rem;
-    width: 2rem;
-  }
+/* active：押し込まれる */
+.btn:active {
+  transform: translateY(1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.18);
+}
 
-  /* ==============================
+/* focus：操作感が分かる */
+.btn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.3);
+}
+
+/* ==============================
    Page Transition
-  ============================== */
+============================== */
+body {
+  opacity: 1;
+  transition: opacity .25s ease, transform .25s ease;
+}
 
-  body {
-    opacity: 1;
-    transition: opacity .25s ease, transform .25s ease;
-  }
+body.is-transitioning {
+  opacity: 0;
+  transform: translateY(6px);
+}
 
-  body.is-transitioning {
-    opacity: 0;
-    transform: translateY(6px);
-  }
+/* ==============================
+   Color Themes
+============================== */
+body {
+  background-color: var(--bg-main);
+  color: var(--text-main);
+}
+
+/* ==============================
+   Header
+============================== */
+.site-header {
+  background-color: #2f2f2f;  /* 黒寄りグレー */
+  color: #ffffff;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.site-header a {
+  color: #ffffff;
+  text-decoration: none;
+  transition: color 0.2s ease, opacity 0.2s ease;
+}
+
+.site-header a:hover {
+  color: var(--accent);
+  opacity: 1;
+}
+
+/* ==============================
+   Hamburger Menu Button
+============================== */
+.site-header .dropdown > .btn {
+  padding: 0;                     /* 余白を削除 */
+  width: 2.5rem;                  /* ボタンサイズ */
+  height: 2.5rem;
+  display: block;                  /* 画像をボタンいっぱいに広げる */
+  border: none;                    /* 枠線を消す */
+  background-color: transparent;
+}
+
+.hamburger-icon {
+  width: 100%;                     /* ボタン全体にフィット */
+  height: 100%;
+  object-fit: contain;             /* 縦横比を保持して収める */
+  display: block;                  /* inlineスペース除去 */
+  filter: invert(1);               /* 黒SVGなら白に反転 */
+}
+
+/* ==============================
+   Dropdown Menu
+============================== */
+.site-header .dropdown-menu {
+  min-width: 200px;
+  background-color: #fff;
+  color: #333;
+  border-radius: 0.5rem;
+  padding: 0.75rem;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.site-header .dropdown-menu li .btn-outline-danger {
+  width: 100%;
+}
+
+.site-header .dropdown-menu a,
+.site-header .dropdown-menu div {
+  color: #333;
+}
+
+.site-header .dropdown-menu a:hover {
+  color: var(--accent);
+}
+
+/* ==============================
+   Header Button (Home等)
+============================== */
+.site-header .btn-outline-secondary {
+  color: #ffffff;
+  border-color: #ffffff;
+  background-color: transparent;
+  transition: all 0.2s ease;
+}
+
+.site-header .btn-outline-secondary:hover {
+  background-color: var(--accent);
+  color: #ffffff;
+  border-color: var(--accent);
+}
+
+/* ==============================
+   Dropdown Slide Animation
+============================== */
+.dropdown-menu.slide {
+  transform-origin: top center;
+  transform: scaleY(0);
+  opacity: 0;
+  transition: transform 0.25s ease, opacity 0.25s ease;
+}
+
+/* show クラスが付いたらスライド展開 */
+.dropdown-menu.show.slide {
+  transform: scaleY(1);
+  opacity: 1;
+}
