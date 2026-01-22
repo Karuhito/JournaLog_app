@@ -1,6 +1,10 @@
 {% extends "base.html" %}
 {% load static %}
-<link rel="stylesheet" href="css/calendar.css">
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/pages/calendar.css' %}">
+{% endblock %}
+
 {% block title %}ホーム{% endblock %}
 
 {% block content %}

@@ -51,11 +51,8 @@ thead th {
     background-color: var(--journal-card);
     border-radius: 16px;
     cursor: pointer;
-
-    transition:
-        transform 0.2s ease,
-        box-shadow 0.2s ease,
-        background-color 0.2s ease;
+    box-shadow: 0 1px 2px rgba(0,0,0,.04);
+    transition: transform .2s ease, box-shadow .2s ease, background-color .2s ease;
 }
 
 /* hover：呼吸する感じ */
@@ -65,9 +62,34 @@ thead th {
     background-color: #fcfdff;
 }
 
+.calendar-cell::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 16px;
+
+    background: radial-gradient(
+        circle at top,
+        rgba(79,110,219,.12),
+        transparent 70%
+    );
+
+    opacity: 0;
+    transition: opacity .2s ease;
+    pointer-events: none;
+}
+
 .calendar-cell:active {
     transform: translateY(1px) scale(0.98);
     box-shadow: 0 4px 10px rgba(0,0,0,.12) inset;
+}
+
+/* 選択されたセル */
+.calendar-cell.is-selected {
+    transform: scale(0.97);
+    box-shadow:
+        0 0 0 3px var(--journal-primary-soft),
+        var(--journal-shadow);
 }
 
 

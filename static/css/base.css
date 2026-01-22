@@ -1,0 +1,48 @@
+/* =========
+   Base Button
+   ========= */
+
+   .btn {
+    transition:
+      transform 0.08s ease,
+      box-shadow 0.08s ease,
+      background-color 0.15s ease;
+  }
+  
+  /* hover：少し浮く */
+  .btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.12);
+  }
+  
+  /* active：押し込まれる */
+  .btn:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.18);
+  }
+  
+  /* focus：操作感が分かる */
+  .btn:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.3);
+  }
+
+  /* ハンバーガーメニュー */
+  .hamburger-icon {
+    height: 2rem;
+    width: 2rem;
+  }
+
+  /* ==============================
+   Page Transition
+  ============================== */
+
+  body {
+    opacity: 1;
+    transition: opacity .25s ease, transform .25s ease;
+  }
+
+  body.is-transitioning {
+    opacity: 0;
+    transform: translateY(6px);
+  }
