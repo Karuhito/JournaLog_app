@@ -76,7 +76,6 @@
 }
 
 
-
 /* Buttons */
 .journal-section .btn {
     font-size: 0.85rem;
@@ -92,6 +91,60 @@
 .btn-submit:hover {
     background-color: #1f2937;
     color: #fff;
+}
+
+  
+/* Goal用削除ボタン */
+.goal-form .btn-delete {
+    background-color: rgba(74, 111, 165, 0.1); /* --goal 薄め */
+}
+  
+.goal-form .btn-delete:hover {
+    background-color: rgba(74, 111, 165, 0.2);
+    transform: scale(1.1);
+}
+  
+/* Todo用削除ボタン */
+.todo-form .btn-delete {
+    background-color: rgba(107, 143, 113, 0.1); /* --todo 薄め */
+}
+  
+.todo-form .btn-delete:hover {
+    background-color: rgba(107, 143, 113, 0.2);
+    transform: scale(1.1);
+}
+  
+/* 画像アイコンサイズ調整 */
+.btn-delete img {
+    width: 14px;
+    height: 14px;
+}
+
+  
+/* Goal用追加ボタン */
+.goal-form + .goal-form, .journal-goal .plus-btn {
+    background-color: rgba(74, 111, 165, 0.1); /* --goal 薄め */
+}
+  
+.journal-goal .plus-btn:hover {
+    background-color: rgba(74, 111, 165, 0.2);
+    transform: scale(1.1);
+}
+  
+/* Todo用追加ボタン */
+.journal-todo .plus-btn {
+    background-color: rgba(107, 143, 113, 0.1); /* --todo 薄め */
+}
+  
+.journal-todo .plus-btn:hover {
+    background-color: rgba(107, 143, 113, 0.2);
+    transform: scale(1.1);
+}
+  
+/* 画像アイコンサイズ調整 */
+.plus-btn img {
+    width: 14px;
+    height: 14px;
 }
 
 /* Submit */

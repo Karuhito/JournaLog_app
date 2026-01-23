@@ -158,3 +158,31 @@ body {
   transform: scaleY(1);
   opacity: 1;
 }
+
+/* ボタンデザイン */
+/* 共通削除ボタン */
+.btn-delete {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+
+/* 共通追加ボタン */
+.plus-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
