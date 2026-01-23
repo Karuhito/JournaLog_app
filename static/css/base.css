@@ -1,16 +1,40 @@
 /* =========================
    Color Variables
 ========================= */
-:root {
-  --bg-main: #f4f6f8;
-  --text-main: #333333;
 
+:root {
+  /* ---------- Base ---------- */
+  --bg-main: #f4f6f8;
+  --bg-subtle: #f8f9fa;
+
+  --text-main: #333333;
+  --text-muted: #6c757d;
+
+  /* ---------- Accent ---------- */
   --accent: #4a6fa5;
 
+  /* ---------- Section Theme ---------- */
   --goal: #4a6fa5;
   --todo: #6b8f71;
   --schedule: #7a6c8a;
   --reflection: #8a6f5c;
+
+  /* ---------- Border ---------- */
+  --border-color: #e1e5ea;
+  --border-strong: #c7ccd4;
+
+  /* ---------- Shadow ---------- */
+  --shadow-sm: 0 2px 6px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+
+  /* ---------- Radius ---------- */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+
+  /* ---------- Transition ---------- */
+  --transition-fast: 0.15s ease;
+  --transition-base: 0.25s ease;
 }
 
 /* =========
@@ -425,4 +449,13 @@ body {
 .empty-state .action-btn:hover {
   opacity: 0.9;
   transform: translateY(-1px);
+}
+
+/* =========================
+   Section Divider
+========================= */
+.section-divider {
+  border: none;              /* デフォルトの線を消す */
+  border-top: 2px solid;     /* 上だけ線を表示 */
+  margin: 0.5rem 0 1rem 0;   /* 上下の余白 */
 }

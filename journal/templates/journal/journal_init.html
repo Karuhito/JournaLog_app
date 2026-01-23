@@ -15,11 +15,34 @@
 {% block content %}
 <div class="container my-5 journal-init">
 
-    <!-- ================= Header ================= -->
-    <header class="journal-init-header mb-4">
-        <h3 class="journal-date mb-1">{{ journal.date|date:"Y年n月j日" }}</h3>
-        <p class="text-muted mb-0">ジャーナルの記録を作成します</p>
-    </header>
+<!-- ================= Header ================= -->
+<header class="journal-init-header mb-4">
+
+    <div class="journal-date-nav">
+        <a
+            href="{% url 'journal:journal_init' prev_day.year prev_day.month prev_day.day %}"
+            class="date-nav prev"
+        >
+            ← 前日
+        </a>
+
+        <h3 class="journal-date mb-1">
+            {{ journal_date|date:"Y年n月j日" }}
+        </h3>
+
+        <a
+            href="{% url 'journal:journal_init' next_day.year next_day.month next_day.day %}"
+            class="date-nav next"
+        >
+            翌日 →
+        </a>
+    </div>
+
+    <p class="text-muted mb-0">
+        ジャーナルの記録を作成します
+    </p>
+
+</header>
 
     <hr class="journal-divider">
 

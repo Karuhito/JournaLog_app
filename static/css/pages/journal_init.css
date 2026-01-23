@@ -11,6 +11,11 @@
     --todo: #6b8f71;
     --schedule: #7a6c8a;
     --reflection: #8a6f5c;
+
+    --bg-subtle: #f8f9fa;
+    --text-muted: #6c757d;
+    --border-color: #dddddd;
+    --border-strong: #bdbdbd;
   }
 
 /* ==============================
@@ -33,14 +38,49 @@
 /* --------------------
    ヘッダー
 -------------------- */
-.journal-init-header .journal-date {
-    font-weight: 600;
-    font-size: 1.5rem;
+.journal-init-header {
+    text-align: center;
 }
 
-.journal-init-header p {
-    font-size: 0.95rem;
+.journal-date-nav {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    margin-bottom: 4px;
 }
+
+.journal-date {
+    font-weight: 600;
+}
+
+.date-nav {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    text-decoration: none;
+
+    padding: 4px 10px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+
+    transition: background-color 0.15s ease,
+                color 0.15s ease,
+                border-color 0.15s ease;
+}
+
+.date-nav.prev {
+    justify-self: start;
+}
+
+.date-nav.next {
+    justify-self: end;
+}
+
+.date-nav:hover {
+    background-color: var(--bg-subtle);
+    color: var(--text-main);
+    border-color: var(--border-strong);
+}
+
 
 /* --------------------
    セクション

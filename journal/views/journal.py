@@ -15,28 +15,39 @@ class JournalOverView(LoginRequiredMixin, DetailView):
         return Journal.objects.filter(user=self.request.user)
 
     # --------------------
-    # Journal取得（※モデルのみ返す）
+    # Journal取得（存在しなければ None）
     # --------------------
     def get_object(self, queryset=None):
         year = self.kwargs['year']
         month = self.kwargs['month']
         day = self.kwargs['day']
 
-        return get_object_or_404(
-            Journal,
+        return Journal.objects.filter(
             user=self.request.user,
             date=date(year, month, day)
-        )
+        ).first()
 
     # --------------------
-    # 空JournalならInitへリダイレクト
+    # 存在しない or 空なら Init へ
     # --------------------
     def get(self, request, *args, **kwargs):
         self.object = self.get_object()
 
+        # 🔴 Journalが存在しない
+        if self.object is None:
+            return redirect(
+                'journal:journal_init',
+                year=kwargs['year'],
+                month=kwargs['month'],
+                day=kwargs['day']
+            )
+
+        # 🔴 Journalはあるが中身が空
         if (
             not self.object.goals.exists()
             and not self.object.todos.exists()
+            and not self.object.schedules.exists()
+            and not self.object.reflection.exists()
         ):
             return redirect(
                 'journal:journal_init',
@@ -54,45 +65,39 @@ class JournalOverView(LoginRequiredMixin, DetailView):
         context = super().get_context_data(**kwargs)
         journal = self.object
 
-        prev_day = journal.date - timedelta(days=1)
-        next_day = journal.date + timedelta(days=1)
-
         context['goals'] = journal.goals.all()
         context['todos'] = journal.todos.all()
         context['schedules'] = journal.schedules.order_by("start_time")
         context['reflection'] = journal.reflection.first()
         context['journal_date'] = journal.date
-        context['prev_day'] = prev_day
-        context['next_day'] = next_day
-        
+        context['prev_day'] = journal.date - timedelta(days=1)
+        context['next_day'] = journal.date + timedelta(days=1)
+
         return context
     
 class JournalInitView(LoginRequiredMixin, View):
     template_name = 'journal/journal_init.html'
     login_url = 'accounts:login'
 
+
     def get(self, request, year, month, day):
+        journal_date = date(year, month, day)
+
         journal, _ = Journal.objects.get_or_create(
             user=request.user,
-            date=date(year, month, day)
+            date=journal_date
         )
 
-        goal_formset = GoalFormSet(
-            queryset=journal.goals.none(),
-            prefix='goal'
-        )
-
-        todo_formset = TodoFormSet(
-            queryset=journal.todos.none(),
-            prefix='todo'
-        )
-
-        return render(request, self.template_name, {
-            'goal_formset': goal_formset,
-            'todo_formset': todo_formset,
-            'journal': journal,
-        })
-
+        context = {
+            "journal": journal,
+            "goal_formset": GoalFormSet(queryset=journal.goals.none(), prefix="goal"),
+            "todo_formset": TodoFormSet(queryset=journal.todos.none(), prefix="todo"),
+            "prev_day": journal_date - timedelta(days=1),
+            "next_day": journal_date + timedelta(days=1),
+            "journal_date": journal_date,
+        }
+        return render(request, self.template_name, context)
+    
     def post(self, request, year, month, day):
         journal = get_object_or_404(
         Journal,

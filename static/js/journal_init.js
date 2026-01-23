@@ -1,5 +1,3 @@
-console.log("journal_init.js loaded");
-
 document.addEventListener('DOMContentLoaded', () => {
 
     function setupFormset({ addBtnId, formsetId, emptyFormId }) {
