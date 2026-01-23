@@ -1,0 +1,189 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Journal記録{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/pages/journal_over.css' %}">
+{% endblock %}
+
+
+{% block content %}
+
+<div class="journal-date-nav mb-4">
+    <a href="{% url 'journal:journal_over' prev_day.year prev_day.month prev_day.day %}"
+       class="date-nav-btn">
+        ← 前日
+    </a>
+
+    <div class="journal-date">
+        {{ journal_over|date:"Y年n月j日" }} のジャーナル
+    </div>
+
+    <a href="{% url 'journal:journal_over' next_day.year next_day.month next_day.day %}"
+       class="date-nav-btn">
+        翌日 →
+    </a>
+</div>
+
+<div class="container journal-over my-4">
+
+    <!-- Goal -->
+    <div class="row mb-3">
+        <div class="col-12">
+            <section class="journal-card goal-field">
+                <div class="card-header">
+                    <h5 class="goal-text">Goal一覧</h5>
+                
+                    {% if goals %}
+                    <a class="plus-btn goal-btn">
+                        <img src="{% static 'img/plus-icon.svg' %}" alt="Goal投稿画面に移動するボタン">
+                    </a>
+                    {% endif %}
+                </div>
+                
+                <ul class="item-list">
+                    <li class="item-row">
+                        <span class="item-title">Goalタイトル</span>
+                        <div class="item-actions">
+                            <a class="edit-btn">
+                                <img src="{% static 'img/edit-icon.svg' %}" alt="Goal編集">
+                            </a>
+                            <a class="delete-btn">
+                                <img src="{% static 'img/delete-icon.svg' %}" alt="Goal削除">
+                            </a>
+                        </div>
+                    </li>
+                </ul>
+            </section>
+        </div>
+    </div>
+
+    <!-- Todo -->
+    <div class="row mb-3">
+        <div class="col-12">
+            <section class="journal-card todo-field">
+
+                <div class="card-header">
+                    <h5 class="todo-text">Todo一覧</h5>
+
+                    {% if todos %}
+                    <a class="plus-btn todo-btn">
+                        <img src="{% static 'img/plus-icon.svg' %}" alt="Todo追加">
+                    </a>
+                    {% endif %}
+                </div>
+
+                <div class="card-body">
+
+                    {% if todos %}
+                    <ul class="item-list">
+                        <li class="item-row">
+                            <input type="checkbox">
+                            <span class="item-title">Todoタイトル</span>
+                        
+                            <div class="item-actions">
+                                <a class="edit-btn">
+                                    <img src="{% static 'img/edit-icon.svg' %}" alt="Todo編集">
+                                </a>
+                                <a class="delete-btn">
+                                    <img src="{% static 'img/delete-icon.svg' %}" alt="Todo削除">
+                                </a>
+                            </div>
+                        </li>
+                    </ul>
+                    {% else %}
+                    <div class="empty-state">
+                        <a class="btn todo-bg ">
+                            今日のTodoを記録しましょう
+                        </a>
+                    </div>
+                    {% endif %}
+
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <!-- Schedule -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <section class="journal-card schedule-field">
+
+                <div class="card-header">
+                    <h5 class="schedule-text">スケジュール一覧</h5>
+
+                    {% if schedules %}
+                    <a class="plus-btn schedule-btn">
+                        <img src="{% static 'img/plus-icon.svg' %}" alt="スケジュール追加">
+                    </a>
+                    {% endif %}
+                </div>
+
+                <div class="card-body">
+
+                    {% if schedules %}
+                    <ul class="item-list">
+                        <li class="item-row">
+                            <span class="item-title">予定タイトル</span>
+                            <span class="item-time">{{ schedule.start_time }} ~ {{ schedule.end_time }}</span>
+                            <div class="item-actions">
+                                <a class="edit-btn">
+                                    <img src="{% static 'img/edit-icon.svg' %}" alt="Schedule編集">
+                                </a>
+                                <a class="delete-btn">
+                                    <img src="{% static 'img/delete-icon.svg' %}" alt="Schedule削除">
+                                </a>
+                            </div>
+                        </li>
+                    </ul>
+                    {% else %}
+                    <div class="empty-state">
+                        <a href="#" class="btn schedule-bg">スケジュールを記録する</a>
+                        
+                    </div>
+                    {% endif %}
+
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <!-- Divider -->
+    <div class="reflection-divider my-4">
+        <span>振り返り</span>
+    </div>
+
+    <!-- Reflection -->
+    <div class="row">
+        <div class="col-12">
+            <section class="journal-card reflection-field">
+
+                <div class="card-header">
+                    <h5 class="reflection-text">振り返り</h5>
+                    {% if reflection %}
+                        <a class="edit-btn">
+                            <img src="{% static 'img/edit-icon.svg' %}" alt="振り返り編集">
+                        </a>
+                    {% endif %}
+                </div>
+
+                <div class="card-body">
+
+                    {% if reflection %}
+                    <p class="reflection-content">
+                        {{ reflection.content }}
+                    </p>
+                    {% else %}
+                    <div class="empty-state">
+                        <a href="" class="btn reflection-bg">今日の1日を振り返る</a>
+                    </div>
+                    {% endif %}
+
+                </div>
+            </section>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

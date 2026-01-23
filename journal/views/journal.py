@@ -5,10 +5,11 @@ from django.views import View
 from django.views.generic import DetailView
 from journal.models import Journal
 from journal.forms import GoalFormSet, TodoFormSet
+from datetime import timedelta
 
-class JournalDetailView(LoginRequiredMixin, DetailView):
+class JournalOverView(LoginRequiredMixin, DetailView):
     model = Journal
-    template_name = 'journal/journal_detail.html'
+    template_name = 'journal/journal_over.html'
 
     def get_queryset(self):
         return Journal.objects.filter(user=self.request.user)
@@ -53,11 +54,17 @@ class JournalDetailView(LoginRequiredMixin, DetailView):
         context = super().get_context_data(**kwargs)
         journal = self.object
 
+        prev_day = journal.date - timedelta(days=1)
+        next_day = journal.date + timedelta(days=1)
+
         context['goals'] = journal.goals.all()
         context['todos'] = journal.todos.all()
         context['schedules'] = journal.schedules.order_by("start_time")
         context['reflection'] = journal.reflection.first()
-
+        context['journal_date'] = journal.date
+        context['prev_day'] = prev_day
+        context['next_day'] = next_day
+        
         return context
     
 class JournalInitView(LoginRequiredMixin, View):
@@ -119,7 +126,7 @@ class JournalInitView(LoginRequiredMixin, View):
                     todo.save()
 
             return redirect(
-                "journal:journal_detail",
+                "journal:journal_over",
                 year=year,
                 month=month,
                 day=day

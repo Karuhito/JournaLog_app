@@ -13,28 +13,20 @@
 {% endblock %}
 
 {% block content %}
-<div class="container my-5 journal-init" style="max-width: 900px;">
+<div class="container my-5 journal-init">
 
     <!-- ================= Header ================= -->
     <header class="journal-init-header mb-4">
-        <h3 class="journal-date mb-1">
-            {{ journal.date|date:"Y年n月j日" }}
-        </h3>
-        <p class="text-muted mb-0">
-            ジャーナルの記録を作成します
-        </p>
+        <h3 class="journal-date mb-1">{{ journal.date|date:"Y年n月j日" }}</h3>
+        <p class="text-muted mb-0">ジャーナルの記録を作成します</p>
     </header>
 
     <hr class="journal-divider">
 
     <!-- ================= Intro ================= -->
     <section class="journal-init-intro my-4">
-        <p class="journal-intro-main mb-1">
-            まずは今日のゴールとやることを決めましょう。
-        </p>
-        <p class="journal-intro-sub text-muted small mb-0">
-            細かい計画や振り返りはあとから追加できます。
-        </p>
+        <p class="journal-intro-main mb-1">まずは今日のゴールとやることを決めましょう。</p>
+        <p class="journal-intro-sub text-muted small mb-0">細かい計画や振り返りはあとから追加できます。</p>
     </section>
 
     <hr class="journal-divider">
@@ -44,13 +36,12 @@
 
         <!-- ================= Goal ================= -->
         <section class="journal-section journal-goal mb-5">
-            <div class="section-header goal-card d-flex justify-content-between align-items-center mb-2">
-                <h4 class="section-title mb-0">Goal</h4>
-                <button type="button" id="add-goal" class="btn btn-sm btn-outline-primary">
+            <div class="section-header mb-2">
+                <h4 class="section-title goal-text mb-0">Goal</h4>
+                <button type="button" id="add-goal" class="plus-btn goal-btn">
                     <img src="{% static 'img/plus-icon.svg' %}" alt="Goal投稿追加ボタン">
                 </button>
             </div>
-
             <p class="section-description text-muted small mb-3">
                 今日1日の達成したいことを書いてみましょう。
             </p>
@@ -58,93 +49,62 @@
             <div id="goal-formset">
                 {{ goal_formset.management_form }}
                 {% for form in goal_formset %}
-                <div class="goal-form journal-input-card mb-3 d-flex align-items-center">
+                <div class="goal-form journal-input-card">
                     {{ form.DELETE }}
-            
-                    <!-- 入力フィールド -->
-                    <div class="flex-grow-1 me-2">
-                        {{ form.title }}
-                    </div>
-            
-                    <!-- 削除ボタン -->
-                    <button type="button" class="btn btn-sm btn-delete remove-form d-flex align-items-center justify-content-center p-1">
-                        <img src="{% static 'img/close-icon.svg' %}" alt="Todo投稿削除ボタン" style="width:16px; height:16px;">
+                    <div class="flex-grow-1 goal-field me-2">{{ form.title }}</div>
+                    <button type="button" class="delete-btn remove-form">
+                        <img src="{% static 'img/close-icon.svg' %}" alt="Goal削除">
                     </button>
                 </div>
                 {% endfor %}
             </div>
-
         </section>
 
         <hr class="journal-divider">
 
         <!-- ================= Todo ================= -->
-        <div class="todo-card">
-            <section class="journal-section journal-todo mb-5">
-                <div class="section-header todo-card d-flex justify-content-between align-items-center mb-2">
-                    <h4 class="section-title mb-0">Todo</h4>
-                    <button type="button" id="add-todo" class="btn btn-sm btn-outline-success">
-                        <img src="{% static 'img/plus-icon.svg' %}" alt="Todo投稿追加ボタン">
+        <section class="journal-section journal-todo mb-5">
+            <div class="section-header mb-2">
+                <h4 class="section-title todo-text mb-0">Todo</h4>
+                <button type="button" id="add-todo" class="plus-btn todo-btn">
+                    <img src="{% static 'img/plus-icon.svg' %}" alt="Todo投稿フィールド追加ボタン">
+                </button>
+            </div>
+            <p class="section-description text-muted small mb-3">
+                ゴールに向けて、今日やる具体的な行動を書いてみましょう。
+            </p>
+
+            <div id="todo-formset">
+                {{ todo_formset.management_form }}
+                {% for form in todo_formset %}
+                <div class="todo-form journal-input-card">
+                    {{ form.DELETE }}
+                    <div class="flex-grow-1 todo-field me-2">{{ form.title }}</div>
+                    <button type="button" class="delete-btn remove-form">
+                        <img src="{% static 'img/close-icon.svg' %}" alt="Todo投稿フィールドを削除するボタン">
                     </button>
                 </div>
-
-                <p class="section-description text-muted small mb-3">
-                    ゴールに向けて、今日やる具体的な行動を書いてみましょう。
-                </p>
-
-                <div id="todo-formset">
-                    {{ todo_formset.management_form }}
-                    {% for form in todo_formset %}
-                    <div class="todo-form journal-input-card mb-3 d-flex align-items-center">
-                        {{ form.DELETE }}
-                
-                        <!-- 入力フィールド -->
-                        <div class="flex-grow-1 me-2">
-                            {{ form.title }}
-                        </div>
-                
-                        <!-- 削除ボタン -->
-                        <button type="button" class="btn btn-sm btn-delete remove-form d-flex align-items-center justify-content-center p-1">
-                            <img src="{% static 'img/close-icon.svg' %}" alt="Todo投稿削除ボタン" style="width:16px; height:16px;">
-                        </button>
-                    </div>
-                    {% endfor %}
-                </div>
-
-            </section>
-        </div>
+                {% endfor %}
+            </div>
+        </section>
 
         <!-- ================= Empty Forms ================= -->
-        <!-- ================= Goal Empty Form ================= -->
         <div id="goal-empty-form" class="d-none">
-            <div class="goal-form journal-input-card mb-3 d-flex align-items-center">
+            <div class="goal-form journal-input-card">
                 {{ goal_formset.empty_form.DELETE }}
-                
-                <!-- 入力フィールド -->
-                <div class="flex-grow-1 me-2">
-                    {{ goal_formset.empty_form.title }}
-                </div>
-
-                <!-- 削除ボタン -->
-                <button type="button" class="btn btn-sm btn-delete remove-form d-flex align-items-center justify-content-center p-1">
-                    <img src="{% static 'img/close-icon.svg' %}" alt="Goal投稿削除ボタン" style="width:16px; height:16px;">
+                <div class="flex-grow-1 goal-field me-2">{{ goal_formset.empty_form.title }}</div>
+                <button type="button" class="delete-btn remove-form">
+                    <img src="{% static 'img/close-icon.svg' %}" alt="Goal投稿フィールドを削除するボタン">
                 </button>
             </div>
         </div>
 
-        <!-- ================= Todo Empty Form ================= -->
         <div id="todo-empty-form" class="d-none">
-            <div class="todo-form journal-input-card mb-3 d-flex align-items-center">
+            <div class="todo-form journal-input-card">
                 {{ todo_formset.empty_form.DELETE }}
-                
-                <!-- 入力フィールド -->
-                <div class="flex-grow-1 me-2">
-                    {{ todo_formset.empty_form.title }}
-                </div>
-
-                <!-- 削除ボタン -->
-                <button type="button" class="btn btn-sm btn-delete remove-form d-flex align-items-center justify-content-center p-1">
-                    <img src="{% static 'img/close-icon.svg' %}" alt="Todo投稿削除ボタン" style="width:16px; height:16px;">
+                <div class="flex-grow-1 todo-field me-2">{{ todo_formset.empty_form.title }}</div>
+                <button type="button" class="delete-btn remove-form">
+                    <img src="{% static 'img/close-icon.svg' %}" alt="Todo投稿フィールドを削除するボタン">
                 </button>
             </div>
         </div>

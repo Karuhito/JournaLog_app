@@ -1,3 +1,6 @@
+/* =========================
+   Color Variables
+========================= */
 :root {
     --bg-main: #f4f6f8;
     --text-main: #333333;
@@ -10,145 +13,100 @@
     --reflection: #8a6f5c;
   }
 
-  /* Header */
-
-.journal-init-header {
-    text-align: left;
+/* ==============================
+   ページ全体
+============================== */
+.journal-init {
+    max-width: 900px;
+    margin: 0 auto;
 }
 
-.journal-date {
-    font-weight: 600;
-}
-
-/* divider */
+/* --------------------
+   区切り線
+-------------------- */
 .journal-divider {
     border: none;
-    border-top: 1px solid #ddd;
-    margin: 2rem 0;
+    border-top: 1px solid #dcdcdc;
+    margin: 1.5rem 0;
 }
 
-/* Intro */
-.journal-intro-main {
-    font-size: 1.05rem;
-    font-weight: 500;
+/* --------------------
+   ヘッダー
+-------------------- */
+.journal-init-header .journal-date {
+    font-weight: 600;
+    font-size: 1.5rem;
 }
 
-/* section */
+.journal-init-header p {
+    font-size: 0.95rem;
+}
+
+/* --------------------
+   セクション
+-------------------- */
 .journal-section {
-    margin-top: 2rem;
+    margin-bottom: 2rem;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .section-title {
-    font-weight: 600;
-}
-
-.section-description {
-    line-height: 1.6;
-}
-
-/* Input Card */
-.journal-input-card {
-    background-color: #fff;
-    border: 1px solid #e0e0e0;
-    border-radius: 12px;
-    padding: 1rem;
-}
-
-/* Goal */
-.journal-goal .section-title {
-    color: var(--goal);
-}
-
-.journal-goal .journal-input-card {
-    border-left: 4px solid var(--goal);
-}
-
-/* Todo */
-.todo-card {
-    border-radius: 24px;
-}
-.journal-todo .section-title {
-    color: var(--todo);
-}
-
-.journal-todo .journal-input-card {
-    border-left: 4px solid var(--todo);
-}
-
-
-/* Buttons */
-.journal-section .btn {
-    font-size: 0.85rem;
-}
-
-
-.btn-submit {
-    background-color: var(--accent);
-    color: #fff;
+    font-size: 1.25rem;
     font-weight: 500;
 }
 
-.btn-submit:hover {
-    background-color: #1f2937;
-    color: #fff;
+.section-description {
+    font-size: 0.875rem;
+    color: #6c757d;
 }
 
-  
-/* Goal用削除ボタン */
-.goal-form .btn-delete {
-    background-color: rgba(74, 111, 165, 0.1); /* --goal 薄め */
-}
-  
-.goal-form .btn-delete:hover {
-    background-color: rgba(74, 111, 165, 0.2);
-    transform: scale(1.1);
-}
-  
-/* Todo用削除ボタン */
-.todo-form .btn-delete {
-    background-color: rgba(107, 143, 113, 0.1); /* --todo 薄め */
-}
-  
-.todo-form .btn-delete:hover {
-    background-color: rgba(107, 143, 113, 0.2);
-    transform: scale(1.1);
-}
-  
-/* 画像アイコンサイズ調整 */
-.btn-delete img {
-    width: 14px;
-    height: 14px;
+/* --------------------
+   入力カード
+-------------------- */
+.journal-input-card {
+    background-color: white;
+    border-radius: 0.5rem;
+    border: 1px solid #e0e0e0;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    padding: 0.5rem 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
 }
 
-  
-/* Goal用追加ボタン */
-.goal-form + .goal-form, .journal-goal .plus-btn {
-    background-color: rgba(74, 111, 165, 0.1); /* --goal 薄め */
-}
-  
-.journal-goal .plus-btn:hover {
-    background-color: rgba(74, 111, 165, 0.2);
-    transform: scale(1.1);
-}
-  
-/* Todo用追加ボタン */
-.journal-todo .plus-btn {
-    background-color: rgba(107, 143, 113, 0.1); /* --todo 薄め */
-}
-  
-.journal-todo .plus-btn:hover {
-    background-color: rgba(107, 143, 113, 0.2);
-    transform: scale(1.1);
-}
-  
-/* 画像アイコンサイズ調整 */
-.plus-btn img {
-    width: 14px;
-    height: 14px;
+/* テキストフィールドと削除ボタン横並び */
+.journal-input-card input[type="text"] {
+    flex: 1;
+    border-radius: 0.375rem;
+    border: 1px solid #ccc;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.875rem;
 }
 
-/* Submit */
-.journal-submit button{
-    font-size: 1.1rem;
-    font-weight: 600;
+
+/* --------------------
+   削除ボタンサイズ調整
+-------------------- */
+.delete-btn img {
+    width: 1rem;
+    height: 1rem;
+}
+
+/* --------------------
+   Submitボタン
+-------------------- */
+.journal-submit .btn-lg {
+    font-size: 1.125rem;
+    padding: 0.75rem 2rem;
+    border-radius: 0.5rem;
+    border: 2px solid var(--accent);
+}
+.journal-submit .btn-lg:hover {
+    background-color: var(--accent);
+    color: white;
 }

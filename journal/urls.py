@@ -1,6 +1,6 @@
 from django.urls import path
 from journal.views.home import HomeScreenView
-from journal.views.journal import JournalDetailView, JournalInitView
+from journal.views.journal import JournalOverView, JournalInitView
 from journal.views.goal import UpdateGoalView, DeleteGoalView, CreateGoalView 
 from journal.views.todo import UpdateTodoView, DeleteTodoView, CreateTodoView
 from journal.views.schedule import UpdateScheduleView, DeleteScheduleView, CreateScheduleView
@@ -12,7 +12,7 @@ urlpatterns = [
     # ホーム画面関連のURLパターン
     path('', HomeScreenView.as_view(), name='home'),
     path('journal/<int:year>/<int:month>/<int:day>/init/', JournalInitView.as_view(), name='journal_init'),
-    path('journal/<int:year>/<int:month>/<int:day>/', JournalDetailView.as_view(), name='journal_detail'),
+    path('journal/<int:year>/<int:month>/<int:day>/', JournalOverView.as_view(), name='journal_over'),
 
     # todo関連のURLパターン
     path('journal/<int:year>/<int:month>/<int:day>/todo/create/', CreateTodoView.as_view(), name='create_todo'),
