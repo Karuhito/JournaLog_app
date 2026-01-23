@@ -22,7 +22,12 @@ class GoalForm(forms.ModelForm):
             'title': '今日の目標',
         }
         widgets = {
-            'title': forms.TextInput(attrs={'class': 'form-control'}),
+            'title': forms.TextInput(
+                attrs={
+                    'class': 'form-control',
+                    'placeholder': '目標内容'
+                }
+            ),
         }
 
 

@@ -1,0 +1,101 @@
+:root {
+    --bg-main: #f4f6f8;
+    --text-main: #333333;
+  
+    --accent: #4a6fa5;
+  
+    --goal: #4a6fa5;
+    --todo: #6b8f71;
+    --schedule: #7a6c8a;
+    --reflection: #8a6f5c;
+  }
+
+  /* Header */
+
+.journal-init-header {
+    text-align: left;
+}
+
+.journal-date {
+    font-weight: 600;
+}
+
+/* divider */
+.journal-divider {
+    border: none;
+    border-top: 1px solid #ddd;
+    margin: 2rem 0;
+}
+
+/* Intro */
+.journal-intro-main {
+    font-size: 1.05rem;
+    font-weight: 500;
+}
+
+/* section */
+.journal-section {
+    margin-top: 2rem;
+}
+
+.section-title {
+    font-weight: 600;
+}
+
+.section-description {
+    line-height: 1.6;
+}
+
+/* Input Card */
+.journal-input-card {
+    background-color: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    padding: 1rem;
+}
+
+/* Goal */
+.journal-goal .section-title {
+    color: var(--goal);
+}
+
+.journal-goal .journal-input-card {
+    border-left: 4px solid var(--goal);
+}
+
+/* Todo */
+.todo-card {
+    border-radius: 24px;
+}
+.journal-todo .section-title {
+    color: var(--todo);
+}
+
+.journal-todo .journal-input-card {
+    border-left: 4px solid var(--todo);
+}
+
+
+
+/* Buttons */
+.journal-section .btn {
+    font-size: 0.85rem;
+}
+
+
+.btn-submit {
+    background-color: var(--accent);
+    color: #fff;
+    font-weight: 500;
+}
+
+.btn-submit:hover {
+    background-color: #1f2937;
+    color: #fff;
+}
+
+/* Submit */
+.journal-submit button{
+    font-size: 1.1rem;
+    font-weight: 600;
+}
