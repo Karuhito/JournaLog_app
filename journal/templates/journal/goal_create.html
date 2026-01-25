@@ -15,7 +15,7 @@
             <h3 class="mb-1">{{ journal.date|date:"Y年n月j日" }}</h3>
             <small class="text-muted">この日の目標を作成します</small>
         </div>
-        <a href="{% url 'journal:journal_detail' year=journal.date.year month=journal.date.month day=journal.date.day %}" class="btn btn-outline-secondary">
+        <a href="{% url 'journal:journal_over' year=journal.date.year month=journal.date.month day=journal.date.day %}" class="btn btn-outline-secondary">
             ← 戻る
         </a>
     </div>

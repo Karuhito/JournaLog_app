@@ -18,7 +18,7 @@
                     {{ form.content.errors }}
                 </div>
                 <div class="d-flex justify-content-between mt-4">
-                    <a href="{% url 'journal:journal_detail' year=journal.date.year month=journal.date.month day=journal.date.day %}" class="btn btn-outline-secondary">
+                    <a href="{% url 'journal:journal_over' year=journal.date.year month=journal.date.month day=journal.date.day %}" class="btn btn-outline-secondary">
                         キャンセル
                     </a>
                     <button type="submit" class="btn btn-warning px-4">保存</button>

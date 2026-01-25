@@ -1,6 +1,7 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
     <meta charset="UTF-8">
     <!-- スマホ対応の最重要設定 -->
@@ -9,12 +10,8 @@
     <title>JournaLog - {% block title %}{% endblock %}</title>
 
     <!-- Bootstrap -->
-    <link
-        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-        rel="stylesheet"
-        integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
-        crossorigin="anonymous"
-    >
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
 
     <!-- 独自CSS -->
     <link rel="stylesheet" href="{% static 'css/base.css' %}">
@@ -28,7 +25,7 @@
     <header class="site-header">
         <nav class="navbar border-bottom shadow-sm sticky-top">
             <div class="container d-flex justify-content-between align-items-center">
-        
+
                 <!-- 左側：タイトル + Home -->
                 <div class="d-flex align-items-center gap-3">
                     <a class="navbar-brand fw-bold fs-5 mb-0" href="{% url 'journal:home' %}">
@@ -38,25 +35,22 @@
                         Home
                     </a>
                 </div>
-        
+
                 <!-- 右側：ハンバーガーメニュー（アカウント） -->
                 <div class="dropdown">
-                    <button
-                        class="btn"
-                        type="button"
-                        data-bs-toggle="dropdown"
-                        aria-expanded="false"
-                        aria-label="アカウントメニュー"
-                    >
-                    <img src="{% static 'img/menu-btn.svg' %}" alt="ハンバーガーメニュー" class="hamburger-icon ">
+                    <button class="btn" type="button" data-bs-toggle="dropdown" aria-expanded="false"
+                        aria-label="アカウントメニュー">
+                        <img src="{% static 'img/menu-btn.svg' %}" alt="ハンバーガーメニュー" class="hamburger-icon ">
                     </button>
-        
+
                     <ul class="dropdown-menu dropdown-menu-end p-3" style="min-width: 200px;">
                         <li class="mb-2">
                             <div class="small text-muted">ログイン中</div>
                             <div class="fw-semibold">{{ user.username }}</div>
                         </li>
-                        <li><hr class="dropdown-divider"></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
                         <li>
                             <form method="post" action="{% url 'accounts:logout' %}">
                                 {% csrf_token %}
@@ -75,13 +69,15 @@
         {% block content %}
         {% endblock %}
     </main>
-        <!-- Bootstrap JS -->
-    <script
-        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
-        crossorigin="anonymous">
-    </script>
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous">
+        </script>
     <script src="{% static 'js/page_transition.js' %}"></script>
     {% block extra_js %}{% endblock %}
+    <form style="display:none;">
+        {% csrf_token %}
+    </form>
 </body>
+
 </html>

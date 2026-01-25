@@ -150,6 +150,14 @@
     width: 16px;
     height: 16px;
   }
+
+  /* item time */
+  .item-time {
+    margin-left: auto;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    white-space: nowrap;
+  }
   
   /* =========================
      Empty State Button

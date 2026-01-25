@@ -7,19 +7,21 @@
 <link rel="stylesheet" href="{% static 'css/pages/journal_over.css' %}">
 {% endblock %}
 
+{% block extra_js %}
+<script src="{% static 'js/todo_toggle.js' %}"></script>
+{% endblock %}
 
 {% block content %}
 
 <div class="journal-date-nav mb-4">
-    <a href="{% url 'journal:journal_over' prev_day.year prev_day.month prev_day.day %}" class="date-nav-btn">
+    <a href="{% url 'journal:journal_router' prev_day.year prev_day.month prev_day.day %}" class="date-nav-btn">
         ← 前日
     </a>
 
     <div class="journal-date">
-        {{ journal_over|date:"Y年n月j日" }} のジャーナル
+        <h3>{{ journal_date|date:"Y年n月j日" }} のジャーナル</h3>
     </div>
-
-    <a href="{% url 'journal:journal_over' next_day.year next_day.month next_day.day %}" class="date-nav-btn">
+    <a href="{% url 'journal:journal_router' next_day.year next_day.month next_day.day %}" class="date-nav-btn">
         翌日 →
     </a>
 </div>
@@ -34,7 +36,8 @@
                     <h5 class="goal-text">Goal一覧</h5>
 
                     {% if goals %}
-                    <a href="{% url 'journal:create_todo' journal_date.year journal_date.month journal_date.day %}" class="plus-btn goal-btn">
+                    <a href="{% url 'journal:create_todo' journal_date.year journal_date.month journal_date.day %}"
+                        class="plus-btn goal-btn">
                         <img src="{% static 'img/plus-icon.svg' %}" alt="Goal追加">
                     </a>
                     {% endif %}
@@ -44,7 +47,7 @@
 
                 <ul class="item-list">
                     {% for goal in goals %}
-                    <li class="item-row">
+                    <li class="item-row goal-item">
                         <span class="item-title">{{ goal.title }}</span>
                         <div class="item-actions">
                             <a href="{% url 'journal:update_goal' goal.pk %}" class="edit-btn">
@@ -70,7 +73,8 @@
                     <h5 class="todo-text">Todo一覧</h5>
 
                     {% if todos %}
-                    <a href="{% url 'journal:create_todo' journal_date.year journal_date.month journal_date.day %}" class="plus-btn todo-btn">
+                    <a href="{% url 'journal:create_todo' journal_date.year journal_date.month journal_date.day %}"
+                        class="plus-btn todo-btn">
                         <img src="{% static 'img/plus-icon.svg' %}" alt="Todo追加">
                     </a>
                     {% endif %}
@@ -81,10 +85,14 @@
                     {% if todos %}
                     <ul class="item-list">
                         {% for todo in todos %}
-                        <li class="item-row">
-                            <input type="checkbox">
-                            <span class="item-title">{{ todo.title }}</span>
+                        <li class="item-row todo-item {% if todo.is_done %}is-done{% endif %}">
+                            <input type="checkbox" class="todo-checkbox"
+                            data-todo-id="{{ todo.id }}"
+                            {% if todo.is_done%}checked{% endif %}>
 
+                            <span class="item-title">
+                                {{ todo.title }}
+                            </span>
                             <div class="item-actions">
                                 <a href="{% url 'journal:update_todo' todo.pk %}" class="edit-btn">
                                     <img src="{% static 'img/edit-icon.svg' %}" alt="Todo編集">
@@ -94,11 +102,12 @@
                                 </a>
                             </div>
                         </li>
+
                         {% endfor %}
                     </ul>
                     {% else %}
                     <div class="empty-state">
-                        <a class="btn todo-bg ">
+                        <a class="btn todo-bg todo-btn">
                             今日のTodoを記録しましょう
                         </a>
                     </div>
@@ -118,7 +127,8 @@
                     <h5 class="schedule-text">スケジュール一覧</h5>
 
                     {% if schedules %}
-                    <a href="{% url 'journal:create_shcedule' journal_date.year journal_date.month journal_date.day %}" class="plus-btn schedule-btn">
+                    <a href="{% url 'journal:create_schedule' journal_date.year journal_date.month journal_date.day %}"
+                        class="plus-btn schedule-btn">
                         <img src="{% static 'img/plus-icon.svg' %}" alt="スケジュール追加">
                     </a>
                     {% endif %}
@@ -129,9 +139,23 @@
                     {% if schedules %}
                     <ul class="item-list">
                         {% for schedule in schedules %}
-                        <li class="item-row">
-                            <span class="item-title">予定タイトル</span>
-                            <span class="item-time">{{ schedule.start_time }} ~ {{ schedule.end_time }}</span>
+                        <li class="item-row schedule-item">
+                            <span class="item-title">{{ schedule.title }}</span>
+
+                            {% if schedule.start_time or schedule.end_time %}
+                            <span class="item-time">
+                                {% if schedule.start_time %}
+                                {{ schedule.start_time|time:"H:i" }}
+                                {% endif %}
+                                {% if schedule.start_time and schedule.end_time %}
+                                ~
+                                {% endif %}
+                                {% if schedule.end_time %}
+                                {{ schedule.end_time|time:"H:i" }}
+                                {% endif %}
+                            </span>
+                            {% endif %}
+
                             <div class="item-actions">
                                 <a href="{% url 'journal:update_schedule' schedule.pk %}" class="edit-btn">
                                     <img src="{% static 'img/edit-icon.svg' %}" alt="Schedule編集">
@@ -145,7 +169,8 @@
                     </ul>
                     {% else %}
                     <div class="empty-state">
-                        <a href="{% url 'journal:create_schedule' journal_date.year journal_date.month journal_date.day %}" class="btn schedule-bg schedule-btn">スケジュールを記録する</a>
+                        <a href="{% url 'journal:create_schedule' journal_date.year journal_date.month journal_date.day %}"
+                            class="btn schedule-bg schedule-btn">スケジュールを記録する</a>
 
                     </div>
                     {% endif %}
@@ -182,7 +207,8 @@
                     </p>
                     {% else %}
                     <div class="empty-state">
-                        <a href="{% url 'journal:create_reflection' journal_date.year journal_date.month journal_date.day %}" class="btn reflection-bg reflection-btn">今日の1日を振り返る</a>
+                        <a href="{% url 'journal:create_reflection' journal_date.year journal_date.month journal_date.day %}"
+                            class="btn reflection-bg reflection-btn">今日の1日を振り返る</a>
                     </div>
                     {% endif %}
 

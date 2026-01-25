@@ -1,8 +1,8 @@
 from django.urls import path
 from journal.views.home import HomeScreenView
-from journal.views.journal import JournalOverView, JournalInitView
+from journal.views.journal import JournalOverView, JournalInitView, JournalDateRouterView
 from journal.views.goal import UpdateGoalView, DeleteGoalView, CreateGoalView 
-from journal.views.todo import UpdateTodoView, DeleteTodoView, CreateTodoView
+from journal.views.todo import UpdateTodoView, DeleteTodoView, CreateTodoView, TodoToggleView
 from journal.views.schedule import UpdateScheduleView, DeleteScheduleView, CreateScheduleView
 from journal.views.reflection import CreateReflectionView, UpdateReflectionView
 
@@ -13,11 +13,13 @@ urlpatterns = [
     path('', HomeScreenView.as_view(), name='home'),
     path('journal/<int:year>/<int:month>/<int:day>/init/', JournalInitView.as_view(), name='journal_init'),
     path('journal/<int:year>/<int:month>/<int:day>/', JournalOverView.as_view(), name='journal_over'),
+    path("journal/<int:year>/<int:month>/<int:day>/go/", JournalDateRouterView.as_view(), name="journal_router",),
 
     # todo関連のURLパターン
     path('journal/<int:year>/<int:month>/<int:day>/todo/create/', CreateTodoView.as_view(), name='create_todo'),
     path('journal/todo/update/<int:pk>/', UpdateTodoView.as_view(), name='update_todo'),
     path('journal/todo/delete/<int:pk>/', DeleteTodoView.as_view(), name='delete_todo'),
+    path('journal/todo/toggle/<int:pk>/', TodoToggleView.as_view(), name='toggle_todo'),
     
     # goal関連のURLパターン
     path('journal/<int:year>/<int:month>/<int:day>/goal/create/', CreateGoalView.as_view(), name='create_goal'),

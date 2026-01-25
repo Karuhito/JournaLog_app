@@ -5,6 +5,7 @@ from django.views import View
 from django.views.generic import DetailView
 from journal.models import Journal
 from journal.forms import GoalFormSet, TodoFormSet
+from journal.models import Goal, Todo, Schedule, Reflection
 from datetime import timedelta
 
 class JournalOverView(LoginRequiredMixin, DetailView):
@@ -142,3 +143,28 @@ class JournalInitView(LoginRequiredMixin, View):
             "todo_formset": todo_formset,
             "journal": journal,
         })
+    
+class JournalDateRouterView(LoginRequiredMixin, View):
+    def get(self, request, year, month, day):
+        target_date = date(year, month, day)
+        has_journal = (
+            Goal.objects.filter(journal__date=target_date, journal__user=request.user).exists()
+            or Todo.objects.filter(journal__date=target_date, journal__user=request.user).exists()
+            or Schedule.objects.filter(journal__date=target_date, journal__user=request.user).exists()
+            or Reflection.objects.filter(journal__date=target_date, journal__user=request.user).exists()
+        )
+
+        if has_journal:
+            return redirect(
+                "journal:journal_over",
+                year=year,
+                month=month,
+                day=day,
+            )
+
+        return redirect(
+            "journal:journal_init",
+            year=year,
+            month=month,
+            day=day,
+        )

@@ -34,7 +34,7 @@ class CreateReflectionView(View):
             reflection.journal = journal
             reflection.save()
             return redirect(
-                "journal:journal_detail",
+                "journal:journal_over",
                 year=year,
                 month=month,
                 day=day
@@ -57,7 +57,7 @@ class UpdateReflectionView(BaseUpdateView):
         journal = getattr(self.object, 'journal', None)
         if journal:
             return reverse(
-                "journal:journal_detail",
+                "journal:journal_over",
                 kwargs={
                     "year": journal.date.year,
                     "month": journal.date.month,

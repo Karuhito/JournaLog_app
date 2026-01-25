@@ -23,7 +23,7 @@
 
             <form method="post" class="d-flex flex-column flex-sm-row gap-2">
                 {% csrf_token %}
-                <a href="{% url 'journal:journal_detail' year=object.journal.date.year month=object.journal.date.month day=object.journal.date.day %}"
+                <a href="{% url 'journal:journal_over' year=object.journal.date.year month=object.journal.date.month day=object.journal.date.day %}"
                    class="btn btn-outline-secondary w-100 w-sm-auto">
                     キャンセル
                 </a>

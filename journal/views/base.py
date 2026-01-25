@@ -61,7 +61,7 @@ class BaseCreateView(LoginRequiredMixin, View):
                 obj.save()
 
             return redirect(
-                "journal:journal_detail",
+                "journal:journal_over",
                 year=year,
                 month=month,
                 day=day
@@ -84,7 +84,7 @@ class BaseUpdateView(LoginRequiredMixin, UpdateView):
     def get_success_url(self):
         journal = self.object.journal
         return reverse(
-            "journal:journal_detail",
+            "journal:journal_over",
             kwargs={
                 'year': journal.date.year,
                 'month': journal.date.month,
@@ -114,7 +114,7 @@ class BaseDeleteView(LoginRequiredMixin, DeleteView):
     def get_success_url(self):
         journal = self.object.journal
         return reverse(
-            "journal:journal_detail",
+            "journal:journal_over",
             kwargs={
                 "year": journal.date.year,
                 "month": journal.date.month,
@@ -129,7 +129,7 @@ class BaseDeleteView(LoginRequiredMixin, DeleteView):
         context["object_name"] = self.object_name
         context["model_label"] = self.model_label
         context["cancel_url"] = reverse(
-            "journal:journal_detail",
+            "journal:journal_over",
             kwargs={
                 "year": journal.date.year,
                 "month": journal.date.month,

@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{% endblock %}
+
+
+
+{% block content %}
+<header class="create-header">
+    <h1>{% block feature_name %}{% endblock %}の記録を作成する</h1>
+    <a href="{% url 'journal:journal_over' year=journal.date.year month=journal.date.month day=journal.date.day %}">
+        <img src="{% static 'img/back-icon.svg' %}" alt="戻るボタン">
+    </a>
+</header>
+
+<section class="create-card">
+    <div class="card-header">
+        <h2>投稿</h2>
+
+        {% if allow_multiple %}
+        <button id="add-form" type="button">
+            <img src="{% static 'img/plus-icon.svg' %}" alt="投稿追加ボタン">
+        </button>
+        {% endif %}
+    </div>
+
+    <div id="form-container">
+        {% block forms %}
+        {% endblock %}
+    </div>
+</section>
+{% endblock %}
