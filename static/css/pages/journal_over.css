@@ -92,16 +92,17 @@
      Plus Button
   ------------------------- */
   .plus-btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
     width: 32px;
     height: 32px;
     border-radius: 50%;
     background-color: var(--bg-main);
     border: 1px solid var(--border-color);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     cursor: pointer;
     transition: all 0.2s ease;
+    padding: 0; /* base.cssのpaddingを打ち消す */
   }
   
   .plus-btn img {
@@ -231,3 +232,4 @@
 .reflection-divider {
     border-top-color: var(--reflection);
 }
+

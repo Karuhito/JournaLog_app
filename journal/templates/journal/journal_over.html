@@ -36,7 +36,7 @@
                     <h5 class="goal-text">Goal一覧</h5>
 
                     {% if goals %}
-                    <a href="{% url 'journal:create_todo' journal_date.year journal_date.month journal_date.day %}"
+                    <a href="{% url 'journal:create_goal' journal_date.year journal_date.month journal_date.day %}"
                         class="plus-btn goal-btn">
                         <img src="{% static 'img/plus-icon.svg' %}" alt="Goal追加">
                     </a>
@@ -178,11 +178,6 @@
                 </div>
             </section>
         </div>
-    </div>
-
-    <!-- Divider -->
-    <div class="reflection-divider my-4">
-        <span>振り返り</span>
     </div>
 
     <!-- Reflection -->

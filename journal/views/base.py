@@ -12,6 +12,7 @@ class BaseCreateView(LoginRequiredMixin, View):
     formset_class = None
     prefix = None
     template_name = None
+    allow_multiple = False
 
     login_url = "accounts:login"
 
@@ -38,7 +39,9 @@ class BaseCreateView(LoginRequiredMixin, View):
 
         return render(request, self.template_name, {
             "journal": journal,
-            "formset": formset,
+            "formset": formset,          # ← 統一
+            "feature": self.prefix,      # ← これ超重要
+            "allow_multiple": self.allow_multiple,
         })
 
     # --------------------
@@ -67,11 +70,13 @@ class BaseCreateView(LoginRequiredMixin, View):
                 day=day
             )
 
-        # バリデーションエラー時
         return render(request, self.template_name, {
             "journal": journal,
             "formset": formset,
+            "feature": self.prefix,
+            "allow_multiple": self.allow_multiple,
         })
+
     
 class BaseUpdateView(LoginRequiredMixin, UpdateView):
     title = ""

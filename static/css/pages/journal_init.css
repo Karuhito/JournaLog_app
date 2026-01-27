@@ -127,26 +127,3 @@
     padding: 0.5rem 0.75rem;
     font-size: 0.875rem;
 }
-
-
-/* --------------------
-   削除ボタンサイズ調整
--------------------- */
-.delete-btn img {
-    width: 1rem;
-    height: 1rem;
-}
-
-/* --------------------
-   Submitボタン
--------------------- */
-.journal-submit .btn-lg {
-    font-size: 1.125rem;
-    padding: 0.75rem 2rem;
-    border-radius: 0.5rem;
-    border: 2px solid var(--accent);
-}
-.journal-submit .btn-lg:hover {
-    background-color: var(--accent);
-    color: white;
-}

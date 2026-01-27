@@ -1,32 +1,66 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 {% load static %}
 
-{% block title %}{% endblock %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/journal_over.css' %}">
+{% endblock %}
 
-
+{% block extra_js %}
+<script src="{% static 'js/create_formset.js' %}" defer></script>
+{% endblock %}
 
 {% block content %}
-<header class="create-header">
-    <h1>{% block feature_name %}{% endblock %}の記録を作成する</h1>
-    <a href="{% url 'journal:journal_over' year=journal.date.year month=journal.date.month day=journal.date.day %}">
-        <img src="{% static 'img/back-icon.svg' %}" alt="戻るボタン">
-    </a>
-</header>
+<section class="journal-section journal-{{ feature }}" data-feature="{{ feature }}">
+    <div class="journal-card {{ feature }}-card">
 
-<section class="create-card">
-    <div class="card-header">
-        <h2>投稿</h2>
+        <!-- Card Header -->
+        <div class="card-header">
+            <h5 class="{{ feature }}-text">{% block section_title %}{% endblock %}</h5>
+            {% if allow_multiple %}
+            <button type="button" class="plus-btn {{ feature }}-btn" data-add-btn>
+                <img src="{% static 'img/plus-icon.svg' %}" alt="追加">
+            </button>
+            {% endif %}
+        </div>
 
-        {% if allow_multiple %}
-        <button id="add-form" type="button">
-            <img src="{% static 'img/plus-icon.svg' %}" alt="投稿追加ボタン">
-        </button>
-        {% endif %}
-    </div>
+        <hr class="section-divider {{ feature }}-divider">
 
-    <div id="form-container">
-        {% block forms %}
-        {% endblock %}
+        <!-- Form -->
+        <form method="post">
+            {% csrf_token %}
+            <div data-formset>
+                {{ formset.management_form }}
+
+                {% for form in formset %}
+                <div class="journal-input-card mb-2 d-flex align-items-center {{ feature }}-field">
+                    {% block form_fields %}{% endblock %}
+                    {% if allow_multiple %}
+                    <button type="button" class="remove-form delete-btn ms-2">
+                        <img src="{% static 'img/delete-icon.svg' %}" alt="削除">
+                    </button>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+
+            <template data-empty-form>
+                <div class="journal-input-card mb-2 d-flex align-items-center {{ feature }}-field">
+                    {% block empty_form_fields %}{% endblock %}
+                    {% if allow_multiple %}
+                    <button type="button" class="remove-form delete-btn ms-2">
+                        <img src="{% static 'img/delete-icon.svg' %}" alt="削除">
+                    </button>
+                    {% endif %}
+                </div>
+            </template>
+
+            <!-- Submit Button -->
+            <div class="journal-submit text-center mt-3">
+                <button type="submit" class="btn btn-lg {{ feature }}-submit">
+                    {% block submit_label %}{% endblock %}
+                </button>
+            </div>
+        </form>
     </div>
 </section>
 {% endblock %}

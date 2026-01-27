@@ -1,0 +1,12 @@
+{% extends "common/create_base.html" %}
+
+{% block section_title %}スケジュール投稿作成{% endblock %}
+{% block submit_label %}スケジュールを記録{% endblock %}
+
+{% block form_fields %}
+  {{ form.title }}
+{% endblock %}
+
+{% block empty_form_fields %}
+  {{ formset.empty_form.title }}
+{% endblock %}

@@ -10,7 +10,8 @@ class CreateTodoView(BaseCreateView):
     model = Todo
     formset_class = TodoFormSet
     prefix = "todo"
-    template_name = "journal/todo_create.html"
+    allow_multiple = True
+    template_name = "journal/create_todo.html"
 
 
 class UpdateTodoView(BaseUpdateView):
@@ -18,7 +19,7 @@ class UpdateTodoView(BaseUpdateView):
     form_class = TodoUpdateForm
     title = "Todoの編集"
     header_class = "bg-info"
-    template_name = "journal/todo_update.html"
+    template_name = "journal/update_todo.html"
 
 class DeleteTodoView(BaseDeleteView):
     model = Todo

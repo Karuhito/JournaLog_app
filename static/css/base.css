@@ -303,7 +303,7 @@ body {
   background-color: var(--goal);
 }
 .goal-field {
-  border:2px solid var(--goal);
+  border-left:4px solid var(--goal);
   border-radius: 5px;
 }
 .goal-submit {
@@ -482,3 +482,23 @@ eld .todo-item.is-done {
   border-top: 2px solid;     /* 上だけ線を表示 */
   margin: 0.5rem 0 1rem 0;   /* 上下の余白 */
 }
+
+/* 機能ごとのカード装飾 */
+.goal-card {
+  border: var(--goal) solid 2px;
+}
+
+.todo-card {
+  border: var(--todo) solid 2px; 
+}
+
+.schedule-card {
+  border: var(--schedule) solid 2px;
+
+}
+
+.reflection-card {
+  border: var(--reflection) solid 2px;
+}
+
+
