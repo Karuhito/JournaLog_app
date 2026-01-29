@@ -9,6 +9,9 @@
 <script src="{% static 'js/create_formset.js' %}" defer></script>
 {% endblock %}
 
+{% block back_journalover %}
+<a  class="btn btn-outline-secondary btn-sm" href="{% url 'journal:journal_over' journal.date.year journal.date.month journal.date.day %}">今日のジャーナルに戻る</a>
+{% endblock %}
 {% block content %}
 <section class="journal-section journal-{{ feature }}" data-feature="{{ feature }}">
     <div class="journal-card {{ feature }}-card">

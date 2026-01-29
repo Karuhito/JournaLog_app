@@ -1,9 +1,9 @@
 {% extends "common/update_base.html" %}
 
+{% block section_title %}振り返りの編集{% endblock %}
+
 {% block form_fields %}
-<div class="mb-3">
-    {{ form.content.label_tag }}
+<div class="form-group">
     {{ form.content }}
-    {{ form.content.errors }}
 </div>
 {% endblock %}

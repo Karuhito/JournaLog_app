@@ -1,39 +1,38 @@
 {% extends "base.html" %}
-
-{% block extra_js %}{% endblock %}
+{% load static %}
 
 {% block content %}
-<div class="container my-5" style="max-width: 600px;">
+<div class="container my-4">
 
-    <div class="card shadow-sm">
-        <!-- カードヘッダー -->
-        <div class="card-header text-white {{ header_class }}">
-            <h5 class="mb-0">
-                {{ title }}
+    <section class="journal-card {{ feature }}-field">
+
+        <div class="card-header">
+            <h5 class="{{ feature }}-text">
+                {% block section_title %}{% endblock %}
             </h5>
+
+            <a href="{{ cancel_url }}" class="back-btn">
+                ← Journalへ戻る
+            </a>
         </div>
 
-        <!-- カードボディ -->
-        <div class="card-body">
+        <hr class="section-divider {{ feature }}-divider">
+
+        <div class="card-body {{ feature }}-card">
             <form method="post">
                 {% csrf_token %}
-
-                {{ form.non_field_errors }}
-
                 {% block form_fields %}
                 {% endblock %}
 
-                <div class="d-flex justify-content-between mt-4">
-                    <a href="{{ cancel_url }}" class="btn btn-outline-secondary">
-                        キャンセル
-                    </a>
-                    <button type="submit" class="btn btn-primary px-4">
-                        更新
+                <div class="form-actions">
+                    <button type="submit" class="btn {{ feature }}-bg">
+                        保存する
                     </button>
                 </div>
             </form>
         </div>
-    </div>
+
+    </section>
 
 </div>
 {% endblock %}

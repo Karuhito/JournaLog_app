@@ -1,18 +1,11 @@
 {% extends "common/update_base.html" %}
 
+{% block title %}Todo編集{% endblock %}
+
+{% block section_title %}Todoの編集{% endblock %}
+
 {% block form_fields %}
-    {{ form.non_field_errors }}
-
-    <div class="mb-3">
-        {{ form.title.label_tag }}
-        {{ form.title }}
-        {{ form.title.errors }}
-    </div>
-
-    {% if form.is_done %}
-    <div class="form-check">
-        {{ form.is_done }}
-        {{ form.is_done.label_tag }}
-    </div>
-    {% endif %}
+<div class="form-group">
+    {{ form.title }}
+</div>
 {% endblock %}

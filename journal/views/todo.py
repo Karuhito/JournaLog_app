@@ -18,8 +18,8 @@ class UpdateTodoView(BaseUpdateView):
     model = Todo
     form_class = TodoUpdateForm
     title = "Todoの編集"
-    header_class = "bg-info"
     template_name = "journal/update_todo.html"
+    feature = "todo"
 
 class DeleteTodoView(BaseDeleteView):
     model = Todo

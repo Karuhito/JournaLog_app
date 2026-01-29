@@ -1,10 +1,9 @@
 {% extends "common/update_base.html" %}
 
+{% block section_title %}Goalの編集{% endblock %}
+
 {% block form_fields %}
-    {{ form.non_field_errors }}
-    <div class="mb-3">
-        {{ form.title.label_tag }}
-        {{ form.title }}
-        {{ form.title.errors }}
-    </div>
+<div class="form-group">
+    {{ form.title }}
+</div>
 {% endblock %}

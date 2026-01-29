@@ -39,14 +39,12 @@ class BaseCreateView(LoginRequiredMixin, View):
 
         return render(request, self.template_name, {
             "journal": journal,
-            "formset": formset,          # ← 統一
-            "feature": self.prefix,      # ← これ超重要
+            "journal_date": journal.date,     # ← ここを追加
+            "formset": formset,
+            "feature": self.prefix,
             "allow_multiple": self.allow_multiple,
         })
 
-    # --------------------
-    # POST：保存（ここが本丸）
-    # --------------------
     def post(self, request, year, month, day):
         journal = self.get_journal(request, year, month, day)
 
@@ -72,6 +70,7 @@ class BaseCreateView(LoginRequiredMixin, View):
 
         return render(request, self.template_name, {
             "journal": journal,
+            "journal_date": journal.date,     # ← ここも追加
             "formset": formset,
             "feature": self.prefix,
             "allow_multiple": self.allow_multiple,

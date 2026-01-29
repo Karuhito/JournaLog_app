@@ -14,7 +14,7 @@ class UpdateGoalView(BaseUpdateView):
     model = Goal
     form_class = GoalForm
     title = "Goalの編集"
-    header_class = "bg-primary"
+    feature = "goal"
     template_name = "journal/update_goal.html"
 
 

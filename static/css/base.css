@@ -486,19 +486,23 @@ eld .todo-item.is-done {
 /* 機能ごとのカード装飾 */
 .goal-card {
   border: var(--goal) solid 2px;
+
 }
 
 .todo-card {
   border: var(--todo) solid 2px; 
+
 }
 
 .schedule-card {
   border: var(--schedule) solid 2px;
 
+
 }
 
 .reflection-card {
   border: var(--reflection) solid 2px;
+
 }
 
 

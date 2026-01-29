@@ -14,7 +14,7 @@ class UpdateScheduleView(BaseUpdateView):
     model = Schedule
     form_class = ScheduleForm
     title = "Scheduleの編集"
-    header_class = "bg-success"
+    feature = "schedule"
     template_name = "journal/update_schedule.html"
 
 class DeleteScheduleView(BaseDeleteView):

@@ -4,9 +4,30 @@
 {% block submit_label %}スケジュールを記録{% endblock %}
 
 {% block form_fields %}
-  {{ form.title }}
+<div class="schedule-fields">
+    <div class="schedule-title">
+        {{ form.title }}
+    </div>
+    <div class="schedule-start">
+        {{ form.start_time }}
+    </div>
+    <div class="schedule-end">
+        {{ form.end_time }}
+    </div>
+</div>
 {% endblock %}
 
+
 {% block empty_form_fields %}
-  {{ formset.empty_form.title }}
+<div class="schedule-fields">
+    <div class="schedule-title">
+        {{ formset.empty_form.start_time }}
+    </div>
+    <div class="schedule-start">
+        {{ formset.empty_form.end_time }}
+    </div>
+    <div class="schedule-end">
+        {{ formset.empty_form.title }}
+    </div>
+</div>
 {% endblock %}
