@@ -106,8 +106,8 @@
   }
   
   .plus-btn img {
-    width: 16px;
-    height: 16px;
+    width: 1rem;
+    height: 1rem;
   }
   
   .plus-btn:hover {
@@ -233,3 +233,15 @@
     border-top-color: var(--reflection);
 }
 
+/* 初期状態：非表示 */
+.journal-card {
+  opacity: 0;
+  transform: translateY(-20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+/* 表示された状態 */
+.journal-card.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}

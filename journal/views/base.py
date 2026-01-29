@@ -79,7 +79,6 @@ class BaseCreateView(LoginRequiredMixin, View):
     
 class BaseUpdateView(LoginRequiredMixin, UpdateView):
     title = ""
-    header_class = "bg-secondary"
     def get_queryset(self):
         return self.model.objects.filter(
             journal__user=self.request.user
@@ -101,8 +100,9 @@ class BaseUpdateView(LoginRequiredMixin, UpdateView):
 
         # 🔑 ここでテンプレートに渡す
         context["title"] = self.title
-        context["header_class"] = self.header_class
         context["cancel_url"] = self.get_success_url()
+        context["feature"] = self.feature
+        
 
         return context
 

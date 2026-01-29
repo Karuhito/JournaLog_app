@@ -38,7 +38,7 @@
                 <div class="journal-input-card mb-2 d-flex align-items-center {{ feature }}-field">
                     {% block form_fields %}{% endblock %}
                     {% if allow_multiple %}
-                    <button type="button" class="remove-form delete-btn ms-2">
+                    <button type="button" class="remove-form delete-btn ms-auto">
                         <img src="{% static 'img/delete-icon.svg' %}" alt="削除">
                     </button>
                     {% endif %}
@@ -50,7 +50,7 @@
                 <div class="journal-input-card mb-2 d-flex align-items-center {{ feature }}-field">
                     {% block empty_form_fields %}{% endblock %}
                     {% if allow_multiple %}
-                    <button type="button" class="remove-form delete-btn ms-2">
+                    <button type="button" class="remove-form delete-btn ms-auto">
                         <img src="{% static 'img/delete-icon.svg' %}" alt="削除">
                     </button>
                     {% endif %}

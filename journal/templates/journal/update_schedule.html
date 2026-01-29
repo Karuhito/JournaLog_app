@@ -3,7 +3,17 @@
 {% block section_title %}スケジュールの編集{% endblock %}
 
 {% block form_fields %}
+
 <div class="form-group">
-    {{ form.title }}
+    <div class="schedule-title schedule-field">
+        {{ form.title }}
+    </div>
+    <div class="schedule-start schedule-field mt-3">
+        {{ form.start_time }}
+    </div>
+    <div class="schedule-end schedule-field mt-3">
+        {{ form.end_time }}
+    </div>
 </div>
+
 {% endblock %}

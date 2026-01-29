@@ -242,6 +242,24 @@ body {
 }
 
 /* =============================
+   Back Buttons 戻るボタン
+============================= */
+.back-btn {
+  background-color: transparent;
+  padding: 0.25rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.375rem;
+  transition: background-color 0.2s, transform 0.1s;
+}
+
+.back-btn img {
+  width: 1rem;
+  height: 1rem;
+}
+
+/* =============================
    Delete Buttons (削除ボタン) 共通
 ============================= */
 .delete-btn {
@@ -252,6 +270,10 @@ body {
   justify-content: center;
   border-radius: 0.375rem;
   transition: background-color 0.2s, transform 0.1s;
+}
+.back-btn:hover {
+  transform: scale(1.05);
+  background-color: rgba(0,0,0,0.05);
 }
 
 /* 削除ボタンのアイコンサイズ */
@@ -343,8 +365,7 @@ body {
     transform 0.25s ease,
     background-color 0.25s ease;
 }
-.todo-fi
-eld .todo-item.is-done {
+.todo-field .todo-item.is-done {
   opacity: 0.5;
   transform: translateX(4px);
 }

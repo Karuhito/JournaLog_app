@@ -19,15 +19,28 @@ class CreateReflectionView(LoginRequiredMixin, CreateView):
             int(kwargs["month"]),
             int(kwargs["day"]),
         )
-        return super().dispatch(request, *args, **kwargs)
-
-    def form_valid(self, form):
-        journal = get_object_or_404(
+        self.journal = get_object_or_404(
             Journal,
-            user=self.request.user,
+            user=request.user,
             date=self.journal_date
         )
-        form.instance.journal = journal
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["journal"] = self.journal
+        context["cancel_url"] = reverse(
+        "journal:journal_over",
+        kwargs={
+            "year": self.journal_date.year,
+            "month": self.journal_date.month,
+            "day": self.journal_date.day,
+            }
+        )
+        return context
+
+    def form_valid(self, form):
+        form.instance.journal = self.journal
         return super().form_valid(form)
 
     def get_success_url(self):
