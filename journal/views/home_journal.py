@@ -28,12 +28,14 @@ class HomeScreenView(LoginRequiredMixin, TemplateView):
             cal = calendar.Calendar(firstweekday=6)
             month_days = cal.monthdatescalendar(year, month)
 
+            # 今月のジャーナルを取得
             journals = Journal.objects.filter(
                 user=self.request.user,
                 date__year=year,
                 date__month=month
             ).prefetch_related("goals", "todos", "schedules", "reflection")
 
+            # 日付: 記録あり(True/False) の辞書を作成
             journal_map = {
                 j.date: (
                     j.goals.exists() or
@@ -52,7 +54,7 @@ class HomeScreenView(LoginRequiredMixin, TemplateView):
                         "day": day,
                         "is_today": day == today,
                         "is_other_month": day.month != month,
-                        # 🔴 ここは常に Router に飛ばす
+                        "has_journal": journal_map.get(day, False),  # 🔹追加
                         "url": f"/journal/{day.year}/{day.month}/{day.day}/"
                     })
                 cal_data.append(week_row)
@@ -79,12 +81,24 @@ class HomeScreenView(LoginRequiredMixin, TemplateView):
                 date__range=(week_start, week_end)
             ).prefetch_related("goals", "todos", "schedules", "reflection")
 
+            # 日付: 記録あり(True/False) の辞書
+            journal_map = {
+                j.date: (
+                    j.goals.exists() or
+                    j.todos.exists() or
+                    j.schedules.exists() or
+                    j.reflection.exists()
+                )
+                for j in journals
+            }
+
             week_data = []
             for i in range(7):
                 day = week_start + timedelta(days=i)
                 week_data.append({
                     "day": day,
                     "is_today": day == today,
+                    "has_journal": journal_map.get(day, False),  # 🔹追加
                     "url": f"/journal/{day.year}/{day.month}/{day.day}/"
                 })
 
