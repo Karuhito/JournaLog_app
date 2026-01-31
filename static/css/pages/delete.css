@@ -1,0 +1,56 @@
+.delete-btn {
+    font-weight: 600;
+}
+
+.journal-card {
+    padding: 1rem;
+    background-color: white;
+}
+.journal-card.goal-card {
+    border: 2px solid var(--goal);
+    border-radius: 0.5rem;
+}
+
+.journal-card.todo-card {
+    border: 2px solid var(--todo);
+    border-radius: 0.5rem;
+}
+
+.journal-card.schedule-card {
+    border: 2px solid var(--schedule);
+    border-radius: 0.5rem;
+}
+
+.card-header {
+    display: flex;               /* 横並びにする */
+    justify-content: space-between; /* 左右に分ける */
+    align-items: center;         /* 垂直中央揃え */
+    gap: 1rem;                   /* タイトルとボタンの間隔 */
+}
+
+.view-title {
+    margin: 0;                   /* h5のデフォルトマージンをリセット */
+    font-weight: bold;
+    font-size: 2rem;
+}
+
+.back-btn {
+    white-space: nowrap;         /* ボタンのテキストが折り返さないようにする */
+}
+
+.delete-item {
+    color: var(--danger);
+    font-size: 2.5rem;
+    font-weight: bold;
+}
+
+.warning-ms {
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+.time-text {
+    font-weight: var(--schedule);
+    font-size: 1.75rem;
+    font-weight: bold;
+}

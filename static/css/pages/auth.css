@@ -1,0 +1,145 @@
+:root {
+    --bg-main: #f4f6f8;
+    --text-main: #333;
+    --accent: #4a6fa5;
+  }
+  
+  body {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    color: var(--text-main);
+    background-color: var(--bg-main);
+  }
+
+/* =========================
+   Auth Layout
+========================= */
+
+.auth-container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f9fafb; /* 紙っぽい背景 */
+}
+
+/* =========================
+   Card
+========================= */
+
+.auth-card {
+    animation: fadeUp 0.4s ease-out;
+  }
+  
+@keyframes fadeUp {
+    from {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+}
+
+.auth-container .container {
+    background-color: #ffffff;
+    border-color: #e5e7eb !important;
+}
+
+/* =========================
+   Title / Text
+========================= */
+
+.auth-title {
+    font-size: 1.6rem;
+    font-weight: 600;
+    text-align: center;
+    color: var(--text-main);
+}
+
+.auth-description {
+    font-size: 0.9rem;
+    text-align: center;
+    color: #6b7280;
+    margin-bottom: 1.5rem;
+}
+
+.auth-alt-text {
+    font-size: 0.85rem;
+    text-align: center;
+    color: #777;
+    margin-bottom: 0.5rem;
+}
+
+/* =========================
+   Form
+========================= */
+
+.auth-form label {
+    font-size: 0.85rem;
+    color: #374151;
+    margin-bottom: 0.25rem;
+}
+
+.auth-form input {
+    width: 100%;
+    padding: 0.45rem 0.6rem;
+    font-size: 0.9rem;
+    border-radius: 6px;
+    border: 1px solid #d1d5db;
+}
+
+.auth-form input:focus {
+    outline: none;
+    border-color: #6366f1;
+    box-shadow: 0 0 0 1px rgba(99, 102, 241, 0.3);
+}
+
+/* =========================
+   Buttons
+========================= */
+
+.btn-submit {
+    background-color: var(--accent);
+    color: #fff;
+    font-weight: 500;
+}
+
+.btn-submit:hover {
+    background-color: #1f2937;
+    color: #ffffff;
+}
+
+.btn-alt {
+    background-color: #ffffff;
+    border: 1px solid #d1d5db;
+    color: #374151;
+}
+
+.btn-alt:hover {
+    background-color: #1f2937;
+    color: #ffffff;
+}
+
+
+
+/* =========================
+   Divider（ジャーナル感）
+========================= */
+
+.auth-divider {
+    margin: 1.5rem 0;
+    height: 1px;
+    background-color: #e5e7eb;
+}
+
+/* =========================
+   Error
+========================= */
+
+.auth-field ul {
+    margin-top: 0.25rem;
+    padding-left: 1rem;
+    color: #dc2626;
+    font-size: 0.8rem;
+}

@@ -7,15 +7,18 @@ class CreateScheduleView(BaseCreateView):
     model = Schedule
     formset_class = ScheduleFormSet
     prefix = "schedule"
-    template_name = "journal/schedule_create.html"
+    allow_multiple = True
+    template_name = "journal/create_schedule.html"
 
 class UpdateScheduleView(BaseUpdateView):
     model = Schedule
     form_class = ScheduleForm
     title = "Scheduleの編集"
-    header_class = "bg-success"
-    template_name = "journal/schedule_update.html"
+    feature = "schedule"
+    template_name = "journal/update_schedule.html"
 
 class DeleteScheduleView(BaseDeleteView):
     model = Schedule
     object_name = "Schedule"
+    feature = "schedule"
+    template_name = "journal/delete_schedule.html"

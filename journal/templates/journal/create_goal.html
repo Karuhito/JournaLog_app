@@ -1,0 +1,16 @@
+{% extends "common/create_base.html" %}
+{% load static %}
+
+{% block title %}Goal投稿{% endblock %}
+
+{% block section_title %}Goal投稿作成{% endblock %}
+{% block submit_label %}Goalを投稿する{% endblock %}
+
+
+{% block form_fields %}
+  {{ form.title }}
+{% endblock %}
+
+{% block empty_form_fields %}
+  {{ formset.empty_form.title }}
+{% endblock %}

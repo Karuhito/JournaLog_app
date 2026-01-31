@@ -1,0 +1,25 @@
+{% extends "common/update_base.html" %}
+{% load static %}
+
+{% block extra_js %}
+<script src="{% static 'js/timeset_rules.js' %}"></script>
+{% endblock %}
+
+{% block title %}スケジュール更新{% endblock %}
+{% block section_title %}スケジュールの更新{% endblock %}
+
+{% block form_fields %}
+
+<div class="schedule-fields row g-2 flex-grow-1">
+    <div class="col-6">
+        {{ form.start_time }}
+    </div>
+    <div class="col-6">
+        {{ form.end_time }}
+    </div>
+    <div class="col-12">
+        {{ form.title }}
+    </div>
+</div>
+
+{% endblock %}

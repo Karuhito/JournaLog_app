@@ -2,133 +2,118 @@
 {% load static %}
 {% block title %}Journal作成{% endblock %}
 
+{% block body_class %}page-journal-init{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/pages/journal_init.css' %}">
+{% endblock %}
+
 {% block extra_js %}
 <script src="{% static 'js/journal_init.js' %}"></script>
 {% endblock %}
 
 {% block content %}
-<div class="container my-5" style="max-width: 900px;" id="top">
+<div class="container my-5 journal-init">
 
-    <!-- ヘッダー -->
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <div>
-            <h3 class="mb-1">{{ journal.date|date:"Y年n月j日" }}</h3>
-            <small class="text-muted">今日の記録を作成します</small>
+    <!-- Header -->
+    <header class="journal-init-header mb-4">
+        <div class="journal-date-nav d-flex justify-content-between align-items-center">
+            <a href="{% url 'journal:journal_router' prev_day.year prev_day.month prev_day.day %}" class="date-nav prev">← 前日</a>
+            <h3 class="journal-date mb-1">{{ journal_date|date:"Y年n月j日" }}</h3>
+            <a href="{% url 'journal:journal_router' next_day.year next_day.month next_day.day %}" class="date-nav next">翌日 →</a>
         </div>
-        <a href="{% url 'journal:home' %}" class="btn btn-outline-secondary">
-            ← カレンダーへ戻る
-        </a>
-    </div>
+        <p class="text-muted mb-0">ジャーナルの記録を作成します</p>
+    </header>
+
+    <hr class="journal-divider">
+
+    <!-- Intro -->
+    <section class="journal-init-intro my-4">
+        <p class="journal-intro-main mb-1">まずは今日のゴールとやることを決めましょう。</p>
+        <p class="journal-intro-sub text-muted small mb-0">細かい計画や振り返りはあとから追加できます。</p>
+    </section>
+
+    <hr class="journal-divider">
 
     <form method="post">
         {% csrf_token %}
 
-        <div class="row g-4">
-
-            <!-- ================= Goal ================= -->
-            <div class="col-md-6">
-                <div class="card shadow-sm h-100">
-                    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
-                        <span>Goal</span>
-                        <button type="button" id="add-goal" class="btn btn-sm btn-light">+ 追加</button>
-                    </div>
-
-                    <div class="card-body">
-                        {{ goal_formset.management_form }}
-
-                        <div id="goal-formset">
-                            {% for form in goal_formset %}
-                            <div class="goal-form border rounded p-3 mb-3">
-                                {{ form.DELETE }}
-
-                                <div class="mb-2">
-                                    {{ form.title }}
-                                </div>
-
-                                <button type="button"
-                                        class="btn btn-outline-danger remove-form w-100 w-md-auto">
-                                    - 削除
-                                </button>
-                            </div>
-                            {% endfor %}
-                        </div>
-
-                        <small class="text-muted">
-                            今日の指針・達成したいことを書きましょう
-                        </small>
-                    </div>
-                </div>
+        <!-- ================= Goal 作成 ================= -->
+        <section class="journal-card goal-field mb-4 p-4">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="goal-text mb-0">今日のGoal作成</h5>
+                <button type="button" id="add-goal" class="plus-btn goal-btn">
+                    <img src="{% static 'img/plus-icon.svg' %}" alt="Goal追加">
+                </button>
             </div>
 
-            <!-- ================= Todo ================= -->
-            <div class="col-md-6">
-                <div class="card shadow-sm h-100">
-                    <div class="card-header bg-success text-white d-flex justify-content-between align-items-center">
-                        <span>Todo</span>
-                        <button type="button" id="add-todo" class="btn btn-sm btn-light">+ 追加</button>
+            <div class="card-body">
+                <div id="goal-formset">
+                    {{ goal_formset.management_form }}
+                    {% for form in goal_formset %}
+                    <div class="goal-form journal-input-card d-flex align-items-center mb-2">
+                        {{ form.title }}
+                        {{ form.DELETE }}
+                        <button type="button" class="delete-btn goal-btn remove-form">
+                            <img src="{% static 'img/close-icon.svg' %}" alt="Goal削除">
+                        </button>
                     </div>
-
-                    <div class="card-body">
-                        {{ todo_formset.management_form }}
-
-                        <div id="todo-formset">
-                            {% for form in todo_formset %}
-                            <div class="todo-form border rounded p-3 mb-3">
-                                {{ form.DELETE }}
-
-                                <div class="mb-2">
-                                    {{ form.title }}
-                                </div>
-
-                                <button type="button"
-                                        class="btn btn-outline-danger remove-form w-100 w-md-auto">
-                                    - 削除
-                                </button>
-                            </div>
-                            {% endfor %}
-                        </div>
-
-                        <small class="text-muted">
-                            Goalを達成するために、今日やる具体的な行動を書きましょう
-                        </small>
-                    </div>
+                    {% endfor %}
                 </div>
             </div>
+        </section>
 
-        </div>
+        <!-- ================= Todo 作成 ================= -->
+        <section class="journal-card todo-field mb-4 p-4">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="todo-text mb-0">今日のTodo作成</h5>
+                <button type="button" id="add-todo" class="plus-btn todo-btn">
+                    <img src="{% static 'img/plus-icon.svg' %}" alt="Todo追加">
+                </button>
+            </div>
 
-        <!-- empty forms -->
+            <div class="card-body">
+                <div id="todo-formset">
+                    {{ todo_formset.management_form }}
+                    {% for form in todo_formset %}
+                    <div class="todo-form journal-input-card d-flex align-items-center mb-2">
+                        {{ form.title }}
+                        {{ form.DELETE }}
+                        <button type="button" class="delete-btn todo-btn remove-form">
+                            <img src="{% static 'img/close-icon.svg' %}" alt="Todo削除">
+                        </button>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+
+        <!-- JS 用 empty form (非表示) -->
         <div id="goal-empty-form" class="d-none">
-            <div class="goal-form border rounded p-3 mb-3">
-                {{ goal_formset.empty_form.DELETE }}
-                <div class="mb-2">
-                    {{ goal_formset.empty_form.title }}
-                </div>
-                <button type="button"
-                        class="btn btn-outline-danger remove-form w-100 w-md-auto">
-                    - 削除
+            <div class="goal-form journal-input-card d-flex align-items-center mb-2">
+                <input type="text" name="goal-__prefix__-title" id="id_goal-__prefix__-title" class="form-control" placeholder="目標内容">
+                <input type="hidden" name="goal-__prefix__-DELETE" id="id_goal-__prefix__-DELETE">
+                <button type="button" class="delete-btn goal-btn remove-form">
+                    <img src="{% static 'img/close-icon.svg' %}" alt="Goal削除">
                 </button>
             </div>
         </div>
 
         <div id="todo-empty-form" class="d-none">
-            <div class="todo-form border rounded p-3 mb-3">
-                {{ todo_formset.empty_form.DELETE }}
-                <div class="mb-2">
-                    {{ todo_formset.empty_form.title }}
-                </div>
-                <button type="button"
-                        class="btn btn-outline-danger remove-form w-100 w-md-auto">
-                    - 削除
+            <div class="todo-form journal-input-card d-flex align-items-center mb-2">
+                <input type="text" name="todo-__prefix__-title" id="id_todo-__prefix__-title" class="form-control" placeholder="Todo内容">
+                <input type="hidden" name="todo-__prefix__-DELETE" id="id_todo-__prefix__-DELETE">
+                <button type="button" class="delete-btn todo-btn remove-form">
+                    <img src="{% static 'img/close-icon.svg' %}" alt="Todo削除">
                 </button>
             </div>
         </div>
 
-        <div class="text-center mt-5">
-            <button type="submit" class="btn btn-lg btn-primary px-5">
-                記録する
-            </button>
+        <!-- Submit -->
+        <div class="journal-submit text-center mt-4">
+            <button type="submit" class="submit-btn btn-lg btn px-5">今日の目標を作成</button>
         </div>
+
     </form>
 </div>
 {% endblock %}

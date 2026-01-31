@@ -1,16 +1,22 @@
-console.log("journal_init.js loaded");
-
 document.addEventListener('DOMContentLoaded', () => {
 
     function setupFormset({ addBtnId, formsetId, emptyFormId }) {
         const addBtn = document.getElementById(addBtnId);
         const formset = document.getElementById(formsetId);
-        const emptyTemplate = document.getElementById(emptyFormId).innerHTML;
+        const emptyTemplate = document.getElementById(emptyFormId)?.innerHTML;
 
+        if (!addBtn || !formset || !emptyTemplate) {
+            console.error("Formset elements not found!", addBtn, formset, emptyTemplate);
+            return;
+        }
+
+        // 追加ボタン
         addBtn.addEventListener('click', () => {
-            const totalFormsInput =
-                formset.closest('.card-body')
-                    .querySelector('input[name$="-TOTAL_FORMS"]');
+            const totalFormsInput = formset.querySelector('input[name$="-TOTAL_FORMS"]');
+            if (!totalFormsInput) {
+                console.error("TOTAL_FORMS input not found!");
+                return;
+            }
 
             const index = parseInt(totalFormsInput.value);
             const newFormHtml = emptyTemplate.replace(/__prefix__/g, index);
@@ -19,50 +25,21 @@ document.addEventListener('DOMContentLoaded', () => {
             totalFormsInput.value = index + 1;
         });
 
+        // 削除ボタン
         formset.addEventListener('click', (e) => {
-            if (!e.target.classList.contains('remove-form')) return;
+            if (!e.target.classList.contains('remove-form') && !e.target.closest('.remove-form')) return;
 
             const form = e.target.closest('.goal-form, .todo-form');
-            const deleteInput = form.querySelector('input[type="checkbox"][name$="-DELETE"]');
+            if (!form) return;
 
-            if (deleteInput) {
-                deleteInput.checked = true;
-            }
-            form.style.display = 'none';
+            const deleteInput = form.querySelector('input[type="hidden"][name$="-DELETE"]');
+            if (deleteInput) deleteInput.value = "on"; // Django に削除フラグ
+
+            form.remove();
         });
     }
 
-    setupFormset({
-        addBtnId: 'add-goal',
-        formsetId: 'goal-formset',
-        emptyFormId: 'goal-empty-form'
-    });
+    setupFormset({ addBtnId: 'add-goal', formsetId: 'goal-formset', emptyFormId: 'goal-empty-form' });
+    setupFormset({ addBtnId: 'add-todo', formsetId: 'todo-formset', emptyFormId: 'todo-empty-form' });
 
-    setupFormset({
-        addBtnId: 'add-todo',
-        formsetId: 'todo-formset',
-        emptyFormId: 'todo-empty-form'
-    });
-
-    // 開始時刻 → 終了時刻制御
-    document.addEventListener('input', (e) => {
-
-        // 開始時刻 input のみ拾う
-        if (!e.target.matches('input[type="time"][name$="start_time"]')) return;
-    
-        const form = e.target.closest('.todo-form');
-        if (!form) return;
-    
-        const startInput = e.target;
-        const endInput = form.querySelector('input[type="time"][name$="end_time"]');
-        if (!endInput) return;
-    
-        // 終了時刻が未入力なら開始時刻をセット
-        if (!endInput.value) {
-            endInput.value = startInput.value;
-        }
-    
-        // 終了時刻が開始時刻より前にならないよう制限
-        endInput.min = startInput.value;
-    });
 });

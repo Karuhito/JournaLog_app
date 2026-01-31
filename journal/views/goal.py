@@ -7,20 +7,23 @@ class CreateGoalView(BaseCreateView):
     model = Goal
     formset_class = GoalFormSet
     prefix = "goal"
-    template_name = "journal/goal_create.html"
+    allow_multiple = True
+    template_name = "journal/create_goal.html"
 
 class UpdateGoalView(BaseUpdateView):
     model = Goal
     form_class = GoalForm
     title = "Goalの編集"
-    header_class = "bg-primary"
-    template_name = "journal/goal_update.html"
+    feature = "goal"
+    template_name = "journal/update_goal.html"
 
 
 class DeleteGoalView(BaseDeleteView):
     model = Goal
     object_name = "Goal"
     model_label = "Goal"
+    feature = "goal"
+    template_name = "journal/delete_goal.html"
 
 
 

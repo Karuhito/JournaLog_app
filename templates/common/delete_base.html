@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/pages/delete.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container my-4">
+
+  <section class="journal-card {{ feature }}-card">
+
+    <div class="card-header">
+      <h5 class="{{ feature }}-text view-title">
+        {% block section_title %}{% endblock %}
+      </h5>
+
+      <a href="{{ cancel_url|default:'javascript:history.back()' }}"
+        class="btn back-btn {{ feature }}-btn">
+        キャンセル
+      </a>
+    </div>
+
+    <hr class="section-divider {{ feature }}-divider">
+    <p class="warning-ms">以下の{{model_label}}の投稿を削除しますか？</p>
+
+    <form method="post">
+      {% csrf_token %}
+
+
+      <div class="journal-card {{ feature}}-card mb-2 d-flex align-items-center">
+        {% block delete_object %}
+        <!-- 削除対象の内容を表示 -->
+        {% endblock %}
+      </div>
+   
+
+      <div class="journal-submit text-center mt-3">
+        <button type="submit"
+                class="btn btn-lg delete-btn {{ feature }}-btn">
+          削除する
+        </button>
+      </div>
+    </form>
+
+  </section>
+
+</div>
+{% endblock %}

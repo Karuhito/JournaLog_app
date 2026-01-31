@@ -1,0 +1,13 @@
+{% extends "common/create_base.html" %}
+{% block title %}Todo投稿{% endblock %}
+
+{% block section_title %}Todo投稿作成{% endblock %}
+{% block submit_label %}Todoを投稿{% endblock %}
+
+{% block form_fields %}
+  {{ form.title }}
+{% endblock %}
+
+{% block empty_form_fields %}
+  {{ formset.empty_form.title }}
+{% endblock %}

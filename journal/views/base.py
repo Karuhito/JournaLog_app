@@ -12,6 +12,7 @@ class BaseCreateView(LoginRequiredMixin, View):
     formset_class = None
     prefix = None
     template_name = None
+    allow_multiple = False
 
     login_url = "accounts:login"
 
@@ -38,12 +39,12 @@ class BaseCreateView(LoginRequiredMixin, View):
 
         return render(request, self.template_name, {
             "journal": journal,
+            "journal_date": journal.date,     # ← ここを追加
             "formset": formset,
+            "feature": self.prefix,
+            "allow_multiple": self.allow_multiple,
         })
 
-    # --------------------
-    # POST：保存（ここが本丸）
-    # --------------------
     def post(self, request, year, month, day):
         journal = self.get_journal(request, year, month, day)
 
@@ -61,21 +62,23 @@ class BaseCreateView(LoginRequiredMixin, View):
                 obj.save()
 
             return redirect(
-                "journal:journal_detail",
+                "journal:journal_over",
                 year=year,
                 month=month,
                 day=day
             )
 
-        # バリデーションエラー時
         return render(request, self.template_name, {
             "journal": journal,
+            "journal_date": journal.date,     # ← ここも追加
             "formset": formset,
+            "feature": self.prefix,
+            "allow_multiple": self.allow_multiple,
         })
+
     
 class BaseUpdateView(LoginRequiredMixin, UpdateView):
     title = ""
-    header_class = "bg-secondary"
     def get_queryset(self):
         return self.model.objects.filter(
             journal__user=self.request.user
@@ -84,7 +87,7 @@ class BaseUpdateView(LoginRequiredMixin, UpdateView):
     def get_success_url(self):
         journal = self.object.journal
         return reverse(
-            "journal:journal_detail",
+            "journal:journal_over",
             kwargs={
                 'year': journal.date.year,
                 'month': journal.date.month,
@@ -97,8 +100,9 @@ class BaseUpdateView(LoginRequiredMixin, UpdateView):
 
         # 🔑 ここでテンプレートに渡す
         context["title"] = self.title
-        context["header_class"] = self.header_class
         context["cancel_url"] = self.get_success_url()
+        context["feature"] = self.feature
+        
 
         return context
 
@@ -106,15 +110,16 @@ class BaseUpdateView(LoginRequiredMixin, UpdateView):
 
 
 class BaseDeleteView(LoginRequiredMixin, DeleteView):
-    template_name = "common/delete_confirm.html"
     model_label = ""
+    feature = ""
+    # 他人のデータではないか確認をする
     def get_queryset(self):
         return super().get_queryset().filter(journal__user=self.request.user)
     
     def get_success_url(self):
         journal = self.object.journal
         return reverse(
-            "journal:journal_detail",
+            "journal:journal_over",
             kwargs={
                 "year": journal.date.year,
                 "month": journal.date.month,
@@ -128,8 +133,9 @@ class BaseDeleteView(LoginRequiredMixin, DeleteView):
 
         context["object_name"] = self.object_name
         context["model_label"] = self.model_label
+        context["feature"] = self.feature
         context["cancel_url"] = reverse(
-            "journal:journal_detail",
+            "journal:journal_over",
             kwargs={
                 "year": journal.date.year,
                 "month": journal.date.month,

@@ -1,0 +1,10 @@
+{% extends "common/delete_base.html" %}
+
+{% block title %}Todo削除{% endblock %}
+{% block section_title %}Todoの記録削除{% endblock %}
+
+{% block delete_object %}
+<div class="goal-fields delete-item">
+    {{ object.title }}
+</div>
+{% endblock %}

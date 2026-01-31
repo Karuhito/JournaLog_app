@@ -1,0 +1,12 @@
+.goal-text {
+    color: var(--goal);
+}
+.goal-btn {
+    border: 2px solid var(--goal);
+}
+.goal-btn:hover {
+    background-color: var(--goal); color: #fff;
+}
+.goal-card {
+    border: 2px solid var(--goal);
+}

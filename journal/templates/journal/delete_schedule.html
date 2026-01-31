@@ -1,0 +1,11 @@
+{% extends "common/delete_base.html" %}
+
+{% block title %}スケジュール削除{% endblock %}
+{% block section_title %}スケジュールの削除{% endblock %}
+
+{% block delete_object %}
+    <div class="schedule-fields delete-item">
+        {{ object.title }}
+    </div>
+
+{% endblock %}

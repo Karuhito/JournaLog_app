@@ -1,63 +1,71 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse
 from django.views import View
+from django.views.generic import CreateView
 from .base import BaseUpdateView
 from django.shortcuts import render, get_object_or_404, redirect
 from journal.models import Journal, Reflection
 from journal.forms import ReflectionForm
 from datetime import date, timezone
 
-class CreateReflectionView(View):
-    template_name = "journal/reflection_create.html"
-    login_url = "accounts:login"
+class CreateReflectionView(LoginRequiredMixin, CreateView):
+    model = Reflection
+    form_class = ReflectionForm
+    template_name = "journal/create_reflection.html"
 
-    def get(self, request, year, month, day):
-        journal, _ = Journal.objects.get_or_create(
-            user=request.user,
-            date=date(year, month, day)
+    def dispatch(self, request, *args, **kwargs):
+        self.journal_date = date(
+            int(kwargs["year"]),
+            int(kwargs["month"]),
+            int(kwargs["day"]),
         )
-
-        form = ReflectionForm()
-        return render(request, self.template_name, {
-            'journal': journal,
-            'form': form,
-        })
-
-    def post(self, request, year, month, day):
-        journal, _ = Journal.objects.get_or_create(
+        self.journal = get_object_or_404(
+            Journal,
             user=request.user,
-            date=date(year, month, day)
+            date=self.journal_date
         )
+        return super().dispatch(request, *args, **kwargs)
 
-        form = ReflectionForm(request.POST)
-        if form.is_valid():
-            reflection = form.save(commit=False)
-            reflection.journal = journal
-            reflection.save()
-            return redirect(
-                "journal:journal_detail",
-                year=year,
-                month=month,
-                day=day
-            )
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["journal"] = self.journal
+        context["cancel_url"] = reverse(
+        "journal:journal_over",
+        kwargs={
+            "year": self.journal_date.year,
+            "month": self.journal_date.month,
+            "day": self.journal_date.day,
+            }
+        )
+        return context
 
-        return render(request, self.template_name, {
-            'journal': journal,
-            'form': form,
-        })
+    def form_valid(self, form):
+        form.instance.journal = self.journal
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse(
+            "journal:journal_over",
+            kwargs={
+                "year": self.journal_date.year,
+                "month": self.journal_date.month,
+                "day": self.journal_date.day,
+            }
+        )
     
 class UpdateReflectionView(BaseUpdateView):
     model = Reflection
     form_class = ReflectionForm
     title = "振り返り編集"
-    header_class = "bg-warning"
-    template_name = "journal/reflection_update.html"
+    template_name = "journal/update_reflection.html"
+    feature = "reflection"
 
     def get_success_url(self):
         # journal が None の場合は安全にホームに戻す
         journal = getattr(self.object, 'journal', None)
         if journal:
             return reverse(
-                "journal:journal_detail",
+                "journal:journal_over",
                 kwargs={
                     "year": journal.date.year,
                     "month": journal.date.month,

@@ -1,6 +1,7 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
     <meta charset="UTF-8">
     <!-- スマホ対応の最重要設定 -->
@@ -9,79 +10,88 @@
     <title>JournaLog - {% block title %}{% endblock %}</title>
 
     <!-- Bootstrap -->
-    <link
-        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-        rel="stylesheet"
-        integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
-        crossorigin="anonymous"
-    >
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
 
     <!-- 独自CSS -->
-    <link rel="stylesheet" href="{% static 'css/calendar.css' %}">
-
-    {% block extra_js %}{% endblock %}
+    <link rel="stylesheet" href="{% static 'css/foundation/variables.css' %}">
+    <link rel="stylesheet" href="{% static 'css/foundation/base.css' %}">
+    
+    <link rel="stylesheet" href="{% static 'css/layout/container.css' %}">
+    <link rel="stylesheet" href="{% static 'css/layout/header.css' %}">
+    
+    <link rel="stylesheet" href="{% static 'css/components/buttons.css' %}">
+    <link rel="stylesheet" href="{% static 'css/components/forms.css' %}">
+    
+    <link rel="stylesheet" href="{% static 'css/themes/goal.css' %}">
+    <link rel="stylesheet" href="{% static 'css/themes/todo.css' %}">
+    <link rel="stylesheet" href="{% static 'css/themes/schedule.css' %}">
+    <link rel="stylesheet" href="{% static 'css/themes/reflection.css' %}">
+    
+    <!-- 追加CSS -->
     {% block extra_css %}{% endblock %}
+    
 </head>
 
-<body>
-    <!-- Bootstrap JS -->
-    <script
-        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
-        crossorigin="anonymous">
-    </script>
-
+<body class="{% block body_css %}{% endblock %}">
     <!-- ナビゲーション -->
-    <nav class="navbar navbar-expand-lg bg-body-tertiary">
-        <div class="container">
-            <a class="navbar-brand fw-bold" href="{% url 'journal:home' %}">
-                JournaLog
-            </a>
+    <header class="site-header">
+        <nav class="navbar border-bottom shadow-sm sticky-top">
+            <div class="container d-flex justify-content-between align-items-center">
 
-            <!-- スマホ用トグル -->
-            <button class="navbar-toggler" type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#navbarSupportedContent"
-                    aria-controls="navbarSupportedContent"
-                    aria-expanded="false"
-                    aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+                <!-- 左側：タイトル + Home -->
+                <div class="d-flex align-items-center gap-3">
+                    <a class="navbar-brand fw-bold fs-5 mb-0" href="{% url 'journal:home' %}">
+                        JournaLog
+                    </a>
+                    <a href="{% url 'journal:home' %}" class="btn btn-outline-secondary btn-sm">
+                        Home
+                    </a>
+                    {% block back_journalover %}{% endblock %}
+                </div>
 
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <!-- 左側メニュー -->
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="{% url 'journal:home' %}">カレンダー</a>
-                    </li>
-                </ul>
+                <!-- 右側：ハンバーガーメニュー（アカウント） -->
+                <div class="dropdown">
+                    <button class="btn" type="button" data-bs-toggle="dropdown" aria-expanded="false"
+                        aria-label="アカウントメニュー">
+                        <img src="{% static 'img/menu-btn.svg' %}" alt="ハンバーガーメニュー" class="hamburger-icon ">
+                    </button>
 
-                <!-- ここにページ固有アクションボタンを挿入 -->
-                {% block action %}{% endblock %}
-
-                <!-- 右側（ログイン状態） -->
-                <div class="d-flex flex-column flex-lg-row align-items-lg-center gap-2">
-                    {% if user.is_authenticated %}
-                        <span class="small me-lg-3">ようこそ、{{ user.username }}さん</span>
-                        <form method="post" action="{% url 'accounts:logout' %}">
-                            {% csrf_token %}
-                            <button class="btn btn-outline-danger btn-sm" type="submit">
-                                ログアウト
-                            </button>
-                        </form>
-                    {% else %}
-                        <a class="btn btn-outline-primary btn-sm" href="{% url 'accounts:login' %}">ログイン</a>
-                        <a class="btn btn-outline-info btn-sm" href="{% url 'accounts:signup' %}">新規登録</a>
-                    {% endif %}
+                    <ul class="dropdown-menu dropdown-menu-end p-3" style="min-width: 200px;">
+                        <li class="mb-2">
+                            <div class="small text-muted">ログイン中</div>
+                            <div class="fw-semibold">{{ user.username }}</div>
+                        </li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li>
+                            <form method="post" action="{% url 'accounts:logout' %}">
+                                {% csrf_token %}
+                                <button class="btn btn-outline-danger btn-sm w-100" type="submit">
+                                    ログアウト
+                                </button>
+                            </form>
+                        </li>
+                    </ul>
                 </div>
             </div>
-        </div>
-    </nav>
-
+        </nav>
+    </header>
     <!-- メインコンテンツ -->
     <main class="container my-3 my-md-4">
         {% block content %}
         {% endblock %}
     </main>
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous">
+        </script>
+    <script src="{% static 'js/page_transition.js' %}"></script>
+    {% block extra_js %}{% endblock %}
+    <form style="display:none;">
+        {% csrf_token %}
+    </form>
 </body>
+
 </html>

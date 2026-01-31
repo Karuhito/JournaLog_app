@@ -1,0 +1,615 @@
+/* =========================
+   Color Variables
+========================= */
+
+:root {
+  /* ---------- Base ---------- */
+  --bg-main: #f4f6f8;
+  --bg-subtle: #f8f9fa;
+
+  --text-main: #333333;
+  --text-muted: #6c757d;
+
+  /* ---------- Accent ---------- */
+  --accent: #4a6fa5;
+
+  /* ---------- Section Theme ---------- */
+  --goal: #4a6fa5;
+  --todo: #6b8f71;
+  --schedule: #7a6c8a;
+  --reflection: #8a6f5c;
+
+  /* ---------- Border ---------- */
+  --border-color: #e1e5ea;
+  --border-strong: #c7ccd4;
+
+  /* ---------- Shadow ---------- */
+  --shadow-sm: 0 2px 6px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+
+  /* ---------- Radius ---------- */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+
+  /* ---------- Transition ---------- */
+  --transition-fast: 0.15s ease;
+  --transition-base: 0.25s ease;
+}
+
+/* =========
+   Base Button
+   ========= */
+.btn {
+  transition:
+    transform 0.08s ease,
+    box-shadow 0.08s ease,
+    background-color 0.15s ease;
+}
+
+/* hover：少し浮く */
+.btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.12);
+}
+
+/* active：押し込まれる */
+.btn:active {
+  transform: translateY(1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.18);
+}
+
+/* focus：操作感が分かる */
+.btn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.3);
+}
+
+/* ==============================
+   Page Transition
+============================== */
+body {
+  opacity: 1;
+  transition: opacity .25s ease, transform .25s ease;
+}
+
+body.is-transitioning {
+  opacity: 0;
+  transform: translateY(6px);
+}
+
+/* ==============================
+   Color Themes
+============================== */
+body {
+  background-color: var(--bg-main);
+  color: var(--text-main);
+}
+
+/* ==============================
+   Header
+============================== */
+.site-header {
+  background-color: #2f2f2f;  /* 黒寄りグレー */
+  color: #ffffff;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.site-header a {
+  color: #ffffff;
+  text-decoration: none;
+  transition: color 0.2s ease, opacity 0.2s ease;
+}
+
+.site-header a:hover {
+  color: var(--accent);
+  opacity: 1;
+}
+
+/* ==============================
+   Hamburger Menu Button
+============================== */
+.site-header .dropdown > .btn {
+  padding: 0;                     /* 余白を削除 */
+  width: 2.5rem;                  /* ボタンサイズ */
+  height: 2.5rem;
+  display: block;                  /* 画像をボタンいっぱいに広げる */
+  border: none;                    /* 枠線を消す */
+  background-color: transparent;
+}
+
+.hamburger-icon {
+  width: 100%;                     /* ボタン全体にフィット */
+  height: 100%;
+  object-fit: contain;             /* 縦横比を保持して収める */
+  display: block;                  /* inlineスペース除去 */
+  filter: invert(1);               /* 黒SVGなら白に反転 */
+}
+
+/* ==============================
+   Dropdown Menu
+============================== */
+.site-header .dropdown-menu {
+  min-width: 200px;
+  background-color: #fff;
+  color: #333;
+  border-radius: 0.5rem;
+  padding: 0.75rem;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.site-header .dropdown-menu li .btn-outline-danger {
+  width: 100%;
+}
+
+.site-header .dropdown-menu a,
+.site-header .dropdown-menu div {
+  color: #333;
+}
+
+.site-header .dropdown-menu a:hover {
+  color: var(--accent);
+}
+
+/* ==============================
+   Header Button (Home等)
+============================== */
+.site-header .btn-outline-secondary {
+  color: #ffffff;
+  border-color: #ffffff;
+  background-color: transparent;
+  transition: all 0.2s ease;
+}
+
+.site-header .btn-outline-secondary:hover {
+  background-color: var(--accent);
+  color: #ffffff;
+  border-color: var(--accent);
+}
+
+/* ==============================
+   Dropdown Slide Animation
+============================== */
+.dropdown-menu.slide {
+  transform-origin: top center;
+  transform: scaleY(0);
+  opacity: 0;
+  transition: transform 0.25s ease, opacity 0.25s ease;
+}
+
+/* show クラスが付いたらスライド展開 */
+.dropdown-menu.show.slide {
+  transform: scaleY(1);
+  opacity: 1;
+}
+
+/* =============================
+   Plus Buttons (追加ボタン) 共通
+============================= */
+.plus-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  cursor: pointer;
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+  padding: 0.3rem 0.6rem;
+  transition: background-color 0.2s, transform 0.1s, color 0.2s;
+}
+
+/* 軽いホバーアニメーション */
+.plus-btn:hover {
+  transform: scale(1.05);
+}
+
+/* =============================
+   Plus Buttons テーマ別カラー
+============================= */
+/* Goal 追加ボタン */
+.plus-btn.goal-btn {
+  border: 2px solid var(--goal);
+}
+.plus-btn.goal-btn:hover {
+  background-color: var(--goal);
+  color: white;
+}
+
+/* Todo 追加ボタン */
+.plus-btn.todo-btn {
+  border: 2px solid var(--todo);
+}
+.plus-btn.todo-btn:hover {
+  background-color: var(--todo);
+  color: white;
+}
+/* Schedule 追加ボタン */
+.plus-btn.schedule-btn {
+  border: 2px solid var(--schedule);
+}
+.plus-btn.schedule-btn:hover {
+  background-color: var(--schedule);
+  color: white;
+}
+
+/* Reflection 追加ボタン */
+.plus-btn.reflection-btn {
+  border: 2px solid var(--reflection);
+}
+.plus-btn.reflection-btn:hover {
+  background-color: var(--reflection);
+  color: white;
+}
+
+/* =============================
+   Back Buttons 戻るボタン
+============================= */
+.back-btn {
+  background-color: transparent;
+  padding: 0.25rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.375rem;
+  transition: background-color 0.2s, transform 0.1s;
+}
+
+.back-btn img {
+  width: 1rem;
+  height: 1rem;
+}
+
+/* 機能別にテーマカラー等を装飾 */
+.back-btn.goal-btn {
+  border: 2px solid var(--goal);
+}
+.back-btn.goal-btn:hover {
+  background-color: var(--goal);
+  color: white;
+}
+.back-btn.todo-btn {
+  border: 2px solid var(--todo);
+}
+.back-btn.todo-btn:hover {
+  background-color: var(--todo);
+  color: white;
+}
+.back-btn.schedule-btn {
+  border: 2px solid var(--schedule);
+}
+.back-btn.schedule-btn:hover {
+  background-color: var(--schedule);
+  color: white;
+}
+.back-btn.reflection-btn {
+  border: 2px solid var(--reflection);
+}
+.back-btn.reflection-btn:hover {
+  background-color: var(--reflection);
+  color: white;
+}
+
+
+/* =============================
+   Delete Buttons (削除ボタン) 共通
+============================= */
+.delete-btn {
+  background-color: transparent;
+  padding: 0.25rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.375rem;
+  transition: background-color 0.2s, transform 0.1s;
+}
+.delete-btn:hover {
+  transform: scale(1.05);
+  background-color: red;
+  border: red solid 2px;
+}
+
+/* 機能別にテーマカラーを入れる */
+.delete-btn.goal-btn {
+  border:2px solid var(--goal);
+}
+
+.delete-btn.todo-btn {
+  border: 2px solid var(--todo);
+}
+
+.delete-btn.schedule-btn {
+  border: 2px solid var(--schedule);
+}
+
+.delete-btn.reflection-btn {
+  border: 2px solid var(--reflection);
+}
+/* 削除ボタンのアイコンサイズ */
+.delete-btn img {
+  width: 1rem;
+  height: 1rem;
+}
+
+/* ホバー時に少し強調 */
+.delete-btn:hover {
+  transform: scale(1.05);
+  background-color: rgba(0,0,0,0.05);
+}
+
+/* =============================
+   Edit Buttons (編集ボタン) 共通
+============================= */
+/* 編集ボタン（アイコン用） */
+.edit-btn {
+  background-color: transparent;
+  padding: 0.25rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.375rem;
+  transition: background-color 0.2s, transform 0.1s;
+}
+
+.edit-btn img {
+  width: 18px;
+  height: 18px;
+}
+
+/* ホバー時に少し強調 */
+.edit-btn:hover {
+  transform: scale(1.05);
+  background-color: rgba(0,0,0,0.05);
+}
+
+/* 機能別装飾 */
+.edit-btn.goal-btn {
+  border: 2px solid var(--goal);
+}
+.edit-btn.todo-btn {
+  border: 2px solid var(--todo);
+}
+
+.edit-btn.schedule-btn {
+  border: 2px solid var(--schedule);
+}
+
+.edit-btn.reflection-btn {
+  border: 2px solid var(--reflection);
+}
+
+/* goal */
+.goal-text {
+  color: var(--goal);
+}
+.goal-bg {
+  background-color: var(--goal);
+}
+.goal-field {
+  border-left:4px solid var(--goal);
+  border-radius: 5px;
+}
+.goal-border {
+  border: 2px solid var(--goal);
+}
+.goal-submit {
+  border: 2px solid var(--goal);
+}
+.goal-submit:hover {
+  background-color: var(--goal);
+  color: #fff;
+}
+
+/* todo */
+.todo-text {
+  color: var(--todo);
+}
+.todo-bg {
+  background-color: var(--todo);
+}
+.todo-field {
+  border-left: 4px solid var(--todo);
+  border-radius: 5px;
+}
+.todo-border {
+  border: 2px solid var(--todo);
+}
+.todo-submit {
+  border: 2px solid var(--todo);
+}
+.todo-submit:hover {
+  background-color: var(--todo);
+  color: #fff;
+}
+/* 完了/未完了切替ボタン */
+.todo-field .todo-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  transition:
+    opacity 0.25s ease,
+    transform 0.25s ease,
+    background-color 0.25s ease;
+}
+.todo-field .todo-item.is-done {
+  opacity: 0.5;
+  transform: translateX(4px);
+}
+
+.todo-field .todo-item.is-done .item-title {
+  text-decoration: line-through;
+  color: var(--text-muted);
+}
+
+
+/* schedule */
+.schedule-text {
+  color: var(--schedule);
+}
+.schedule-bg {
+  background-color: var(--schedule);
+}
+.schedule-field {
+  border-left: 4px solid var(--schedule);
+  border-radius: 5px;
+}
+.schedule-border {
+  border: 2px solid var(--schedule);
+}
+.schedule-submit {
+  border: 2px solid var(--schedule);
+}
+.schedule-submit:hover {
+  background-color: var(--schedule);
+  color: #fff;
+}
+
+/* reflection */
+.reflection-text {
+  color: var(--reflection);
+}
+.reflection-bg {
+  background-color: var(--reflection);
+}
+.reflection-field {
+  border-left: 4px solid var(--reflection);
+  border-radius: 5px;
+}
+.reflection-border {
+  border: 2px solid var(--reflection);
+}
+.reflection-submit {
+  border: 2px solid var(--reflection);
+}
+.reflection-submit:hover {
+  background-color: var(--reflection);
+  color: #fff;
+}
+
+/* =============================
+   Journal Card 共通
+============================= */
+.journal-card {
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+}
+
+/* カード内ヘッダー */
+.journal-card .card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+/* セクションタイトル */
+.journal-card .section-title {
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+/* =============================
+   Item List 共通
+============================= */
+.item-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.item-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #eee;
+}
+
+.item-row:last-child {
+  border-bottom: none;
+}
+
+/* タイトル */
+.item-title {
+  flex: 1;
+  margin-right: 0.5rem;
+}
+
+/* アクション群 */
+.item-actions {
+  display: flex;
+  gap: 0.25rem;
+}
+
+/* =============================
+   Empty State 共通
+============================= */
+.empty-state {
+  padding: 1.5rem 0;
+  text-align: center;
+}
+
+.empty-state .action-btn {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  border-radius: 999px;
+  color: #fff;
+  font-size: 0.875rem;
+  text-decoration: none;
+  transition: opacity 0.2s ease, transform 0.1s ease;
+}
+
+.empty-state .action-btn:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+/* =========================
+   Section Divider
+========================= */
+.section-divider {
+  border: none;              /* デフォルトの線を消す */
+  border-top: 2px solid;     /* 上だけ線を表示 */
+  margin: 0.5rem 0 1rem 0;   /* 上下の余白 */
+}
+
+/* 機能ごとのカード装飾 */
+.goal-card {
+  border: var(--goal) solid 2px;
+
+}
+
+.todo-card {
+  border: var(--todo) solid 2px; 
+
+}
+
+.schedule-card {
+  border: var(--schedule) solid 2px;
+
+
+}
+
+.reflection-card {
+  border: var(--reflection) solid 2px;
+
+}
+
+
+  /* --------------------
+     Submitボタン
+  -------------------- */
+  .journal-submit .btn-lg {
+    font-size: 1.125rem;
+    padding: 0.75rem 2rem;
+    border-radius: 0.5rem;
+    border: 2px solid var(--accent);
+  }
+  
+  .journal-submit .btn-lg:hover {
+    background-color: var(--accent);
+    color: white;
+  }

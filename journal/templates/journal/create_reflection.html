@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}振り返り作成{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/journal_over.css' %}">
+{% endblock %}
+
+{% block back_journalover %}
+<a class="btn btn-outline-secondary btn-sm"
+   href="{{ cancel_url }}">今日のジャーナルに戻る
+</a>
+{% endblock %}
+
+{% block content %}
+<section class="journal-section journal-reflection" data-feature="reflection">
+    <div class="journal-card reflection-card">
+
+        <!-- Card Header -->
+        <div class="card-header">
+            <h5 class="reflection-text">Reflection</h5>
+        </div>
+
+        <hr class="section-divider reflection-divider">
+
+        <!-- Form -->
+        <form method="post">
+            {% csrf_token %}
+
+            <div class="journal-input-card mb-2 reflection-field">
+                {{ form.content }}
+            </div>
+
+            <!-- Submit Button -->
+            <div class="journal-submit text-center mt-3">
+                <button type="submit" class="btn btn-lg reflection-submit">
+                    保存
+                </button>
+            </div>
+        </form>
+
+    </div>
+</section>
+{% endblock %}

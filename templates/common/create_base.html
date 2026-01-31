@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/pages/create_update.css' %}">
+<link rel="stylesheet" href="{% static 'css/components/buttons.css' %}">
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/create_formset.js' %}" defer></script>
+{% endblock %}
+
+{% block back_journalover %}
+<a  class="btn btn-outline-secondary btn-sm" href="{% url 'journal:journal_over' journal.date.year journal.date.month journal.date.day %}">今日のジャーナルに戻る</a>
+{% endblock %}
+{% block content %}
+<section class="journal-section journal-{{ feature }}" data-feature="{{ feature }}">
+    <div class="journal-card {{ feature }}-card">
+
+        <!-- Card Header -->
+        <div class="card-header">
+            <h5 class="{{ feature }}-text view-title">{% block section_title %}{% endblock %}</h5>
+            {% if allow_multiple %}
+            <button type="button" class="plus-btn {{ feature }}-btn" data-add-btn>
+                <img src="{% static 'img/plus-icon.svg' %}" alt="追加">
+            </button>
+            {% endif %}
+        </div>
+
+        <hr class="section-divider {{ feature }}-divider">
+
+        <!-- Form -->
+        <form method="post">
+            {% csrf_token %}
+            <div data-formset>
+                {{ formset.management_form }}
+
+                {% for form in formset %}
+                <div class="journal-input-card journal-card {{feature}}-card mb-2 d-flex align-items-center">
+                    {% block form_fields %}{% endblock %}
+                    {% if allow_multiple %}
+                    <button type="button" class="remove-form delete-btn ms-auto">
+                        <img src="{% static 'img/delete-icon.svg' %}" alt="削除">
+                    </button>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+
+            <template data-empty-form>
+                <div class="journal-input-card journal-card {{feature}}-card mb-2 d-flex align-items-center">
+                    {% block empty_form_fields %}{% endblock %}
+                    {% if allow_multiple %}
+                    <button type="button" class="remove-form delete-btn ms-auto">
+                        <img src="{% static 'img/delete-icon.svg' %}" alt="削除">
+                    </button>
+                    {% endif %}
+                </div>
+            </template>
+
+            <!-- Submit Button -->
+            <div class="journal-submit text-center mt-3">
+                <button type="submit" class="btn btn-lg {{ feature }}-btn ">
+                    {% block submit_label %}{% endblock %}
+                </button>
+            </div>
+        </form>
+    </div>
+</section>
+{% endblock %}
