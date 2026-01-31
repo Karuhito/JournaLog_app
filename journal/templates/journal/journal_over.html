@@ -5,6 +5,7 @@
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/pages/journal_over.css' %}">
+<link rel="stylesheet" href="{% static 'css/components/cards.css' %}">
 {% endblock %}
 
 {% block extra_js %}
@@ -35,7 +36,7 @@
             <section class="journal-card goal-field">
 
                 <div class="card-header">
-                    <h5 class="goal-text">Goal一覧</h5>
+                    <h5 class="goal-text view-title">Goal一覧</h5>
 
                     {% if goals %}
                     <a href="{% url 'journal:create_goal' journal_date.year journal_date.month journal_date.day %}"
@@ -56,10 +57,10 @@
                                 {{ goal.title }}
                             </span>
                             <div class="item-actions">
-                                <a href="{% url 'journal:update_goal' goal.pk %}" class="edit-btn">
+                                <a href="{% url 'journal:update_goal' goal.pk %}" class="edit-btn goal-btn">
                                     <img src="{% static 'img/edit-icon.svg' %}" alt="Goal編集">
                                 </a>
-                                <a href="{% url 'journal:delete_goal' goal.pk %}" class="delete-btn">
+                                <a href="{% url 'journal:delete_goal' goal.pk %}" class="delete-btn goal-btn">
                                     <img src="{% static 'img/delete-icon.svg' %}" alt="Goal削除">
                                 </a>
                             </div>
@@ -69,7 +70,7 @@
                     </ul>
                     {% else %}
                     <div class="empty-state">
-                        <a class="btn goal-bg goal-btn">
+                        <a  href="{% url 'journal:create_goal' journal_date.year journal_date.month journal_date.day %}" class="btn goal-bg goal-btn">
                             今日のGoalを記録しましょう
                         </a>
                     </div>
@@ -86,7 +87,7 @@
             <section class="journal-card todo-field">
 
                 <div class="card-header">
-                    <h5 class="todo-text">Todo一覧</h5>
+                    <h5 class="todo-text view-title">Todo一覧</h5>
 
                     {% if todos %}
                     <a href="{% url 'journal:create_todo' journal_date.year journal_date.month journal_date.day %}"
@@ -110,10 +111,10 @@
                                 {{ todo.title }}
                             </span>
                             <div class="item-actions">
-                                <a href="{% url 'journal:update_todo' todo.pk %}" class="edit-btn">
+                                <a href="{% url 'journal:update_todo' todo.pk %}" class="edit-btn todo-btn">
                                     <img src="{% static 'img/edit-icon.svg' %}" alt="Todo編集">
                                 </a>
-                                <a href="{% url 'journal:delete_todo' todo.pk %}" class="delete-btn">
+                                <a href="{% url 'journal:delete_todo' todo.pk %}" class="delete-btn todo-btn">
                                     <img src="{% static 'img/delete-icon.svg' %}" alt="Todo削除">
                                 </a>
                             </div>
@@ -123,7 +124,7 @@
                     </ul>
                     {% else %}
                     <div class="empty-state">
-                        <a class="btn todo-bg todo-btn">
+                        <a href="{% url 'journal:create_todo' journal_date.year journal_date.month journal_date.day %}" class="btn todo-bg todo-btn">
                             今日のTodoを記録しましょう
                         </a>
                     </div>
@@ -140,7 +141,7 @@
             <section class="journal-card schedule-field">
 
                 <div class="card-header">
-                    <h5 class="schedule-text">スケジュール一覧</h5>
+                    <h5 class="schedule-text view-title">スケジュール一覧</h5>
 
                     {% if schedules %}
                     <a href="{% url 'journal:create_schedule' journal_date.year journal_date.month journal_date.day %}"
@@ -173,10 +174,10 @@
                             {% endif %}
 
                             <div class="item-actions">
-                                <a href="{% url 'journal:update_schedule' schedule.pk %}" class="edit-btn">
+                                <a href="{% url 'journal:update_schedule' schedule.pk %}" class="edit-btn schedule-btn">
                                     <img src="{% static 'img/edit-icon.svg' %}" alt="Schedule編集">
                                 </a>
-                                <a href="{% url 'journal:delete_schedule' schedule.pk %}" class="delete-btn">
+                                <a href="{% url 'journal:delete_schedule' schedule.pk %}" class="delete-btn schedule-btn">
                                     <img src="{% static 'img/delete-icon.svg' %}" alt="Schedule削除">
                                 </a>
                             </div>
@@ -202,9 +203,9 @@
             <section class="journal-card reflection-field">
 
                 <div class="card-header">
-                    <h5 class="reflection-text">振り返り</h5>
+                    <h5 class="reflection-text view-title">振り返り</h5>
                     {% if reflection %}
-                    <a href="{% url 'journal:update_reflection'  reflection.pk%}" class="edit-btn">
+                    <a href="{% url 'journal:update_reflection'  reflection.pk%}" class="edit-btn reflection-btn">
                         <img src="{% static 'img/edit-icon.svg' %}" alt="振り返り編集">
                     </a>
                     {% endif %}

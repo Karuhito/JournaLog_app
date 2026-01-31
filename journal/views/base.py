@@ -110,8 +110,9 @@ class BaseUpdateView(LoginRequiredMixin, UpdateView):
 
 
 class BaseDeleteView(LoginRequiredMixin, DeleteView):
-    template_name = "common/delete_confirm.html"
     model_label = ""
+    feature = ""
+    # 他人のデータではないか確認をする
     def get_queryset(self):
         return super().get_queryset().filter(journal__user=self.request.user)
     
@@ -132,6 +133,7 @@ class BaseDeleteView(LoginRequiredMixin, DeleteView):
 
         context["object_name"] = self.object_name
         context["model_label"] = self.model_label
+        context["feature"] = self.feature
         context["cancel_url"] = reverse(
             "journal:journal_over",
             kwargs={

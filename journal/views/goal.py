@@ -22,6 +22,8 @@ class DeleteGoalView(BaseDeleteView):
     model = Goal
     object_name = "Goal"
     model_label = "Goal"
+    feature = "goal"
+    template_name = "journal/delete_goal.html"
 
 
 

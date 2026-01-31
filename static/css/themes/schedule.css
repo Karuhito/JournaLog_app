@@ -1,0 +1,12 @@
+.schedule-text { 
+    color: var(--schedule); 
+}
+.schedule-btn { 
+    border: 2px solid var(--schedule); 
+}
+.schedule-btn:hover { 
+    background-color: var(--schedule); color: #fff; 
+}
+.schedule-card { border: 2px solid var(--schedule); 
+}
+

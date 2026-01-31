@@ -127,3 +127,13 @@
     padding: 0.5rem 0.75rem;
     font-size: 0.875rem;
 }
+
+.goal-field {
+    border: 2px solid var(--goal);
+    border-radius: 8px;
+}
+
+.todo-field {
+    border: 2px solid var(--todo);
+    border-radius: 8px;
+}

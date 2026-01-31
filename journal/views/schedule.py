@@ -20,3 +20,5 @@ class UpdateScheduleView(BaseUpdateView):
 class DeleteScheduleView(BaseDeleteView):
     model = Schedule
     object_name = "Schedule"
+    feature = "schedule"
+    template_name = "journal/delete_schedule.html"

@@ -1,9 +1,12 @@
 {% extends "common/update_base.html" %}
 
+{% block title %}Goal編集{% endblock %}
 {% block section_title %}Goalの編集{% endblock %}
 
 {% block form_fields %}
-<div class="form-group">
-    {{ form.title }}
+<div class="form-group goal-fields">
+    <div class="form-control">
+        {{ form.title }}
+    </div>
 </div>
 {% endblock %}

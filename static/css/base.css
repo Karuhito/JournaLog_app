@@ -259,6 +259,37 @@ body {
   height: 1rem;
 }
 
+/* 機能別にテーマカラー等を装飾 */
+.back-btn.goal-btn {
+  border: 2px solid var(--goal);
+}
+.back-btn.goal-btn:hover {
+  background-color: var(--goal);
+  color: white;
+}
+.back-btn.todo-btn {
+  border: 2px solid var(--todo);
+}
+.back-btn.todo-btn:hover {
+  background-color: var(--todo);
+  color: white;
+}
+.back-btn.schedule-btn {
+  border: 2px solid var(--schedule);
+}
+.back-btn.schedule-btn:hover {
+  background-color: var(--schedule);
+  color: white;
+}
+.back-btn.reflection-btn {
+  border: 2px solid var(--reflection);
+}
+.back-btn.reflection-btn:hover {
+  background-color: var(--reflection);
+  color: white;
+}
+
+
 /* =============================
    Delete Buttons (削除ボタン) 共通
 ============================= */
@@ -271,11 +302,28 @@ body {
   border-radius: 0.375rem;
   transition: background-color 0.2s, transform 0.1s;
 }
-.back-btn:hover {
+.delete-btn:hover {
   transform: scale(1.05);
-  background-color: rgba(0,0,0,0.05);
+  background-color: red;
+  border: red solid 2px;
 }
 
+/* 機能別にテーマカラーを入れる */
+.delete-btn.goal-btn {
+  border:2px solid var(--goal);
+}
+
+.delete-btn.todo-btn {
+  border: 2px solid var(--todo);
+}
+
+.delete-btn.schedule-btn {
+  border: 2px solid var(--schedule);
+}
+
+.delete-btn.reflection-btn {
+  border: 2px solid var(--reflection);
+}
 /* 削除ボタンのアイコンサイズ */
 .delete-btn img {
   width: 1rem;
@@ -313,9 +361,21 @@ body {
   background-color: rgba(0,0,0,0.05);
 }
 
-
-
 /* 機能別装飾 */
+.edit-btn.goal-btn {
+  border: 2px solid var(--goal);
+}
+.edit-btn.todo-btn {
+  border: 2px solid var(--todo);
+}
+
+.edit-btn.schedule-btn {
+  border: 2px solid var(--schedule);
+}
+
+.edit-btn.reflection-btn {
+  border: 2px solid var(--reflection);
+}
 
 /* goal */
 .goal-text {
@@ -327,6 +387,9 @@ body {
 .goal-field {
   border-left:4px solid var(--goal);
   border-radius: 5px;
+}
+.goal-border {
+  border: 2px solid var(--goal);
 }
 .goal-submit {
   border: 2px solid var(--goal);
@@ -344,8 +407,11 @@ body {
   background-color: var(--todo);
 }
 .todo-field {
-  border: 2px solid var(--todo);
+  border-left: 4px solid var(--todo);
   border-radius: 5px;
+}
+.todo-border {
+  border: 2px solid var(--todo);
 }
 .todo-submit {
   border: 2px solid var(--todo);
@@ -384,8 +450,11 @@ body {
   background-color: var(--schedule);
 }
 .schedule-field {
-  border: 2px solid var(--schedule);
+  border-left: 4px solid var(--schedule);
   border-radius: 5px;
+}
+.schedule-border {
+  border: 2px solid var(--schedule);
 }
 .schedule-submit {
   border: 2px solid var(--schedule);
@@ -403,8 +472,11 @@ body {
   background-color: var(--reflection);
 }
 .reflection-field {
-  border: 2px solid var(--reflection);
+  border-left: 4px solid var(--reflection);
   border-radius: 5px;
+}
+.reflection-border {
+  border: 2px solid var(--reflection);
 }
 .reflection-submit {
   border: 2px solid var(--reflection);
@@ -527,3 +599,17 @@ body {
 }
 
 
+  /* --------------------
+     Submitボタン
+  -------------------- */
+  .journal-submit .btn-lg {
+    font-size: 1.125rem;
+    padding: 0.75rem 2rem;
+    border-radius: 0.5rem;
+    border: 2px solid var(--accent);
+  }
+  
+  .journal-submit .btn-lg:hover {
+    background-color: var(--accent);
+    color: white;
+  }

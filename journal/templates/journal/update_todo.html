@@ -5,8 +5,14 @@
 {% block section_title %}Todoの編集{% endblock %}
 
 {% block form_fields %}
-<div class="form-group todo-field">
-    {{ form.title }}
+<div class="form-group todo-fields">
+    <div class="mb-4">
+        {{ form.title }}
+    </div>
+    <div class="todo-checkbox">
+        完了/未完了{{ form.is_done }}
+    </div>
+
 </div>
 {% endblock %}
 

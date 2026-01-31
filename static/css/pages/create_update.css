@@ -1,21 +1,4 @@
-:root {
-    --bg-main: #f4f6f8;
-    --text-main: #333333;
-  
-    --accent: #4a6fa5;
-  
-    --goal: #4a6fa5;
-    --todo: #6b8f71;
-    --schedule: #7a6c8a;
-    --reflection: #8a6f5c;
-  
-    --bg-subtle: #f8f9fa;
-    --text-muted: #6c757d;
-    --border-color: #dddddd;
-    --border-strong: #bdbdbd;
-  }
-  
-  /* ==========================
+/* ==========================
      セクション全体
   ========================== */
   .journal-section {
@@ -81,10 +64,6 @@
   /* --------------------
      機能別カラー
   -------------------- */
-  .journal-goal .journal-input-card { border-color: var(--goal); }
-  .journal-todo .journal-input-card { border-color: var(--todo); }
-  .journal-schedule .journal-input-card { border-color: var(--schedule); }
-  .journal-reflection .journal-input-card { border-color: var(--reflection); }
   
   /* --------------------
      Schedule: 横並び3フィールド
@@ -121,20 +100,6 @@
     display: none;
   }
   
-  /* --------------------
-     Submitボタン
-  -------------------- */
-  .journal-submit .btn-lg {
-    font-size: 1.125rem;
-    padding: 0.75rem 2rem;
-    border-radius: 0.5rem;
-    border: 2px solid var(--accent);
-  }
-  
-  .journal-submit .btn-lg:hover {
-    background-color: var(--accent);
-    color: white;
-  }
 
   /* scheduleの時の入力フィールドのレイアウト装飾 */
   .schedule-fields {
@@ -147,3 +112,75 @@
   .schedule-fields input {
     width: 100%;
   }
+
+  /* Card Header: タイトル左・ボタン右 */
+.card-header {
+    display: flex;
+    justify-content: space-between; /* 左右に分ける */
+    align-items: center; /* 縦中央揃え */
+}
+
+/* タイトルが長い場合は右のボタンに被らないように */
+.card-header h5 {
+    margin: 0;
+    flex: 1; /* タイトル部分は残りの幅を使う */
+}
+
+/* Plusボタンを右端に */
+.plus-btn {
+    margin-right: 0.5rem; 
+    margin-top:0.5rem;
+}
+
+.btn-lg{
+    margin-bottom: 1rem;
+}
+
+.journal-card {
+    padding: 1rem;
+}
+.journal-card.goal-card {
+    border: 2px solid var(--goal);
+    border-radius: 0.5rem;
+}
+
+.journal-card.todo-card {
+    border: 2px solid var(--todo);
+    border-radius: 0.5rem;
+}
+
+.journal-card.schedule-card {
+    border: 2px solid var(--schedule);
+    border-radius: 0.5rem;
+}
+
+.journal-card.reflection-card {
+    border: 2px solid var(--reflection);
+    border-radius: 0.5rem;
+}
+
+.journal-input-card {
+    border: none;
+}
+
+/* Scheduleの時間プルダウン調整 */
+.schedule-fields select {
+    width: 100%;        /* 親のcol幅いっぱい */
+    padding-right: 2rem; /* 矢印部分の余白を確保 */
+    box-sizing: border-box; /* padding込みで幅を計算 */
+}
+
+/* optional: 高さを揃える */
+.schedule-fields select {
+    height: 2.5rem;
+}
+
+/* Scheduleの時間プルダウンを広く見せる */
+.schedule-fields select {
+    width: 100%;          /* 親のcol幅いっぱい */
+    min-width: 100px;     /* 最小幅を確保 */
+    padding-right: 2rem;  /* 矢印部分を確保 */
+    box-sizing: border-box;
+    font-size: 0.875rem;  /* 文字が潰れないサイズ */
+    height: 2.5rem;       /* 高さを揃える */
+}

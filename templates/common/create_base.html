@@ -2,7 +2,8 @@
 {% load static %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/journal_over.css' %}">
+<link rel="stylesheet" href="{% static 'css/pages/create_update.css' %}">
+<link rel="stylesheet" href="{% static 'css/components/buttons.css' %}">
 {% endblock %}
 
 {% block extra_js %}
@@ -18,7 +19,7 @@
 
         <!-- Card Header -->
         <div class="card-header">
-            <h5 class="{{ feature }}-text">{% block section_title %}{% endblock %}</h5>
+            <h5 class="{{ feature }}-text view-title">{% block section_title %}{% endblock %}</h5>
             {% if allow_multiple %}
             <button type="button" class="plus-btn {{ feature }}-btn" data-add-btn>
                 <img src="{% static 'img/plus-icon.svg' %}" alt="追加">
@@ -35,7 +36,7 @@
                 {{ formset.management_form }}
 
                 {% for form in formset %}
-                <div class="journal-input-card mb-2 d-flex align-items-center {{ feature }}-field">
+                <div class="journal-input-card journal-card {{feature}}-card mb-2 d-flex align-items-center">
                     {% block form_fields %}{% endblock %}
                     {% if allow_multiple %}
                     <button type="button" class="remove-form delete-btn ms-auto">
@@ -47,7 +48,7 @@
             </div>
 
             <template data-empty-form>
-                <div class="journal-input-card mb-2 d-flex align-items-center {{ feature }}-field">
+                <div class="journal-input-card journal-card {{feature}}-card mb-2 d-flex align-items-center">
                     {% block empty_form_fields %}{% endblock %}
                     {% if allow_multiple %}
                     <button type="button" class="remove-form delete-btn ms-auto">
@@ -59,7 +60,7 @@
 
             <!-- Submit Button -->
             <div class="journal-submit text-center mt-3">
-                <button type="submit" class="btn btn-lg {{ feature }}-submit">
+                <button type="submit" class="btn btn-lg {{ feature }}-btn ">
                     {% block submit_label %}{% endblock %}
                 </button>
             </div>

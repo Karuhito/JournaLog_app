@@ -14,7 +14,20 @@
         integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
 
     <!-- 独自CSS -->
-    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <link rel="stylesheet" href="{% static 'css/foundation/variables.css' %}">
+    <link rel="stylesheet" href="{% static 'css/foundation/base.css' %}">
+    
+    <link rel="stylesheet" href="{% static 'css/layout/container.css' %}">
+    <link rel="stylesheet" href="{% static 'css/layout/header.css' %}">
+    
+    <link rel="stylesheet" href="{% static 'css/components/buttons.css' %}">
+    <link rel="stylesheet" href="{% static 'css/components/forms.css' %}">
+    
+    <link rel="stylesheet" href="{% static 'css/themes/goal.css' %}">
+    <link rel="stylesheet" href="{% static 'css/themes/todo.css' %}">
+    <link rel="stylesheet" href="{% static 'css/themes/schedule.css' %}">
+    <link rel="stylesheet" href="{% static 'css/themes/reflection.css' %}">
+    
     <!-- 追加CSS -->
     {% block extra_css %}{% endblock %}
     

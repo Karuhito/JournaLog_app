@@ -24,6 +24,8 @@ class UpdateTodoView(BaseUpdateView):
 class DeleteTodoView(BaseDeleteView):
     model = Todo
     object_name = "Todo"
+    feature = "todo"
+    template_name = "journal/delete_todo.html"
 
 class TodoToggleView(View):
     def post(self, request, pk):

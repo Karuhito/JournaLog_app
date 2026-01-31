@@ -1,0 +1,12 @@
+.todo-text {
+    color: var(--todo);
+}
+.todo-btn {
+    border: 2px solid var(--todo);
+}
+.todo-btn:hover {
+    background-color: var(--todo); color: #fff;
+}
+.todo-card {
+    border: 2px solid var(--todo);
+}

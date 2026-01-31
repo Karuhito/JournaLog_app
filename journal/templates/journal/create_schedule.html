@@ -1,4 +1,9 @@
 {% extends "common/create_base.html" %}
+{% load static %}
+
+{% block extra_js %}
+<script src="{% static 'js/timeset_rules.js' %}"></script>
+{% endblock %}
 {% block title %}スケジュール作成{% endblock %}
 
 {% block section_title %}Schedule{% endblock %}
@@ -26,7 +31,7 @@
 {% block empty_form_fields %}
 <div class="schedule-fields row g-2 flex-grow-1">
 
-    <div class="col-6">
+    <div class="col-6 ">
         {{ formset.empty_form.start_time }}
     </div>
     <div class="col-6">

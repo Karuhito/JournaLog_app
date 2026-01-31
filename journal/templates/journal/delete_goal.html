@@ -1,37 +1,14 @@
-{% extends "base.html" %}
-{% block title %}Goal削除{% endblock %}
+{% extends "common/delete_base.html" %}
+{% load static %}
 
-{% block content %}
-<div class="container my-5" style="max-width: 600px;">
+{% block title %}Goal投稿削除{% endblock %}
+{% block section_title %}Goalの削除{% endblock %}
 
-    <div class="card shadow-sm border-danger">
-        <div class="card-header bg-danger text-white">
-            ⚠ Goal削除確認
-        </div>
-        <div class="card-body">
-            <p class="mb-3">このGoalを削除すると元に戻せません。よろしいですか？</p>
-            <ul class="list-group mb-3">
-                <li class="list-group-item">
-                    <strong>タイトル:</strong> {{ object.title }}
-                </li>
-                {% if object.detail %}
-                <li class="list-group-item">
-                    <strong>詳細:</strong> {{ object.detail }}
-                </li>
-                {% endif %}
-            </ul>
-
-            <form method="post" class="d-flex flex-column flex-sm-row gap-2">
-                {% csrf_token %}
-                <a href="{% url 'journal:journal_over' year=object.journal.date.year month=object.journal.date.month day=object.journal.date.day %}"
-                   class="btn btn-outline-secondary w-100 w-sm-auto">
-                    キャンセル
-                </a>
-                <button type="submit" class="btn btn-danger w-100 w-sm-auto">
-                    削除
-                </button>
-            </form>
-        </div>
-    </div>
+{% block delete_object %}
+<div class="goal-fields delete-item">
+    {{ object.title }}
 </div>
+    
+
+
 {% endblock %}
