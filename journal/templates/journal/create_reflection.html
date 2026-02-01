@@ -3,13 +3,8 @@
 {% block title %}振り返り作成{% endblock %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/journal_over.css' %}">
-{% endblock %}
+<link rel="stylesheet" href="{% static 'css/pages/create_update.css' %}">
 
-{% block back_journalover %}
-<a class="btn btn-outline-secondary btn-sm"
-   href="{{ cancel_url }}">今日のジャーナルに戻る
-</a>
 {% endblock %}
 
 {% block content %}
@@ -18,7 +13,13 @@
 
         <!-- Card Header -->
         <div class="card-header">
-            <h5 class="reflection-text">Reflection</h5>
+            <h5 class="reflection-text view-title">
+                振り返りを記録
+            </h5>
+
+            <a href="{{ cancel_url }}" class="btn back-btn reflection-btn reflection-text">
+                キャンセル
+            </a>
         </div>
 
         <hr class="section-divider reflection-divider">
@@ -27,14 +28,14 @@
         <form method="post">
             {% csrf_token %}
 
-            <div class="journal-input-card mb-2 reflection-field">
+            <div class="journal-input-card mb-2 reflection-fields">
                 {{ form.content }}
             </div>
 
             <!-- Submit Button -->
             <div class="journal-submit text-center mt-3">
-                <button type="submit" class="btn btn-lg reflection-submit">
-                    保存
+                <button type="submit" class="btn btn-lg reflection-btn ">
+                    振り返りを作成
                 </button>
             </div>
         </form>

@@ -2,41 +2,41 @@
     /* ---------- Base ---------- */
     --bg-main: #f4f6f8;
     --bg-subtle: #f8f9fa;
-  
+
     --text-main: #333333;
     --text-muted: #6c757d;
-  
+
     /* ---------- Accent ---------- */
     --accent: #4a6fa5;
     --danger: #dc3545;
 
-  
+
     /* ---------- Section Theme ---------- */
     --goal: #4a6fa5;
     --todo: #6b8f71;
     --schedule: #7a6c8a;
     --reflection: #8a6f5c;
-  
+
     /* ---------- Border ---------- */
     --border-color: #e1e5ea;
     --border-strong: #c7ccd4;
 
     /* submit-btn */
-    --btn-submit-bg: #4a6fa5; 
-    --btn-submit-hover: #3b5c8a; 
-    --btn-submit-text: #ffffff; 
-  
+    --btn-submit-bg: #4a6fa5;
+    --btn-submit-hover: #3b5c8a;
+    --btn-submit-text: #ffffff;
+
     /* ---------- Shadow ---------- */
     --shadow-sm: 0 2px 6px rgba(0, 0, 0, 0.04);
     --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
-  
+
     /* ---------- Radius ---------- */
     --radius-sm: 6px;
     --radius-md: 10px;
     --radius-lg: 14px;
-  
+
     /* ---------- Transition ---------- */
     --transition-fast: 0.15s ease;
     --transition-base: 0.25s ease;
-    
-  }
+
+}

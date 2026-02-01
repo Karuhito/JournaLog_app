@@ -4,9 +4,9 @@
 :root {
     --bg-main: #f4f6f8;
     --text-main: #333333;
-  
+
     --accent: #4a6fa5;
-  
+
     --goal: #4a6fa5;
     --todo: #6b8f71;
     --schedule: #7a6c8a;
@@ -16,7 +16,7 @@
     --text-muted: #6c757d;
     --border-color: #dddddd;
     --border-strong: #bdbdbd;
-  }
+}
 
 /* ==============================
    ページ全体
@@ -63,8 +63,8 @@
     border-radius: 6px;
 
     transition: background-color 0.15s ease,
-                color 0.15s ease,
-                border-color 0.15s ease;
+        color 0.15s ease,
+        border-color 0.15s ease;
 }
 
 .date-nav.prev {
@@ -112,7 +112,7 @@
     background-color: white;
     border-radius: 0.5rem;
     border: 1px solid #e0e0e0;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
     padding: 0.5rem 0.75rem;
     display: flex;
     align-items: center;

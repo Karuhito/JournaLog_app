@@ -37,3 +37,22 @@ body.is-transitioning {
     font-weight: bold;
     font-size: 2rem;
 }
+
+  /* section-divider */
+  /* 機能ごとに 境界線の色を変更する */
+
+  .goal-divider {
+    border-top-color: var(--goal);
+  }
+
+  .todo-divider {
+    border-top-color: var(--todo);
+  }
+
+  .schedule-divider {
+    border-top-color: var(--schedule);
+  }
+
+  .reflection-divider {
+    border-top-color: var(--reflection);
+  }

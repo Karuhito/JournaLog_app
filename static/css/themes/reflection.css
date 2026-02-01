@@ -5,7 +5,8 @@
     border: 2px solid var(--reflection); 
 }
 .reflection-btn:hover { 
-    background-color: var(--reflection); color: #fff; 
+    background-color: var(--reflection);
+    color: #fff; 
 }
 .reflection-card { 
     border: 2px solid var(--reflection); 

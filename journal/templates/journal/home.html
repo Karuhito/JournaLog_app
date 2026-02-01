@@ -19,11 +19,11 @@
         <!-- 表示切替ボタン -->
         <div class="btn-group btn-group-sm">
             <a href="?view=month"
-               class="btn {% if view_mode == 'month' %}btn-primary{% else %}btn-outline-primary{% endif %}">
+                class="btn {% if view_mode == 'month' %}btn-primary{% else %}btn-outline-primary{% endif %}">
                 月表示
             </a>
             <a href="?view=week"
-               class="btn {% if view_mode == 'week' %}btn-primary{% else %}btn-outline-primary{% endif %}">
+                class="btn {% if view_mode == 'week' %}btn-primary{% else %}btn-outline-primary{% endif %}">
                 週表示
             </a>
         </div>
@@ -35,26 +35,28 @@
          ====================== -->
 
     <!-- 年月セレクタ -->
-    <form method="get" class="mb-3">
-        <input type="hidden" name="view" value="month">
-        <div class="d-flex gap-2">
-            <select name="year" class="form-select w-auto" onchange="this.form.submit();">
-                {% for y in years %}
+    <div class="calendar-outline">
+        <form method="get" class="mb-3">
+            <input type="hidden" name="view" value="month">
+            <div class="d-flex gap-2">
+                <select name="year" class="form-select w-auto" onchange="this.form.submit();">
+                    {% for y in years %}
                     <option value="{{ y }}" {% if y == year %}selected{% endif %}>
                         {{ y }}年
                     </option>
-                {% endfor %}
-            </select>
+                    {% endfor %}
+                </select>
 
-            <select name="month" class="form-select w-auto" onchange="this.form.submit();">
-                {% for m in months %}
+                <select name="month" class="form-select w-auto" onchange="this.form.submit();">
+                    {% for m in months %}
                     <option value="{{ m }}" {% if m == month %}selected{% endif %}>
                         {{ m }}月
                     </option>
-                {% endfor %}
-            </select>
-        </div>
-    </form>
+                    {% endfor %}
+                </select>
+            </div>
+        </form>
+    </div>
 
     <!-- 月カレンダー -->
     <div class="calendar-wrapper">
@@ -81,12 +83,12 @@
                         {% if d.has_journal %}has-journal{% endif %}
                     ">
                         {% if d.is_other_month %}
-                            <span class="text-muted">{{ d.day.day }}</span>
+                        <span class="text-muted">{{ d.day.day }}</span>
                         {% else %}
-                            <!-- Router経由で Over / Init 振り分け -->
-                            <a href="{% url 'journal:journal_router' d.day.year d.day.month d.day.day %}">
-                                <span class="calendar-day">{{ d.day.day }}</span>
-                            </a>
+                        <!-- Router経由で Over / Init 振り分け -->
+                        <a href="{% url 'journal:journal_router' d.day.year d.day.month d.day.day %}">
+                            <span class="calendar-day">{{ d.day.day }}</span>
+                        </a>
                         {% endif %}
                     </td>
                     {% endfor %}
@@ -134,7 +136,7 @@
                         <div class="small text-muted">{{ d.day|date:"D" }}</div>
                         <div class="fw-bold">{{ d.day|date:"j" }}</div>
                         {% if d.has_journal %}
-                            <span class="badge bg-success mt-1">記録あり</span>
+                        <span class="badge bg-success mt-1">記録あり</span>
                         {% endif %}
                     </div>
                 </div>

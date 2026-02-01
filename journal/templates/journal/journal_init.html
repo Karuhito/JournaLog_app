@@ -6,6 +6,7 @@
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/pages/journal_init.css' %}">
+<link rel="stylesheet" href="{% static 'css/components/cards.css' %}">
 {% endblock %}
 
 {% block extra_js %}
@@ -41,12 +42,12 @@
         <!-- ================= Goal 作成 ================= -->
         <section class="journal-card goal-field mb-4 p-4">
             <div class="card-header d-flex justify-content-between align-items-center">
-                <h5 class="goal-text mb-0">今日のGoal作成</h5>
+                <h5 class="goal-text mb-0 view-title">今日のGoal作成</h5>
                 <button type="button" id="add-goal" class="plus-btn goal-btn">
                     <img src="{% static 'img/plus-icon.svg' %}" alt="Goal追加">
                 </button>
             </div>
-
+            <hr class="goal-divider">
             <div class="card-body">
                 <div id="goal-formset">
                     {{ goal_formset.management_form }}
@@ -66,12 +67,12 @@
         <!-- ================= Todo 作成 ================= -->
         <section class="journal-card todo-field mb-4 p-4">
             <div class="card-header d-flex justify-content-between align-items-center">
-                <h5 class="todo-text mb-0">今日のTodo作成</h5>
+                <h5 class="todo-text mb-0 view-title">今日のTodo作成</h5>
                 <button type="button" id="add-todo" class="plus-btn todo-btn">
                     <img src="{% static 'img/plus-icon.svg' %}" alt="Todo追加">
                 </button>
             </div>
-
+            <hr class="todo-divider">
             <div class="card-body">
                 <div id="todo-formset">
                     {{ todo_formset.management_form }}

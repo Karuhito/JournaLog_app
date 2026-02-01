@@ -5,7 +5,6 @@
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/pages/journal_over.css' %}">
-<link rel="stylesheet" href="{% static 'css/components/cards.css' %}">
 {% endblock %}
 
 {% block extra_js %}
@@ -16,14 +15,14 @@
 {% block content %}
 
 <div class="journal-date-nav mb-4">
-    <a href="{% url 'journal:journal_router' prev_day.year prev_day.month prev_day.day %}" class="date-nav-btn">
+    <a href="{% url 'journal:journal_router' prev_day.year prev_day.month prev_day.day %}" class="date-nav-btn btn todo-btn">
         ← 前日
     </a>
 
     <div class="journal-date">
-        <h3>{{ journal_date|date:"Y年n月j日" }} のジャーナル</h3>
+        <h4>{{ journal_date|date:"Y年n月j日" }} のジャーナル</h4>
     </div>
-    <a href="{% url 'journal:journal_router' next_day.year next_day.month next_day.day %}" class="date-nav-btn">
+    <a href="{% url 'journal:journal_router' next_day.year next_day.month next_day.day %}" class="date-nav-btn btn todo-btn">
         翌日 →
     </a>
 </div>

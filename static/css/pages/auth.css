@@ -28,6 +28,7 @@
 
 .auth-card {
     animation: fadeUp 0.4s ease-out;
+
   }
   
 @keyframes fadeUp {

@@ -1,33 +1,12 @@
-  :root {
-  /* ---------- Base ---------- */
-  --bg-main: #f4f6f8;
-  --bg-subtle: #f8f9fa;
-
-  --text-main: #333333;
-  --text-muted: #6c757d;
-
-  /* ---------- Accent ---------- */
-  --accent: #4a6fa5;
-
-  /* ---------- Section Theme ---------- */
-  --goal: #4a6fa5;
-  --todo: #6b8f71;
-  --schedule: #7a6c8a;
-  --reflection: #8a6f5c;
-
-  /* ---------- Border ---------- */
-  --border-color: #e1e5ea;
-  --border-strong: #c7ccd4;
-}
 
 /* =========================
    Journal Over Styles
 ========================= */
 
-.container.journal-over {
+  .container.journal-over {
     padding: 1rem;
   }
-  
+
   /* =========================
      Date Navigation
   ========================= */
@@ -38,7 +17,7 @@
     margin-bottom: 1rem;
     font-weight: 500;
   }
-  
+
   .date-nav-btn {
     background-color: var(--bg-main);
     border: 1px solid var(--border-color);
@@ -49,18 +28,18 @@
     font-size: 0.9rem;
     transition: all 0.2s ease;
   }
-  
+
   .date-nav-btn:hover {
     background-color: var(--accent);
     color: #fff;
     border-color: var(--accent);
   }
-  
+
   .journal-date {
     font-weight: 600;
     font-size: 1rem;
   }
-  
+
   /* =========================
      Journal Card Base
   ========================= */
@@ -69,9 +48,9 @@
     padding: 1rem;
     margin-bottom: 1rem;
     border-radius: 20px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
   }
-  
+
   /* =========================
      Card Header
   ========================= */
@@ -81,13 +60,13 @@
     align-items: center;
     margin-bottom: 0.5rem;
   }
-  
+
   .card-header h5 {
     margin: 0;
     font-size: 1.1rem;
     font-weight: 600;
   }
-  
+
   /* -------------------------
      Plus Button
   ------------------------- */
@@ -102,19 +81,20 @@
     justify-content: center;
     cursor: pointer;
     transition: all 0.2s ease;
-    padding: 0; /* base.cssのpaddingを打ち消す */
+    padding: 0;
+    /* base.cssのpaddingを打ち消す */
   }
-  
+
   .plus-btn img {
     width: 1rem;
     height: 1rem;
   }
-  
+
   .plus-btn:hover {
     background-color: var(--accent);
     border-color: var(--accent);
   }
-  
+
   /* =========================
      Item List
   ========================= */
@@ -123,7 +103,7 @@
     margin: 0;
     padding: 0;
   }
-  
+
   .item-row {
     display: flex;
     align-items: center;
@@ -131,23 +111,23 @@
     padding: 0.5rem 0;
     border-bottom: 1px solid var(--border-color);
   }
-  
+
   .item-row:last-child {
     border-bottom: none;
   }
-  
+
   .item-title {
     flex: 1;
     margin-left: 0.5rem;
     font-weight: bold;
     font-size: 1.5rem;
   }
-  
+
   .item-actions a {
     margin-left: 0.5rem;
     cursor: pointer;
   }
-  
+
   .item-actions img {
     width: 16px;
     height: 16px;
@@ -160,7 +140,7 @@
     color: var(--text-muted);
     white-space: nowrap;
   }
-  
+
   /* =========================
      Empty State Button
   ========================= */
@@ -169,7 +149,7 @@
     justify-content: center;
     margin-top: 1rem;
   }
-  
+
   .empty-state .btn {
     padding: 0.5rem 1rem;
     border-radius: 12px;
@@ -180,13 +160,13 @@
     font-weight: 500;
     transition: all 0.2s ease;
   }
-  
+
   .empty-state .btn:hover {
     background-color: var(--accent);
     border-color: var(--accent);
     color: #fff;
   }
-  
+
   /* =========================
      Reflection Content
   ========================= */
@@ -194,7 +174,7 @@
     padding: 0.5rem 0;
     line-height: 1.5;
   }
-  
+
   /* =========================
      Field Specific Borders
   ========================= */
@@ -202,34 +182,19 @@
     border: 2px solid var(--goal);
     border-radius: 15px;
   }
-  
+
   .todo-field {
     border: 2px solid var(--todo);
     border-radius: 15px;
   }
-  
+
   .schedule-field {
     border: 2px solid var(--schedule);
     border-radius: 15px;
   }
-  
+
   .reflection-field {
     border: 2px solid var(--reflection);
     border-radius: 15px;
   }
 
-/* section-divider */
-/* 機能ごとに 境界線の色を変更する */
-
-.goal-divider {
-    border-top-color: var(--goal);
-}
-.todo-divider {
-    border-top-color: var(--todo);
-}
-.schedule-divider {
-    border-top-color: var(--schedule);
-}
-.reflection-divider {
-    border-top-color: var(--reflection);
-}

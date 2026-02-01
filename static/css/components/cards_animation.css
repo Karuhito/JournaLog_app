@@ -1,0 +1,24 @@
+  /* =========================
+     Card Animation (汎用)
+     ========================= */
+  
+  /*
+    初期状態：
+    - 非表示
+    - 少し下にずらす
+  */
+  .journal-card {
+    opacity: 0;
+    transform: translateY(16px);
+    transition:
+      opacity 0.4s ease,
+      transform 0.4s ease;
+  }
+  
+  /*
+    表示状態
+  */
+  .journal-card.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }

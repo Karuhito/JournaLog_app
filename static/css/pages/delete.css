@@ -6,6 +6,7 @@
     padding: 1rem;
     background-color: white;
 }
+
 .journal-card.goal-card {
     border: 2px solid var(--goal);
     border-radius: 0.5rem;
@@ -22,20 +23,26 @@
 }
 
 .card-header {
-    display: flex;               /* 横並びにする */
-    justify-content: space-between; /* 左右に分ける */
-    align-items: center;         /* 垂直中央揃え */
-    gap: 1rem;                   /* タイトルとボタンの間隔 */
+    display: flex;
+    /* 横並びにする */
+    justify-content: space-between;
+    /* 左右に分ける */
+    align-items: center;
+    /* 垂直中央揃え */
+    gap: 1rem;
+    /* タイトルとボタンの間隔 */
 }
 
 .view-title {
-    margin: 0;                   /* h5のデフォルトマージンをリセット */
+    margin: 0;
+    /* h5のデフォルトマージンをリセット */
     font-weight: bold;
     font-size: 2rem;
 }
 
 .back-btn {
-    white-space: nowrap;         /* ボタンのテキストが折り返さないようにする */
+    white-space: nowrap;
+    /* ボタンのテキストが折り返さないようにする */
 }
 
 .delete-item {

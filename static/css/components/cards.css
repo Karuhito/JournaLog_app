@@ -8,67 +8,42 @@
     border-radius: 8px;
     padding: 0.75rem 1rem;
     box-shadow: var(--shadow-sm, 0 2px 6px rgba(0, 0, 0, 0.08));
-  }
-  
-  /* ヘッダー */
-  .journal-card .card-header {
+}
+
+/* ヘッダー */
+.journal-card .card-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-  }
-  
-  /* セクション区切り線 */
-  .section-divider {
+}
+
+/* セクション区切り線 */
+.section-divider {
     border-top: 2px solid;
     margin: 0.5rem 0 1rem;
-  }
-  
-  /* =========================
-     Card Animation (汎用)
-     ========================= */
-  
-  /*
-    初期状態：
-    - 非表示
-    - 少し下にずらす
-  */
-  .journal-card {
-    opacity: 0;
-    transform: translateY(16px);
-    transition:
-      opacity 0.4s ease,
-      transform 0.4s ease;
-  }
-  
-  /*
-    表示状態
-  */
-  .journal-card.is-visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
-  
-  /* =========================
-     Card Variations
-     ========================= */
-  
-  /* リスト内カード（journal_over など） */
-  .journal-card + .journal-card {
+}
+
+/* =========================
+    Card Variations
+========================= */
+
+/* リスト内カード（journal_over など） */
+.journal-card+.journal-card {
     margin-top: 0.75rem;
-  }
-  
-  /* フォーム系カード（create / update / delete） */
-  .journal-card.form-card {
+}
+
+/* フォーム系カード（create / update / delete） */
+.journal-card.form-card {
     max-width: 640px;
     margin: 0 auto;
-  }
-  
-  /* =========================
+}
+
+/* =========================
      Responsive
      ========================= */
-  
-  @media (max-width: 576px) {
+
+@media (max-width: 576px) {
     .journal-card {
-      padding: 0.75rem;
+        padding: 0.75rem;
     }
-  }
+}
