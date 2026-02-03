@@ -141,6 +141,7 @@
 
 .journal-card {
     padding: 1rem;
+    background-color: #fff;
 }
 
 .journal-card.goal-card {
@@ -199,4 +200,8 @@
 
 .todo-done {
     background-color: #ccc;
+}
+
+.reflection-fields {
+    border: 2px solid var(--reflection);
 }
