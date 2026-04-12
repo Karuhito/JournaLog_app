@@ -1,6 +1,9 @@
 # JournaLog
 ## 日々の積み上げを可視化し、継続を支援するジャーナルアプリ
 
+## 公開URL
+https://journalog-app.onrender.com
+
 ## 背景・課題
 - 自己啓発系Youtuberであるジョージさんの影響で、ジャーナルを書く習慣を始めた
 - ジャーナルでは、目標やその日の行動、振り返りをノートに記録していた
@@ -43,8 +46,8 @@
 ## 工夫した点（Highlights）
 
 - **共通テンプレート設計**
-  - Goal / Todo / スケジュール(Schedule) / 振り返り(Reflection) のCreate・Update・Deleteで共通化できるbaseテンプレートを作成、
-  - 複雑なファイル構成にならないよう意識しました。
+  - Goal / Todo / スケジュール(Schedule) / 振り返り(Reflection) のCreate・Update・Deleteで共通化できるbaseテンプレートを作成
+  - 複雑なファイル構成にならないよう意識しました
 
 - **UX向上の工夫**
   - JavaScriptを活用して一部アニメーションを導入
@@ -54,7 +57,7 @@
 ## 使用技術
 - Python 3.12
 - Django 6.0
-- SQLite3(MySQLに移行する予定)
+- PostgreSQL（Render上で運用中）
 - Bootstrap 5 (Tailwind CSSへの移行検討中)
 
 ## 今後の改善・展望
@@ -64,11 +67,8 @@
   - 現在はBootstrapを使用しているが、Tailwind CSSへの移行も検討中
 
 - **デプロイ・マルチデバイス対応**
-  - 公開環境を整備し、PCだけでなくスマートフォンからも利用可能にする
+  - Renderにデプロイ済み・PCおよびスマートフォンからアクセス可能
   - QRコードなどで簡単に試せるようにする
-
-- **データベースの改善**
-  - 現在はSQLiteを使用しているが、MySQLに移行し運用を安定化
 
 ## セットアップ方法
 
@@ -78,5 +78,17 @@ cd JournaLog_app
 python -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
+```
+
+`.env` ファイルをプロジェクトルートに作成し、以下を設定してください：
+
+```
+SECRET_KEY=your_secret_key
+DEBUG=True
+DATABASE_URL=your_database_url
+```
+
+```bash
 python manage.py migrate
 python manage.py runserver
+```
