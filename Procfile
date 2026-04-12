@@ -1,0 +1,1 @@
+web: gunicorn journalog_project.wsgi
