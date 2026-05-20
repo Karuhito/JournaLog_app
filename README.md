@@ -62,7 +62,7 @@ https://journalog-app.onrender.com
 ## 使用技術
 - Python 3.12
 - Django 6.0
-- PostgreSQL（Render上で運用中）
+- PostgreSQL（Supabase上で運用中）
 - Bootstrap 5 (Tailwind CSSへの移行検討中)
 
 ## 今後の改善・展望
