@@ -1,0 +1,148 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-slate-50 text-slate-700;
+  }
+
+  input[type="text"],
+  input[type="password"],
+  input[type="time"],
+  input[type="email"],
+  textarea,
+  select {
+    @apply w-full border border-slate-300 rounded-xl px-3 py-2
+           focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500
+           focus:outline-none text-slate-700 bg-white transition-colors;
+  }
+}
+
+@layer components {
+
+  /* カードコンポーネント */
+  .journal-card {
+    @apply bg-white rounded-2xl shadow-md;
+  }
+  .card-header {
+    @apply flex items-center justify-between px-4 pt-4 pb-2;
+  }
+  .card-body {
+    @apply px-4 pb-4;
+  }
+  .section-divider {
+    @apply border-t border-slate-100 mx-4 my-0;
+  }
+  .journal-input-card {
+    @apply bg-slate-50 rounded-xl px-3 py-2;
+  }
+  .view-title {
+    @apply font-semibold text-base m-0;
+  }
+
+  /* リスト・アイテム */
+  .item-list {
+    @apply space-y-1 list-none p-0 m-0 mt-2;
+  }
+  .item-row {
+    @apply flex items-center gap-3 px-2 py-2 rounded-xl hover:bg-slate-50 transition-colors;
+  }
+  .item-title {
+    @apply flex-1 text-slate-700 text-sm;
+  }
+  .item-time {
+    @apply text-xs text-slate-400;
+  }
+  .item-actions {
+    @apply flex items-center gap-1;
+  }
+  .empty-state {
+    @apply text-center py-8;
+  }
+
+  /* ボタン基本 */
+  .edit-btn {
+    @apply p-1.5 rounded-lg hover:bg-slate-100 transition-colors inline-flex items-center;
+  }
+  .delete-btn {
+    @apply p-1.5 rounded-lg hover:bg-red-50 transition-colors inline-flex items-center;
+  }
+  .plus-btn {
+    @apply p-1.5 rounded-lg transition-colors inline-flex items-center;
+  }
+  .back-btn {
+    @apply text-sm border rounded-xl px-3 py-1 transition-colors;
+  }
+  .date-nav-btn {
+    @apply text-sm border rounded-xl px-4 py-1.5 transition-colors;
+  }
+  .submit-btn {
+    @apply bg-indigo-600 hover:bg-indigo-700 text-white font-medium
+           rounded-xl px-8 py-3 transition-colors text-base;
+  }
+
+  /* 日付ナビ */
+  .journal-date-nav {
+    @apply flex items-center justify-between mb-4;
+  }
+  .journal-divider {
+    @apply border-t border-slate-200 my-4;
+  }
+
+  /* Todo 完了状態 */
+  .is-done .item-title {
+    @apply line-through text-slate-400;
+  }
+
+  /* カレンダー */
+  .calendar-wrapper {
+    @apply overflow-x-auto rounded-2xl shadow-md;
+  }
+  .calendar-cell {
+    @apply align-top p-1 h-10 cursor-pointer hover:bg-slate-50 transition-colors;
+  }
+  .calendar-day {
+    @apply text-sm font-medium;
+  }
+  .other-month .calendar-day { @apply text-slate-300; }
+  .today { @apply bg-indigo-50; }
+  .today .calendar-day { @apply text-indigo-600 font-bold; }
+  .has-journal { @apply bg-emerald-50; }
+  .has-journal .calendar-day { @apply text-emerald-700; }
+  .weekday-sun, .weekday-sun .calendar-day { @apply text-red-500; }
+  .weekday-sat, .weekday-sat .calendar-day { @apply text-blue-500; }
+  .calendar-outline { @apply mb-3; }
+
+  /* Goal テーマ */
+  .goal-card    { @apply border-l-4 border-emerald-400; }
+  .goal-field   { @apply border-l-4 border-emerald-400; }
+  .goal-text    { @apply text-emerald-600; }
+  .goal-divider { @apply border-emerald-100; }
+  .goal-btn     { @apply text-emerald-600 border-emerald-300 hover:bg-emerald-50; }
+  .goal-bg      { @apply bg-emerald-50 text-emerald-700; }
+
+  /* Todo テーマ */
+  .todo-card    { @apply border-l-4 border-indigo-400; }
+  .todo-field   { @apply border-l-4 border-indigo-400; }
+  .todo-text    { @apply text-indigo-600; }
+  .todo-divider { @apply border-indigo-100; }
+  .todo-btn     { @apply text-indigo-600 border-indigo-300 hover:bg-indigo-50; }
+  .todo-bg      { @apply bg-indigo-50 text-indigo-700; }
+
+  /* Schedule テーマ */
+  .schedule-card    { @apply border-l-4 border-violet-400; }
+  .schedule-field   { @apply border-l-4 border-violet-400; }
+  .schedule-text    { @apply text-violet-600; }
+  .schedule-divider { @apply border-violet-100; }
+  .schedule-btn     { @apply text-violet-600 border-violet-300 hover:bg-violet-50; }
+  .schedule-bg      { @apply bg-violet-50 text-violet-700; }
+
+  /* Reflection テーマ */
+  .reflection-card    { @apply border-l-4 border-amber-400; }
+  .reflection-field   { @apply border-l-4 border-amber-400; }
+  .reflection-text    { @apply text-amber-600; }
+  .reflection-divider { @apply border-amber-100; }
+  .reflection-btn     { @apply text-amber-600 border-amber-300 hover:bg-amber-50; }
+  .reflection-bg      { @apply bg-amber-50 text-amber-700; }
+}
