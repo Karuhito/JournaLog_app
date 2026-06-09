@@ -1,44 +1,25 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/pages/create_update.css' %}">
-
-{% endblock %}
-
 {% block content %}
-<div class="container my-4">
-
-    <section class="journal-card {{ feature }}-card">
-
-        <div class="card-header">
-            <h5 class="{{ feature }}-text view-title">
-                {% block section_title %}{% endblock %}
-            </h5>
-
-            <a href="{{ cancel_url }}" class="btn back-btn {{ feature }}-btn {{feature}}-text">
-                キャンセル
-            </a>
+<div class="max-w-2xl mx-auto">
+  <section class="journal-card {{ feature }}-card" data-feature="{{ feature }}">
+    <div class="card-header">
+      <h5 class="{{ feature }}-text view-title">{% block section_title %}{% endblock %}</h5>
+      <a href="{{ cancel_url }}" class="back-btn {{ feature }}-btn {{ feature }}-text">
+        キャンセル
+      </a>
+    </div>
+    <div class="card-body">
+      <hr class="section-divider {{ feature }}-divider mb-3">
+      <form method="post">
+        {% csrf_token %}
+        {% block form_fields %}{% endblock %}
+        <div class="text-center mt-4">
+          <button type="submit" class="submit-btn">編集を完了</button>
         </div>
-
-        <hr class="section-divider {{ feature }}-divider">
-
-        <div>
-            <form method="post">
-                {% csrf_token %}
-                {% block form_fields %}
-
-                {% endblock %}
-
-                <div class="journal-submit text-center mt-3">
-                    <button type="submit" class="btn btn-lg {{ feature }}-btn">
-                        編集を完了
-                    </button>
-                </div>
-            </form>
-        </div>
-
-    </section>
-
+      </form>
+    </div>
+  </section>
 </div>
 {% endblock %}
