@@ -1,150 +1,126 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/pages/calendar.css' %}">
-{% endblock %}
-
 {% block title %}ホーム{% endblock %}
 
 {% block content %}
-<div class="container">
+<div>
 
-    <!-- ヘッダー -->
-    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-3">
-        <h5 class="mb-2 mb-md-0">
-            {{ user.username }} さんの記録
-        </h5>
+  <div class="flex flex-col md:flex-row md:items-center justify-between mb-4 gap-2">
+    <h5 class="font-semibold text-slate-700 m-0">{{ user.username }} さんの記録</h5>
+    <div class="flex rounded-xl overflow-hidden border border-slate-200 w-fit">
+      <a href="?view=month"
+         class="px-4 py-1.5 text-sm transition-colors
+                {% if view_mode == 'month' %}bg-indigo-600 text-white{% else %}text-slate-600 hover:bg-slate-100{% endif %}">
+        月表示
+      </a>
+      <a href="?view=week"
+         class="px-4 py-1.5 text-sm transition-colors border-l border-slate-200
+                {% if view_mode == 'week' %}bg-indigo-600 text-white{% else %}text-slate-600 hover:bg-slate-100{% endif %}">
+        週表示
+      </a>
+    </div>
+  </div>
 
-        <!-- 表示切替ボタン -->
-        <div class="btn-group btn-group-sm">
-            <a href="?view=month"
-                class="btn {% if view_mode == 'month' %}btn-primary{% else %}btn-outline-primary{% endif %}">
-                月表示
+  {% if view_mode == "month" %}
+
+  <div class="calendar-outline">
+    <form method="get">
+      <input type="hidden" name="view" value="month">
+      <div class="flex gap-2">
+        <select name="year"
+                class="border border-slate-300 rounded-xl px-3 py-1.5 text-sm w-auto
+                       focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                onchange="this.form.submit();">
+          {% for y in years %}
+          <option value="{{ y }}" {% if y == year %}selected{% endif %}>{{ y }}年</option>
+          {% endfor %}
+        </select>
+        <select name="month"
+                class="border border-slate-300 rounded-xl px-3 py-1.5 text-sm w-auto
+                       focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                onchange="this.form.submit();">
+          {% for m in months %}
+          <option value="{{ m }}" {% if m == month %}selected{% endif %}>{{ m }}月</option>
+          {% endfor %}
+        </select>
+      </div>
+    </form>
+  </div>
+
+  <div class="calendar-wrapper">
+    <table class="w-full border-collapse bg-white text-center text-sm">
+      <thead class="bg-slate-50">
+        <tr>
+          <th class="weekday-sun py-2 font-medium text-xs">日</th>
+          <th class="py-2 font-medium text-xs text-slate-600">月</th>
+          <th class="py-2 font-medium text-xs text-slate-600">火</th>
+          <th class="py-2 font-medium text-xs text-slate-600">水</th>
+          <th class="py-2 font-medium text-xs text-slate-600">木</th>
+          <th class="py-2 font-medium text-xs text-slate-600">金</th>
+          <th class="weekday-sat py-2 font-medium text-xs">土</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for week in cal_data %}
+        <tr class="border-t border-slate-100">
+          {% for d in week %}
+          <td class="calendar-cell
+                     {% if d.is_other_month %}other-month{% endif %}
+                     {% if d.is_today %}today{% endif %}
+                     {% if d.has_journal %}has-journal{% endif %}">
+            {% if d.is_other_month %}
+            <span class="calendar-day text-slate-300">{{ d.day.day }}</span>
+            {% else %}
+            <a href="{% url 'journal:journal_router' d.day.year d.day.month d.day.day %}">
+              <span class="calendar-day">{{ d.day.day }}</span>
             </a>
-            <a href="?view=week"
-                class="btn {% if view_mode == 'week' %}btn-primary{% else %}btn-outline-primary{% endif %}">
-                週表示
-            </a>
-        </div>
-    </div>
-
-    {% if view_mode == "month" %}
-    <!-- ======================
-         月表示
-         ====================== -->
-
-    <!-- 年月セレクタ -->
-    <div class="calendar-outline">
-        <form method="get" class="mb-3">
-            <input type="hidden" name="view" value="month">
-            <div class="d-flex gap-2">
-                <select name="year" class="form-select w-auto" onchange="this.form.submit();">
-                    {% for y in years %}
-                    <option value="{{ y }}" {% if y == year %}selected{% endif %}>
-                        {{ y }}年
-                    </option>
-                    {% endfor %}
-                </select>
-
-                <select name="month" class="form-select w-auto" onchange="this.form.submit();">
-                    {% for m in months %}
-                    <option value="{{ m }}" {% if m == month %}selected{% endif %}>
-                        {{ m }}月
-                    </option>
-                    {% endfor %}
-                </select>
-            </div>
-        </form>
-    </div>
-
-    <!-- 月カレンダー -->
-    <div class="calendar-wrapper">
-        <table class="table table-bordered text-center mb-0">
-            <thead class="table-light">
-                <tr>
-                    <th class="weekday-sun">日</th>
-                    <th>月</th>
-                    <th>火</th>
-                    <th>水</th>
-                    <th>木</th>
-                    <th>金</th>
-                    <th class="weekday-sat">土</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for week in cal_data %}
-                <tr>
-                    {% for d in week %}
-                    <td class="
-                        calendar-cell
-                        {% if d.is_other_month %}other-month{% endif %}
-                        {% if d.is_today %}today{% endif %}
-                        {% if d.has_journal %}has-journal{% endif %}
-                    ">
-                        {% if d.is_other_month %}
-                        <span class="text-muted">{{ d.day.day }}</span>
-                        {% else %}
-                        <!-- Router経由で Over / Init 振り分け -->
-                        <a href="{% url 'journal:journal_router' d.day.year d.day.month d.day.day %}">
-                            <span class="calendar-day">{{ d.day.day }}</span>
-                        </a>
-                        {% endif %}
-                    </td>
-                    {% endfor %}
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
-
-    {% else %}
-    <!-- ======================
-         週表示
-         ====================== -->
-
-    <!-- 週ナビゲーション -->
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <a href="?view=week&week_start={{ prev_week | date:'Y-m-d' }}" class="btn btn-outline-secondary btn-sm">
-            ← 前の週
-        </a>
-
-        <div class="text-center small">
-            {{ week_start|date:"Y年n月j日" }} 〜 {{ week_end|date:"n月j日" }}
-        </div>
-
-        <a href="?view=week&week_start={{ next_week | date:'Y-m-d' }}" class="btn btn-outline-secondary btn-sm">
-            次の週 →
-        </a>
-    </div>
-
-    <!-- 今日に戻る -->
-    <div class="text-center mb-3">
-        <a href="?view=week" class="btn btn-outline-primary btn-sm">今週に戻る</a>
-    </div>
-
-    <!-- 週カレンダー -->
-    <div class="row row-cols-2 row-cols-md-4 g-2">
-        {% for d in week_data %}
-        <div class="col">
-            <!-- Router経由 -->
-            <a href="{% url 'journal:journal_router' d.day.year d.day.month d.day.day %}" class="text-decoration-none">
-                <div class="card h-100 text-center
-                    {% if d.is_today %}border-primary{% endif %}
-                    {% if d.has_journal %}bg-light{% endif %}">
-                    <div class="card-body p-2">
-                        <div class="small text-muted">{{ d.day|date:"D" }}</div>
-                        <div class="fw-bold">{{ d.day|date:"j" }}</div>
-                        {% if d.has_journal %}
-                        <span class="badge bg-success mt-1">記録あり</span>
-                        {% endif %}
-                    </div>
-                </div>
-            </a>
-        </div>
+            {% endif %}
+          </td>
+          {% endfor %}
+        </tr>
         {% endfor %}
-    </div>
+      </tbody>
+    </table>
+  </div>
 
-    {% endif %}
+  {% else %}
+
+  <div class="flex items-center justify-between mb-3">
+    <a href="?view=week&week_start={{ prev_week|date:'Y-m-d' }}"
+       class="text-sm text-slate-600 border border-slate-300 rounded-xl px-3 py-1.5
+              hover:bg-slate-100 transition-colors">← 前の週</a>
+    <div class="text-center text-sm text-slate-600">
+      {{ week_start|date:"Y年n月j日" }} 〜 {{ week_end|date:"n月j日" }}
+    </div>
+    <a href="?view=week&week_start={{ next_week|date:'Y-m-d' }}"
+       class="text-sm text-slate-600 border border-slate-300 rounded-xl px-3 py-1.5
+              hover:bg-slate-100 transition-colors">次の週 →</a>
+  </div>
+
+  <div class="text-center mb-4">
+    <a href="?view=week"
+       class="text-sm text-indigo-600 border border-indigo-300 rounded-xl px-4 py-1.5
+              hover:bg-indigo-50 transition-colors">今週に戻る</a>
+  </div>
+
+  <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+    {% for d in week_data %}
+    <a href="{% url 'journal:journal_router' d.day.year d.day.month d.day.day %}"
+       class="text-decoration-none">
+      <div class="bg-white rounded-2xl shadow-md hover:shadow-lg transition-shadow p-3 text-center
+                  {% if d.is_today %}ring-2 ring-indigo-400{% endif %}">
+        <div class="text-xs text-slate-400 mb-1">{{ d.day|date:"D" }}</div>
+        <div class="font-bold text-slate-700 text-lg">{{ d.day|date:"j" }}</div>
+        {% if d.has_journal %}
+        <span class="inline-block mt-2 bg-emerald-100 text-emerald-700 rounded-full
+                     text-xs px-2 py-0.5 font-medium">記録あり</span>
+        {% endif %}
+      </div>
+    </a>
+    {% endfor %}
+  </div>
+
+  {% endif %}
 </div>
 {% endblock %}
