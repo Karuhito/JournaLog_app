@@ -24,6 +24,13 @@ class CreateReflectionView(LoginRequiredMixin, CreateView):
             user=request.user,
             date=self.journal_date
         )
+        # 既にReflectionが存在する場合は編集画面にリダイレクト
+        existing = self.journal.reflection.first()
+        if existing:
+            return redirect(
+                "journal:update_reflection",
+                pk=existing.pk
+            )
         return super().dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
