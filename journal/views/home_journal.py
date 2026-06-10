@@ -203,23 +203,39 @@ class JournalInitView(LoginRequiredMixin, View):
         )
 
         if goal_formset.is_valid() and todo_formset.is_valid():
+            saved_count = 0
             # Goal 保存
             for goal in goal_formset.save(commit=False):
                 if goal.title:
                     goal.journal = journal
                     goal.save()
+                    saved_count += 1
             # Todo 保存
             for todo in todo_formset.save(commit=False):
                 if todo.title:
                     todo.journal = journal
                     todo.save()
+                    saved_count += 1
 
-            return redirect(
-                "journal:journal_over",
-                year=year,
-                month=month,
-                day=day
-            )
+            if saved_count > 0:
+                return redirect(
+                    "journal:journal_over",
+                    year=year,
+                    month=month,
+                    day=day
+                )
+
+            # 全て空の場合はエラーメッセージを表示して再表示
+            context = {
+                "journal": journal,
+                "goal_formset": goal_formset,
+                "todo_formset": todo_formset,
+                "prev_day": journal_date - timedelta(days=1),
+                "next_day": journal_date + timedelta(days=1),
+                "journal_date": journal_date,
+                "error_message": "目標またはTodoを少なくとも1つ入力してください。",
+            }
+            return render(request, self.template_name, context)
 
         # バリデーションエラーの場合は再表示
         context = {
