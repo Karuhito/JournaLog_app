@@ -6,7 +6,7 @@ from .base import BaseUpdateView
 from django.shortcuts import render, get_object_or_404, redirect
 from journal.models import Journal, Reflection
 from journal.forms import ReflectionForm
-from datetime import date, timezone
+from datetime import date
 
 class CreateReflectionView(LoginRequiredMixin, CreateView):
     model = Reflection
