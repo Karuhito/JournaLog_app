@@ -1,98 +1,78 @@
 {% load static %}
+{% load tailwind_tags %}
 <!DOCTYPE html>
 <html lang="ja">
 
 <head>
-    <meta charset="UTF-8">
-    <!-- スマホ対応の最重要設定 -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>JournaLog - {% block title %}{% endblock %}</title>
-    <!-- favicon -->
-    <link rel="shortcut icon" href="{% static 'img/favicon.ico'%}" type="image/x-icon">
-
-    <!-- Bootstrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
-
-    <!-- 独自CSS -->
-    <link rel="stylesheet" href="{% static 'css/foundation/variables.css' %}">
-    <link rel="stylesheet" href="{% static 'css/foundation/base.css' %}">
-    
-    <link rel="stylesheet" href="{% static 'css/layout/container.css' %}">
-    <link rel="stylesheet" href="{% static 'css/layout/header.css' %}">
-    <link rel="stylesheet" href="{% static 'css/components/buttons.css' %}">
-    <link rel="stylesheet" href="{% static 'css/components/forms.css' %}">
-    
-    <link rel="stylesheet" href="{% static 'css/themes/goal.css' %}">
-    <link rel="stylesheet" href="{% static 'css/themes/todo.css' %}">
-    <link rel="stylesheet" href="{% static 'css/themes/schedule.css' %}">
-    <link rel="stylesheet" href="{% static 'css/themes/reflection.css' %}">
-    
-    <!-- 追加CSS -->
-    {% block extra_css %}{% endblock %}
-    
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JournaLog - {% block title %}{% endblock %}</title>
+  <link rel="shortcut icon" href="{% static 'img/favicon.ico' %}" type="image/x-icon">
+  {% tailwind_css %}
+  {% block extra_css %}{% endblock %}
 </head>
 
-<body class="{% block body_css %}{% endblock %}">
-    <!-- ナビゲーション -->
-    <header class="site-header">
-        <nav class="navbar border-bottom shadow-sm sticky-top">
-            <div class="container d-flex justify-content-between align-items-center">
+<body class="bg-slate-50 text-slate-700 {% block body_class %}{% endblock %}">
 
-                <!-- 左側：タイトル + Home -->
-                <div class="d-flex align-items-center gap-3">
-                    <a class="navbar-brand fw-bold fs-5 mb-0" href="{% url 'journal:home' %}">
-                        JournaLog
-                    </a>
-                    <a href="{% url 'journal:home' %}" class="btn btn-outline-secondary btn-sm">
-                        Home
-                    </a>
-                    {% block back_journalover %}{% endblock %}
-                </div>
+  <header>
+    <nav class="sticky top-0 z-50 backdrop-blur-sm bg-white/90 border-b border-slate-200 shadow-sm">
+      <div class="max-w-4xl mx-auto px-4 h-14 flex items-center justify-between">
 
-                <!-- 右側：ハンバーガーメニュー（アカウント） -->
-                <div class="dropdown">
-                    <button class="btn" type="button" data-bs-toggle="dropdown" aria-expanded="false"
-                        aria-label="アカウントメニュー">
-                        <img src="{% static 'img/menu-btn.svg' %}" alt="ハンバーガーメニュー" class="hamburger-icon ">
-                    </button>
+        <div class="flex items-center gap-3">
+          <a class="font-bold text-lg text-indigo-600 hover:text-indigo-700 transition-colors"
+             href="{% url 'journal:home' %}">JournaLog</a>
+          <a href="{% url 'journal:home' %}"
+             class="text-sm text-slate-600 border border-slate-300 rounded-lg px-3 py-1
+                    hover:bg-slate-100 transition-colors">Home</a>
+          {% block back_journalover %}{% endblock %}
+        </div>
 
-                    <ul class="dropdown-menu dropdown-menu-end p-3" style="min-width: 200px;">
-                        <li class="mb-2">
-                            <div class="small text-muted">ログイン中</div>
-                            <div class="fw-semibold">{{ user.username }}</div>
-                        </li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-                        <li>
-                            <form method="post" action="{% url 'accounts:logout' %}">
-                                {% csrf_token %}
-                                <button class="btn btn-outline-danger btn-sm w-100" type="submit">
-                                    ログアウト
-                                </button>
-                            </form>
-                        </li>
-                    </ul>
-                </div>
+        <div x-data="{ open: false }" class="relative">
+          <button @click="open = !open"
+                  @keydown.escape.window="open = false"
+                  class="p-2 rounded-lg hover:bg-slate-100 transition-colors"
+                  aria-label="アカウントメニュー">
+            <img src="{% static 'img/menu-btn.svg' %}" alt="メニュー" class="w-6 h-6">
+          </button>
+          <div x-show="open"
+               @click.away="open = false"
+               x-transition:enter="transition ease-out duration-100"
+               x-transition:enter-start="opacity-0 scale-95"
+               x-transition:enter-end="opacity-100 scale-100"
+               x-transition:leave="transition ease-in duration-75"
+               x-transition:leave-start="opacity-100 scale-100"
+               x-transition:leave-end="opacity-0 scale-95"
+               class="absolute right-0 mt-2 w-52 bg-white rounded-2xl shadow-lg
+                      border border-slate-100 p-3 z-50"
+               style="display: none;">
+            <div class="mb-3">
+              <div class="text-xs text-slate-400">ログイン中</div>
+              <div class="font-semibold text-slate-700">{{ user.username }}</div>
             </div>
-        </nav>
-    </header>
-    <!-- メインコンテンツ -->
-    <main class="container my-3 my-md-4">
-        {% block content %}
-        {% endblock %}
-    </main>
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous">
-        </script>
-    <script src="{% static 'js/page_transition.js' %}"></script>
-    {% block extra_js %}{% endblock %}
-    <form style="display:none;">
-        {% csrf_token %}
-    </form>
-</body>
+            <hr class="border-slate-100 mb-3">
+            <form method="post" action="{% url 'accounts:logout' %}">
+              {% csrf_token %}
+              <button class="w-full text-sm text-red-500 border border-red-300 rounded-xl
+                             px-3 py-1.5 hover:bg-red-50 transition-colors" type="submit">
+                ログアウト
+              </button>
+            </form>
+          </div>
+        </div>
 
+      </div>
+    </nav>
+  </header>
+
+  <main class="max-w-4xl mx-auto px-4 py-4 md:py-6">
+    {% block content %}{% endblock %}
+  </main>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  {% load django_browser_reload %}
+  {% django_browser_reload_script %}
+  <script src="{% static 'js/page_transition.js' %}"></script>
+  {% block extra_js %}{% endblock %}
+  <form style="display:none;">{% csrf_token %}</form>
+</body>
 </html>

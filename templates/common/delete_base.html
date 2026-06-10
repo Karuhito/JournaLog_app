@@ -1,49 +1,31 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/pages/delete.css' %}">
-{% endblock %}
-
 {% block content %}
-<div class="container my-4">
-
-  <section class="journal-card {{ feature }}-card">
-
+<div class="max-w-2xl mx-auto">
+  <section class="journal-card {{ feature }}-card" data-feature="{{ feature }}">
     <div class="card-header">
-      <h5 class="{{ feature }}-text view-title">
-        {% block section_title %}{% endblock %}
-      </h5>
-
+      <h5 class="{{ feature }}-text view-title">{% block section_title %}{% endblock %}</h5>
       <a href="{{ cancel_url|default:'javascript:history.back()' }}"
-        class="btn back-btn {{ feature }}-btn">
-        キャンセル
-      </a>
+         class="back-btn {{ feature }}-btn">キャンセル</a>
     </div>
-
-    <hr class="section-divider {{ feature }}-divider">
-    <p class="warning-ms">以下の{{model_label}}の投稿を削除しますか？</p>
-
-    <form method="post">
-      {% csrf_token %}
-
-
-      <div class="journal-card {{ feature}}-card mb-2 d-flex align-items-center">
-        {% block delete_object %}
-        <!-- 削除対象の内容を表示 -->
-        {% endblock %}
+    <div class="card-body">
+      <hr class="section-divider {{ feature }}-divider mb-3">
+      <p class="text-sm text-slate-500 mb-4">以下の{{ model_label }}の投稿を削除しますか？</p>
+      <div class="journal-input-card mb-4">
+        {% block delete_object %}{% endblock %}
       </div>
-   
-
-      <div class="journal-submit text-center mt-3">
-        <button type="submit"
-                class="btn btn-lg delete-btn {{ feature }}-btn">
-          削除する
-        </button>
-      </div>
-    </form>
-
+      <form method="post">
+        {% csrf_token %}
+        <div class="text-center">
+          <button type="submit"
+                  class="bg-red-500 hover:bg-red-600 text-white font-medium
+                         rounded-xl px-8 py-3 transition-colors">
+            削除する
+          </button>
+        </div>
+      </form>
+    </div>
   </section>
-
 </div>
 {% endblock %}

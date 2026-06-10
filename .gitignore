@@ -9,9 +9,16 @@ venv/
 # Django
 db.sqlite3
 *.log
+staticfiles/
 
 # Environment variables
 .env
 
 # OS
 .DS_Store
+
+# Node.js
+node_modules/
+
+# omc
+.omc

@@ -1,73 +1,64 @@
 {% load static %}
+{% load tailwind_tags %}
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JournaLog - サインアップ</title>
-    <link
-        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-        rel="stylesheet"
-        integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
-        crossorigin="anonymous"
-    >
-    <link rel="stylesheet" href="{% static 'css/foundation/base.css' %}">
-    <link rel="stylesheet" href="{% static 'css/pages/auth.css' %}">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JournaLog - サインアップ</title>
+  <link rel="shortcut icon" href="{% static 'img/favicon.ico' %}" type="image/x-icon">
+  {% tailwind_css %}
 </head>
-<body>
+<body class="bg-slate-50 min-h-screen flex items-center justify-center px-4">
 
-<main class="auth-container">
-    <div class="auth-card mt-5 col-md-4 border border-4 p-4 rounded-3">
-        <h2 class="auth-title mb-4">サインアップ</h2>
-        <p class="auth-description">
-            アカウントを作成してJournaLogを始めよう!
-        </p>
+  <div class="w-full max-w-sm bg-white rounded-2xl shadow-md p-8">
+    <h2 class="text-xl font-bold text-slate-800 mb-2">サインアップ</h2>
+    <p class="text-sm text-slate-500 mb-6">アカウントを作成して JournaLog を始めよう!</p>
 
-        <form class="auth-form" method="post">
-            {% csrf_token %}
-            {{ form.non_field_errors }}
-            <div class="auth-fields">
-                <div class="mb-3 auth-field">
-                    <label class="form-label">ユーザーネーム</label>
-                    {{ form.username }}
-                    {{ form.username.errors }}
-                </div>
+    <form method="post">
+      {% csrf_token %}
+      {% if form.non_field_errors %}
+      <div class="mb-4 text-sm text-red-600 bg-red-50 rounded-xl px-3 py-2">
+        {{ form.non_field_errors }}
+      </div>
+      {% endif %}
+      <div class="mb-4">
+        <label class="block text-sm font-medium text-slate-600 mb-1">ユーザーネーム</label>
+        {{ form.username }}
+        {% if form.username.errors %}
+        <p class="mt-1 text-xs text-red-500">{{ form.username.errors|join:", " }}</p>
+        {% endif %}
+      </div>
+      <div class="mb-4">
+        <label class="block text-sm font-medium text-slate-600 mb-1">パスワード</label>
+        {{ form.password1 }}
+        {% if form.password1.errors %}
+        <p class="mt-1 text-xs text-red-500">{{ form.password1.errors|join:", " }}</p>
+        {% endif %}
+      </div>
+      <div class="mb-6">
+        <label class="block text-sm font-medium text-slate-600 mb-1">パスワード（確認）</label>
+        {{ form.password2 }}
+        {% if form.password2.errors %}
+        <p class="mt-1 text-xs text-red-500">{{ form.password2.errors|join:", " }}</p>
+        {% endif %}
+      </div>
+      <button type="submit"
+              class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium
+                     rounded-xl px-4 py-2.5 transition-colors">
+        アカウントを作成
+      </button>
+    </form>
+    <div class="border-t border-slate-100 my-6"></div>
+    <p class="text-sm text-slate-500 text-center mb-3">すでにアカウントをお持ちの方</p>
+    <a href="{% url 'accounts:login' %}"
+       class="block w-full text-center text-sm text-indigo-600 border border-indigo-300
+              rounded-xl px-4 py-2.5 hover:bg-indigo-50 transition-colors">
+      ログイン
+    </a>
+  </div>
 
-                <div class="mb-3 auth-field">
-                    <label class="form-label">パスワード</label>
-                    {{ form.password1 }}
-                    {{ form.password1.errors }}
-                </div>
-
-                <div class="mb-3 auth-field">
-                    <label class="form-label">パスワード（確認）</label>
-                    {{ form.password2 }}
-                    {{ form.password2.errors }}
-                </div>
-            </div>
-            <button type="submit" class="btn btn-submit w-100">
-                アカウントを作成
-            </button>
-        </form>
-
-        <div class="auth-divider"></div>
-
-        <p class="auth-alt-text">
-            すでにアカウントをお持ちの方
-        </p>
-
-        <div class="d-grid gap-2">
-            <a href="{% url 'accounts:login' %}" class="btn btn-alt w-100">
-                ログイン
-            </a>
-        </div>
-    </div>
-</main>
-
-<script
-    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
-    crossorigin="anonymous">
-</script>
+  {% load django_browser_reload %}
+  {% django_browser_reload_script %}
 </body>
 </html>

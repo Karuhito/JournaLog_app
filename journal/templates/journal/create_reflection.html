@@ -2,44 +2,25 @@
 {% load static %}
 {% block title %}振り返り作成{% endblock %}
 
-{% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/pages/create_update.css' %}">
-
-{% endblock %}
-
 {% block content %}
-<section class="journal-section journal-reflection" data-feature="reflection">
-    <div class="journal-card reflection-card">
-
-        <!-- Card Header -->
-        <div class="card-header">
-            <h5 class="reflection-text view-title">
-                振り返りを記録
-            </h5>
-
-            <a href="{{ cancel_url }}" class="btn back-btn reflection-btn reflection-text">
-                キャンセル
-            </a>
-        </div>
-
-        <hr class="section-divider reflection-divider">
-
-        <!-- Form -->
-        <form method="post">
-            {% csrf_token %}
-
-            <div class="journal-input-card mb-2 reflection-fields">
-                {{ form.content }}
-            </div>
-
-            <!-- Submit Button -->
-            <div class="journal-submit text-center mt-3">
-                <button type="submit" class="btn btn-lg reflection-btn ">
-                    振り返りを作成
-                </button>
-            </div>
-        </form>
-
+<div class="max-w-2xl mx-auto">
+  <section class="journal-card reflection-card">
+    <div class="card-header">
+      <h5 class="reflection-text view-title">振り返りを記録</h5>
+      <a href="{{ cancel_url }}" class="back-btn reflection-btn reflection-text">キャンセル</a>
     </div>
-</section>
+    <div class="card-body">
+      <hr class="section-divider reflection-divider mb-3">
+      <form method="post">
+        {% csrf_token %}
+        <div class="journal-input-card mb-4">
+          {{ form.content }}
+        </div>
+        <div class="text-center mt-4">
+          <button type="submit" class="submit-btn">振り返りを作成</button>
+        </div>
+      </form>
+    </div>
+  </section>
+</div>
 {% endblock %}
