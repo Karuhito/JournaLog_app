@@ -58,6 +58,8 @@ class BaseCreateView(LoginRequiredMixin, View):
             objects = formset.save(commit=False)
 
             for obj in objects:
+                if not obj.title:
+                    continue
                 obj.journal = journal
                 obj.save()
 
