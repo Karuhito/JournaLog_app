@@ -11,9 +11,9 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 
 DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
-
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '*']
-
+# Security fix: Remove wildcard '*' to prevent Host Header Injection attack.
+# Explicitly list allowed hosts. Replace 'your-production-domain.com' with your actual domain.
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'your-production-domain.com']
 
 # Application definition
 
