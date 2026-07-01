@@ -1,0 +1,22 @@
+name: Keep Supabase Alive
+
+# Supabase無料プランは7日間アクセスが無いと自動停止するため、
+# 定期的にDBへ SELECT 1 を実行して非アクティブ判定をリセットする。
+
+on:
+  schedule:
+    # 毎月 1,4,7,...,28,31 日の 03:00 UTC に実行（およそ3日間隔）
+    - cron: '0 3 */3 * *'
+  # 手動実行も可能にする
+  workflow_dispatch:
+
+jobs:
+  keep-alive:
+    runs-on: ubuntu-latest
+    steps:
+      - name: DBへ軽量クエリを実行して起こし続ける
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        run: |
+          # ubuntu-latest には psql (postgresql-client) が同梱されている
+          psql "$DATABASE_URL" -c "SELECT 1;"
