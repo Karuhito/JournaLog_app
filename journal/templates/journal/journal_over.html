@@ -78,7 +78,7 @@
         {% for todo in todos %}
         <li class="item-row {% if todo.is_done %}is-done{% endif %}">
           <input type="checkbox"
-                 class="w-4 h-4 rounded accent-indigo-500 cursor-pointer shrink-0"
+                 class="todo-checkbox w-4 h-4 rounded accent-indigo-500 cursor-pointer shrink-0"
                  data-todo-id="{{ todo.id }}"
                  {% if todo.is_done %}checked{% endif %}>
           <span class="item-title">{{ todo.title }}</span>
