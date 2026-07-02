@@ -1,4 +1,5 @@
 from django.urls import reverse
+from django.contrib.auth.mixins import LoginRequiredMixin
 from .base import BaseCreateView, BaseDeleteView, BaseUpdateView
 from django.views import View
 from ..models import Todo
@@ -27,7 +28,7 @@ class DeleteTodoView(BaseDeleteView):
     feature = "todo"
     template_name = "journal/delete_todo.html"
 
-class TodoToggleView(View):
+class TodoToggleView(LoginRequiredMixin,View):
     def post(self, request, pk):
         todo = get_object_or_404(
             Todo,
