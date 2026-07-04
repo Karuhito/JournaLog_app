@@ -6,7 +6,7 @@ function attachTodoToggle() {
 
       newCheckbox.addEventListener("change", async () => {
           const todoId = newCheckbox.dataset.todoId;
-          const row = newCheckbox.closest(".todo-item");
+          const checkbox = newCheckbox.closest(".item-row");
 
           try {
               const response = await fetch(`/journal/todo/toggle/${todoId}/`, {
@@ -24,7 +24,7 @@ function attachTodoToggle() {
               }
 
               // 完了状態の切替
-              row.classList.toggle("is-done", data.is_done);
+              checkbox.classList.toggle("is-done", data.is_done);
 
           } catch (error) {
               console.error(error);
